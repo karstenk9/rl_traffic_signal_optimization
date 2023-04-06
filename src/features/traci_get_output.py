@@ -38,7 +38,7 @@ def run():
     traci.close()
 
 
-    """execute the TraCI control loop"""
+    #"""execute the TraCI control loop"""
     #step = 0
     # we start with phase 2 where EW has green
     #traci.trafficlight.setPhase("0", 2)
@@ -81,10 +81,10 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
-    traci.start([sumoBinary, "-c", "../../models/Mannheim145_export06032023/osm.sumocfg",
-                                "--tripinfo-output", "../data/tripinfo.xml",
+    traci.start([sumoBinary, "-c", "urban_mobility_simulation/models/Mannheim145_export06032023/osm.sumocfg",
+                                "--tripinfo-output", "urban_mobility_simulation/src/data/tripinfo.xml",
                                 "--output-prefix", "TIME",
                                 "--device.emissions.probability", "1.0",
-                                "--emission-output", "../data/emission_info.xml"])
+                                "--emission-output", "urban_mobility_simulation/src/data/emission_info.xml"])
 
     run()
