@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-03-06 16:04:26.066104 by randomTrips.py v1_14_1+0000-f654d7b963e
+<configuration>
+    <end value="3600"/>
+    <fringe-factor value="40.0"/>
+    <fringe-start-attributes value="departSpeed=&quot;max&quot;"/>
+    <net-file value="osm.net.xml"/>
+    <period value="40.0"/>
+    <route-file value="osm.ship.rou.xml"/>
+    <output-trip-file value="osm.ship.trips.xml"/>
+    <prefix value="ship"/>
+    <validate value="True"/>
+    <vclass value="ship"/>
+    <vehicle-class value="ship"/>
+</configuration>
+-->
+
+<!-- generated on 2023-03-06 16:04:25 by Eclipse SUMO duarouter Version 1.14.1
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="osm.net.xml"/>
+        <route-files value="osm.ship.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="osm.ship.rou.xml"/>
+        <alternatives-output value="NUL"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+
+    <report>
+        <no-warnings value="true"/>
+        <ignore-errors value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="ship_ship" vClass="ship"/>
+    <vehicle id="ship0" type="ship_ship" depart="0.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship1" type="ship_ship" depart="40.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship2" type="ship_ship" depart="80.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship3" type="ship_ship" depart="120.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship4" type="ship_ship" depart="160.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship5" type="ship_ship" depart="200.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship6" type="ship_ship" depart="240.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship7" type="ship_ship" depart="280.00">
+        <route edges="176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship8" type="ship_ship" depart="320.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship9" type="ship_ship" depart="360.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship10" type="ship_ship" depart="400.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship11" type="ship_ship" depart="440.00">
+        <route edges="-514832816#1 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship12" type="ship_ship" depart="480.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship13" type="ship_ship" depart="520.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship14" type="ship_ship" depart="560.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship15" type="ship_ship" depart="600.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship17" type="ship_ship" depart="680.00" departSpeed="max">
+        <route edges="176021667#2 176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship18" type="ship_ship" depart="720.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship19" type="ship_ship" depart="760.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship20" type="ship_ship" depart="800.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship21" type="ship_ship" depart="840.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship22" type="ship_ship" depart="880.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship23" type="ship_ship" depart="920.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship24" type="ship_ship" depart="960.00" departSpeed="max">
+        <route edges="176021667#2 176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship25" type="ship_ship" depart="1000.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship26" type="ship_ship" depart="1040.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship27" type="ship_ship" depart="1080.00">
+        <route edges="176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship28" type="ship_ship" depart="1120.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship29" type="ship_ship" depart="1160.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship30" type="ship_ship" depart="1200.00">
+        <route edges="514832816#0 514832816#1 -514832816#1"/>
+    </vehicle>
+    <vehicle id="ship31" type="ship_ship" depart="1240.00" departSpeed="max">
+        <route edges="176021667#2 -182340536 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship32" type="ship_ship" depart="1280.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship33" type="ship_ship" depart="1320.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship34" type="ship_ship" depart="1360.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship35" type="ship_ship" depart="1400.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship36" type="ship_ship" depart="1440.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 -182340535#0"/>
+    </vehicle>
+    <vehicle id="ship37" type="ship_ship" depart="1480.00">
+        <route edges="182340535#0 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship38" type="ship_ship" depart="1520.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship39" type="ship_ship" depart="1560.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship40" type="ship_ship" depart="1600.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship41" type="ship_ship" depart="1640.00" departSpeed="max">
+        <route edges="176021667#2 -182340536 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship42" type="ship_ship" depart="1680.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship43" type="ship_ship" depart="1720.00">
+        <route edges="514832816#1 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship44" type="ship_ship" depart="1760.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship45" type="ship_ship" depart="1800.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship46" type="ship_ship" depart="1840.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship47" type="ship_ship" depart="1880.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship48" type="ship_ship" depart="1920.00">
+        <route edges="514832816#1 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship50" type="ship_ship" depart="2000.00">
+        <route edges="-182340535#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship51" type="ship_ship" depart="2040.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship52" type="ship_ship" depart="2080.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 176021667#3 -514832816#1"/>
+    </vehicle>
+    <vehicle id="ship53" type="ship_ship" depart="2120.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship54" type="ship_ship" depart="2160.00" departSpeed="max">
+        <route edges="176021667#2 -182340536 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship55" type="ship_ship" depart="2200.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship56" type="ship_ship" depart="2240.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship57" type="ship_ship" depart="2280.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship58" type="ship_ship" depart="2320.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 176021667#3 -514832816#1"/>
+    </vehicle>
+    <vehicle id="ship59" type="ship_ship" depart="2360.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship60" type="ship_ship" depart="2400.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship61" type="ship_ship" depart="2440.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship62" type="ship_ship" depart="2480.00">
+        <route edges="-176021667#3 -182340536"/>
+    </vehicle>
+    <vehicle id="ship63" type="ship_ship" depart="2520.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship64" type="ship_ship" depart="2560.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship65" type="ship_ship" depart="2600.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship66" type="ship_ship" depart="2640.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 182340535#0 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship67" type="ship_ship" depart="2680.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship68" type="ship_ship" depart="2720.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship69" type="ship_ship" depart="2760.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship70" type="ship_ship" depart="2800.00" departSpeed="max">
+        <route edges="176021667#2 176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship71" type="ship_ship" depart="2840.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship72" type="ship_ship" depart="2880.00" departSpeed="max">
+        <route edges="176021667#2 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship73" type="ship_ship" depart="2920.00" departSpeed="max">
+        <route edges="176021667#2 -182340536 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship74" type="ship_ship" depart="2960.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0"/>
+    </vehicle>
+    <vehicle id="ship75" type="ship_ship" depart="3000.00">
+        <route edges="514832816#1 -176021667#3 176021667#3"/>
+    </vehicle>
+    <vehicle id="ship76" type="ship_ship" depart="3040.00" departSpeed="max">
+        <route edges="176021667#2 176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship77" type="ship_ship" depart="3080.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship78" type="ship_ship" depart="3120.00">
+        <route edges="-514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship79" type="ship_ship" depart="3160.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship80" type="ship_ship" depart="3200.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0"/>
+    </vehicle>
+    <vehicle id="ship81" type="ship_ship" depart="3240.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship82" type="ship_ship" depart="3280.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship83" type="ship_ship" depart="3320.00" departSpeed="max">
+        <route edges="-182340535#1 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship84" type="ship_ship" depart="3360.00" departSpeed="max">
+        <route edges="-182340535#1 182340536 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship85" type="ship_ship" depart="3400.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship86" type="ship_ship" depart="3440.00" departSpeed="max">
+        <route edges="176021667#2 -182340536 182340535#1"/>
+    </vehicle>
+    <vehicle id="ship87" type="ship_ship" depart="3480.00" departSpeed="max">
+        <route edges="320699751.7561 514832816#0 514832816#1 -176021667#3 -176021667#2"/>
+    </vehicle>
+    <vehicle id="ship88" type="ship_ship" depart="3520.00" departSpeed="max">
+        <route edges="-182340535#1 -182340535#0 -514832816#0 -320699751"/>
+    </vehicle>
+    <vehicle id="ship89" type="ship_ship" depart="3560.00" departSpeed="max">
+        <route edges="176021667#2 176021667#3 -514832816#1 -514832816#0 -320699751"/>
+    </vehicle>
+</routes>
