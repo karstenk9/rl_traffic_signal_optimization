@@ -39,22 +39,22 @@ def run():
 
 
     """execute the TraCI control loop"""
-    step = 0
+    #step = 0
     # we start with phase 2 where EW has green
-    traci.trafficlight.setPhase("0", 2)
-    while traci.simulation.getMinExpectedNumber() > 0:
-        traci.simulationStep()
-        if traci.trafficlight.getPhase("0") == 2:
-            # we are not already switching
-            if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
-                # there is a vehicle from the north, switch
-                traci.trafficlight.setPhase("0", 3)
-            else:
-                # otherwise try to keep green for EW
-                traci.trafficlight.setPhase("0", 2)
-        step += 1
-    traci.close()
-    sys.stdout.flush()
+    #traci.trafficlight.setPhase("0", 2)
+    #while traci.simulation.getMinExpectedNumber() > 0:
+    #    traci.simulationStep()
+    #    if traci.trafficlight.getPhase("0") == 2:
+    #        # we are not already switching
+    #        if traci.inductionloop.getLastStepVehicleNumber("0") > 0:
+    #            # there is a vehicle from the north, switch
+    #            traci.trafficlight.setPhase("0", 3)
+    #        else:
+    #           # otherwise try to keep green for EW
+    #            traci.trafficlight.setPhase("0", 2)
+    #    step += 1
+    #traci.close()
+    #sys.stdout.flush()
 
 
 def get_options():
@@ -82,6 +82,9 @@ if __name__ == "__main__":
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
     traci.start([sumoBinary, "-c", "../../models/Mannheim145_export06032023/osm.sumocfg",
-                              "--tripinfo-output", "tripinfo.xml",
-                            '--emission-output', 'emission_info.xml'])
-    #run()
+                                "--tripinfo-output", "../data/tripinfo.xml",
+                                "--output-prefix", "TIME",
+                                "--device.emissions.probability", "1.0",
+                                "--emission-output", "../data/emission_info.xml"])
+
+    run()
