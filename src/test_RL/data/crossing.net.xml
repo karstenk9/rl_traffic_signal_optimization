@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+    <location netOffset="0,0" convBoundary="0.00,0.00,500.00,500.00" origBoundary="0.00,0.00,500.00,500.00" projParameter="1,1" reference="WGS84"/>
+    <vType id="car" vClass="passenger" color="1,0,0"/>
+    <edge id="1" from="1i" to="2o" priority="1" numLanes="2" speed="13.89" allow="car"/>
+    <edge id="2" from="2i" to="3o" priority="1" numLanes="2" speed="13.89" allow="car"/>
+    <edge id="3" from="3i" to="4o" priority="1" numLanes="2" speed="13.89" allow="car"/>
+    <edge id="4" from="4i" to="1o" priority="1" numLanes="2" speed="13.89" allow="car"/>
+    <junction id="1" type="traffic_light" x="250.00" y="250.00" incLanes="2" intLanes="2" shape=":"/>
+    <connection from="1" to="2" fromLane="0" toLane="0" via="1" dir="s" tl="1"/>
+    <connection from="1" to="4" fromLane="1" toLane="1" via="4" dir="e" tl="1"/>
+    <connection from="2" to="3" fromLane="0" toLane="0" via="2" dir="s" tl="1"/>
+    <connection from="3" to="4" fromLane="0" toLane="0" via="3" dir="w" tl="1"/>
+    <tlLogic id="1" type="static" programID="1" offset="0">
+        <phase duration="31" state="GrGr"/>
+        <phase duration="6" state="yryr"/>
+        <phase duration="31" state="rGrG"/>
+        <phase duration="6" state="ryry"/>
+    </tlLogic>
+</net>
