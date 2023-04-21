@@ -24,7 +24,7 @@ def rl_env():
     with states, actions, and rewards
     """
 
-    n_actions = 2  # number of possible actions: stop or go
+    n_actions = 2  # number of possible actions: stop or go (non-conflicting phases)
     n_states = 4  # number of possible states: North-South and East-West traffic light color
     Q = np.zeros([n_states, n_actions])  # Q-table for storing state-action values
     gamma = 0.8  # discount factor for future rewards
