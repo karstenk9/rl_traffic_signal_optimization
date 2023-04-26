@@ -3,20 +3,18 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="crossing.net.xml"/>  <!-- path to network definition file -->
-        <route-files value="routes.rou.xml"/>  <!-- path to vehicle routes file -->
-        <additional-files value="crossing.add.xml"/>  <!-- path to additional definitions file -->
+        <net-file value="cross.net.xml"/>
+        <route-files value="cross.rou.xml"/>
+        <additional-files value="cross.det.xml"/>
     </input>
 
     <time>
         <begin value="0"/>
-        <end value="1000"/>
     </time>
 
-    <output>
-        <netstate-dump value="netstate.xml"/>  <!-- path to network state output file -->
-        <summary-output value="summary.xml"/>  <!-- path to simulation summary output file -->
-       <!-- <tripinfo-output value="tripinfo.xml"/>   path to trip information output file -->
-        <!-- <emission-output value="emissionOutput.xml"/>   path to emissions output file -->
-    </output>
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
 </configuration>
