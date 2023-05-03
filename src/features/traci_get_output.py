@@ -6,6 +6,7 @@ import os
 import sys
 import optparse
 import random
+#import libsumo
 
 # we need to import python modules from the $SUMO_HOME/tools directory
 if 'SUMO_HOME' in os.environ:
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
-    traci.start([sumoBinary, "-c", "urban_mobility_simulation/models/Mannheim145_export06032023/osm.sumocfg",
+    traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/Mannheim145_export06032023/osm.sumocfg",
                                 "--tripinfo-output", "urban_mobility_simulation/src/data/tripinfo.xml",
                                 "--output-prefix", "TIME",
                                 "--device.emissions.probability", "1.0",
