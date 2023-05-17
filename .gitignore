@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 
 /src/data/
+src/team_rl_test/
 
 # C extensions
 *.so
