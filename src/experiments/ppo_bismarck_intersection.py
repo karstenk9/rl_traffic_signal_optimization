@@ -37,12 +37,6 @@ model = PPO(
     env=env,
     policy="MlpPolicy",
     learning_rate=1e-3,
-    #learning_starts=0,
-    #buffer_size=50000,
-    #train_freq=1,
-    #target_update_interval=500,
-    #exploration_fraction=0.05,
-    #exploration_final_eps=0.01,
     verbose=1,
     
     
