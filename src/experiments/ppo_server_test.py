@@ -29,8 +29,9 @@ env = SumoEnvironment(
     route_file="urban_mobility_simulation/models/20230502_SUMO_MA/routes.xml, \
                 urban_mobility_simulation/models/20230502_SUMO_MA/osm.bicycle.trips.xml,\
                 urban_mobility_simulation/models/20230502_SUMO_MA/osm.motorcycle.trips.xml,\
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.truck.trips.xml", \
-                #urban_mobility_simulation/models/20230502_SUMO_MA/pt/test_flow.rou.xml",
+                urban_mobility_simulation/models/20230502_SUMO_MA/osm.truck.trips.xml, \
+                urban_mobility_simulation/models/20230502_SUMO_MA/pt/ptflows.rou.xml, \
+                urban_mobility_simulation/models/20230502_SUMO_MA/osm.passenger.trips.xml", 
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_woPT",
     use_gui=True,
     num_seconds=5000,
