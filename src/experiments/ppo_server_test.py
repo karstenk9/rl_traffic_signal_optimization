@@ -33,7 +33,7 @@ env = SumoEnvironment(
                 urban_mobility_simulation/models/20230502_SUMO_MA/pt/ptflows.rou.xml, \
                 urban_mobility_simulation/models/20230502_SUMO_MA/osm.passenger.trips.xml", 
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_woPT",
-    use_gui=True,
+    use_gui=False,
     num_seconds=5000,
     yellow_time=4,
     min_green=5,

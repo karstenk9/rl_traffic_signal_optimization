@@ -8,5 +8,5 @@
 
 cd urban_mobility_simulation/src/experiments/
 
-python ppo_server_test.py
+python traci_get_output.py
 

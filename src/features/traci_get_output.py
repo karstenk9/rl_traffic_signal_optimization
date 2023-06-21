@@ -6,17 +6,32 @@ import os
 import sys
 import optparse
 import random
-#import libsumo
+
+
+import platform
+# on the server (platform = Linux) we use libsumo and also don't need the tools in the path
+if platform.system() != "Linux":
+    if 'SUMO_HOME' in os.environ:
+        tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+        sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
+    else:
+        sys.exit("please declare environment variable 'SUMO_HOME'")
+    import traci
+else:
+    import libsumo as traci
+
+from sumolib import checkBinary
+
 
 # we need to import python modules from the $SUMO_HOME/tools directory
-if 'SUMO_HOME' in os.environ:
-    tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
-    sys.path.append(tools)
-else:
-    sys.exit("please declare environment variable 'SUMO_HOME'")
+# if 'SUMO_HOME' in os.environ:
+#     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+#     sys.path.append(tools)
+# else:
+#     sys.exit("please declare environment variable 'SUMO_HOME'")
 
-from sumolib import checkBinary  # noqa
-import traci  # noqa
+# from sumolib import checkBinary  # noqa
+# import traci  # noqa
 
 def run():
 
@@ -82,10 +97,10 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
-    traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/Mannheim145_export06032023/osm.sumocfg",
-                                "--tripinfo-output", "urban_mobility_simulation/src/data/tripinfo.xml",
+    traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
+                                "--tripinfo-output", "urban_mobility_simulation/src/data/tripinfo_actuated_TL.xml",
                                 "--output-prefix", "TIME",
                                 "--device.emissions.probability", "1.0",
-                                "--emission-output", "urban_mobility_simulation/src/data/emission_info.xml"])
+                                "--emission-output", "urban_mobility_simulation/src/data/emission_info_actuated_TL.xml"])
 
     run()
