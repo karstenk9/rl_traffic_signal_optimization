@@ -6,15 +6,15 @@ import numpy as np
 
 import platform
 # on the server (platform = Linux) we use libsumo and also don't need the tools in the path
-if platform.system() != "Linux":
-    if 'SUMO_HOME' in os.environ:
-        tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
-        sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
-    else:
-        sys.exit("please declare environment variable 'SUMO_HOME'")
-    import traci
-else:
-    import libsumo as traci
+# if platform.system() != "Linux":
+#     if 'SUMO_HOME' in os.environ:
+#         tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+#         sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
+#     else:
+#         sys.exit("please declare environment variable 'SUMO_HOME'")
+#     import traci
+# else:
+import libsumo as traci
 
 from sumolib import checkBinary
 

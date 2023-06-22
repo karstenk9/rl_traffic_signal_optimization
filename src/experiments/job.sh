@@ -1,12 +1,10 @@
 #!/bin/bash
 
-#SBATCH --nodes=1
-#SBATCH --time=20
+#SBATCH --time=00:40:00
 #SBATCH --ntasks=1
 #SBATCH --job-name=ppo_test
-#SBATCH --output=ppo_test.out
+#SBATCH --output=output/ppo_test.out
+#SBATCH --error=output/ppo_test.err
 
-cd urban_mobility_simulation/src/experiments/
-
-python ppo_server_test.py
+python urban_mobility_simulation/src/experiments/ppo_server_test.py
 

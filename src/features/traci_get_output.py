@@ -6,32 +6,17 @@ import os
 import sys
 import optparse
 import random
-
-
-import platform
-# on the server (platform = Linux) we use libsumo and also don't need the tools in the path
-if platform.system() != "Linux":
-    if 'SUMO_HOME' in os.environ:
-        tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
-        sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
-    else:
-        sys.exit("please declare environment variable 'SUMO_HOME'")
-    import traci
-else:
-    import libsumo as traci
-
-from sumolib import checkBinary
-
+#import libsumo
 
 # we need to import python modules from the $SUMO_HOME/tools directory
-# if 'SUMO_HOME' in os.environ:
-#     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
-#     sys.path.append(tools)
-# else:
-#     sys.exit("please declare environment variable 'SUMO_HOME'")
+if 'SUMO_HOME' in os.environ:
+    tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+    sys.path.append(tools)
+else:
+    sys.exit("please declare environment variable 'SUMO_HOME'")
 
-# from sumolib import checkBinary  # noqa
-# import traci  # noqa
+from sumolib import checkBinary  # noqa
+import traci  # noqa
 
 def run():
 
