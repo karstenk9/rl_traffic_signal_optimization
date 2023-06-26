@@ -48,4 +48,4 @@ model = PPO(
 
 )
 
-model.learn(total_timesteps=50000)
+model.learn(total_timesteps=5000)
