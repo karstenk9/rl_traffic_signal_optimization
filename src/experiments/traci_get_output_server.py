@@ -34,8 +34,9 @@ from sumolib import checkBinary
 
 def run():
 
+
     # run the simulation for 1000 time steps
-    for i in range(10000):
+    for i in range(1000):
         # get the current simulation time
         current_time = traci.simulation.getCurrentTime()
 
@@ -43,8 +44,8 @@ def run():
         vehicle_list = traci.vehicle.getIDList()
 
         # print the number of vehicles on the road network
-        print("Current time: ", current_time)
-        print("Number of vehicles: ", len(vehicle_list))
+        # print("Current time: ", current_time)
+        # print("Number of vehicles: ", len(vehicle_list))
 
         # advance the simulation by one step
         traci.simulationStep()
@@ -96,10 +97,14 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
+    
+
     traci.start(['sumo-gui', "-c", "/pfs/data5/home/ma/ma_ma/ma_jenhahn/masterarbeit_sumo/urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
-                                "--tripinfo-output", "/pfs/data5/home/ma/ma_ma/ma_jenhahn/masterarbeit_sumo/urban_mobility_simulation/src/data/tripinfo_actuated_TL.xml",
+                                "--tripinfo-output", "/pfs/data5/home/ma/ma_ma/ma_jenhahn/masterarbeit_sumo/urban_mobility_simulation/src/data/actuated_output/tripinfo.xml",
                                 "--output-prefix", "TIME",
                                 "--device.emissions.probability", "1.0",
-                                "--emission-output", "/pfs/data5/home/ma/ma_ma/ma_jenhahn/masterarbeit_sumo/urban_mobility_simulation/src/data/emission_info_actuated_TL.xml"])
+                                "--emission-output", "/pfs/data5/home/ma/ma_ma/ma_jenhahn/masterarbeit_sumo/urban_mobility_simulation/src/data/actuated_output/emission_info.xml"])
+    
+    #run the simulation a few times to compare outputs
 
     run()

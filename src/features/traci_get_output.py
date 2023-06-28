@@ -29,8 +29,8 @@ def run():
         vehicle_list = traci.vehicle.getIDList()
 
         # print the number of vehicles on the road network
-        print("Current time: ", current_time)
-        print("Number of vehicles: ", len(vehicle_list))
+        # print("Current time: ", current_time)
+        # print("Number of vehicles: ", len(vehicle_list))
 
         # advance the simulation by one step
         traci.simulationStep()
@@ -82,10 +82,13 @@ if __name__ == "__main__":
 
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
-    traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
-                                "--tripinfo-output", "urban_mobility_simulation/src/data/tripinfo_actuated_TL.xml",
-                                "--output-prefix", "TIME",
-                                "--device.emissions.probability", "1.0",
-                                "--emission-output", "urban_mobility_simulation/src/data/emission_info_actuated_TL.xml"])
+    
+    for i in range(5):
+        
+        traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
+                                    "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuated_TL.xml",
+                                    "--output-prefix", "TIME",
+                                    "--device.emissions.probability", "1.0",
+                                    "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_info_actuated_TL.xml"])
 
-    run()
+        run()

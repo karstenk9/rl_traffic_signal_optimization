@@ -35,7 +35,7 @@ env = SumoEnvironment(
     yellow_time=4,
     min_green=5,
     max_green=60,
-    time_to_teleport=500,
+    time_to_teleport=300,
 )
 model = PPO(
     env=env,
