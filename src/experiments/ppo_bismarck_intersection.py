@@ -13,7 +13,7 @@ import numpy as np
 import traci
 from stable_baselines3.ppo.ppo import PPO
 
-from sumo_rl import SumoEnvironment
+from environment.env import SumoEnvironment
 
 
 env = SumoEnvironment(

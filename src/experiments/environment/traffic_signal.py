@@ -209,13 +209,11 @@ class TrafficSignal:
         return -self.get_average_emission.total_emission_avg()
     
     def _CO2_emission_reward(self):
-        return -self.get_average_emission.CO2_avg()
+        return -self.get_total_CO2_emission
         
     # TODO : implement emission reward for each vehicle type?
     
     # TODO : implement emission reward for specific crossing?
-    
-    # TODO : implement noise emission reward
     
     def _noise_emission_reward(self):
         return -self.get_average_noise_emission
@@ -252,6 +250,18 @@ class TrafficSignal:
             wait_time_per_lane.append(wait_time)
         return wait_time_per_lane
 
+    def get_total_CO2emission(self) -> float:
+        '''
+        Return the total CO2 pollutant emission of all vehicles in a simulation.
+        '''
+        CO2emission = 0.0
+        vehs = self._get_veh_list()
+        if len(vehs) == 0:
+            return 0.0
+        CO2emission = sum(self.sumo.vehicle.getCO2Emission(veh) for veh in vehs)
+        
+        return CO2emission
+    
     def get_average_emission(self) -> float:
         '''
         Return the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
@@ -266,13 +276,13 @@ class TrafficSignal:
         vehs = self._get_veh_list()
         if len(vehs) == 0:
             return 0.0
-        for veh in vehs:
-            CO_emission += self.sumo.vehicle.getCOEmission(veh)
-            CO2_emission += self.sumo.vehicle.getCO2Emission(veh)
-            HC_emission += self.sumo.vehicle.getHCEmission(veh)
-            PMx_emission += self.sumo.vehicle.getPMxEmission(veh)
-            NOx_emission += self.sumo.vehicle.getNOxEmission(veh)
-            fuel_consumption += self.sumo.vehicle.getFuelConsumption(veh)
+        
+        CO_emission = sum(self.sumo.vehicle.getCOEmission(veh) for veh in vehs)
+        CO2_emission = sum(self.sumo.vehicle.getCO2Emission(veh) for veh in vehs)
+        HC_emission = sum(self.sumo.vehicle.getHCEmission(veh) for veh in vehs)
+        PMx_emission = sum(self.sumo.vehicle.getPMxEmission(veh) for veh in vehs)
+        NOx_emission = sum(self.sumo.vehicle.getNOxEmission(veh) for veh in vehs)
+        fuel_consumption = sum(self.sumo.vehicle.getFuelConsumption(veh) for veh in vehs)
         
         total_emission_avg = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / len(vehs)
         CO_avg = CO_emission / len(vehs)
@@ -378,35 +388,48 @@ class TrafficSignal:
             
         return emission_per_lane
     
-    def get_emission_per_eclass(self) -> Dict[str: float]:
-        '''
-        Get current emission per vehicle class.
+    # def get_emission_per_eclass(self) -> Dict[str: float]:
+    #     '''
+    #     Get current emission per vehicle class.
         
-        Returns:
-            Dict(str: float): Dictionary containing the current emission per emission class.
-        '''
-        emission_per_type = {}
-        emission_classes = self._get_vehicle_eclasses()
-        for emission_class in emission_classes:
-            emission_per_type[emission_class] = 0.0
-        if emission_classes is None:
-            emission_per_type = {'None' : 0.0}
-            return emission_per_type
-        vehs = self._get_veh_list()
-        if len(vehs) == 0:
-            return 0.0
-        for veh in vehs:
-            eclass = self._get_vehicle_type(veh)
-            emission_per_type[eclass] += self.sumo.vehicle.getCO2Emission(veh)
+    #     Returns:
+    #         Dict(str: float): Dictionary containing the current emission per emission class.
+    #     '''
+    #     emission_per_type = {}
+    #     emission_classes = self._get_vehicle_eclasses()
+    #     for emission_class in emission_classes:
+    #         emission_per_type[emission_class] = 0.0
+    #     if emission_classes is None:
+    #         emission_per_type = {'None' : 0.0}
+    #         return emission_per_type
+    #     vehs = self._get_veh_list()
+    #     if len(vehs) == 0:
+    #         return 0.0
+    #     for veh in vehs:
+    #         eclass = self._get_vehicle_type(veh)
+    #         emission_per_type[eclass] += self.sumo.vehicle.getCO2Emission(veh)
         
-        for emission_class in emission_classes:
-            emission_per_type[emission_class] /= len(vehs)
+    #     for emission_class in emission_classes:
+    #         emission_per_type[emission_class] /= len(vehs)
         
-        return emission_per_type
+    #     return emission_per_type
 
     
     # TODO get emission for specific crossing (where agent is active) - can i get emission for lanes involved in crossing instead?
-        
+    
+    def get_total_noise_emission(self) -> float:
+        '''
+        Return the total noise emission of all vehicles in a simulation.
+        '''
+        noise_emission = 0.0
+        vehs = self._get_veh_list()
+        if len(vehs) == 0:
+            return 0.0
+        noise_emission = sum(self.sumo.vehicle.getNoiseEmission(veh) for veh in vehs)
+            
+        return noise_emission
+    
+    
     def get_average_noise_emission(self) -> float:
         '''
         Return the average noise emission of all vehicles in a simulation.
