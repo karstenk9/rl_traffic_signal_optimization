@@ -99,7 +99,7 @@ class SumoEnvironment(gym.Env):
         min_green: int = 5,
         max_green: int = 50,
         single_agent: bool = False,
-        reward_fn: Union[str, Callable, dict] = "CO2-emission",
+        reward_fn: Union[str, Callable, dict] = "CO2_emission",
         observation_class: ObservationFunction = DefaultObservationFunction,
         add_system_info: bool = True,
         add_per_agent_info: bool = True,
@@ -420,8 +420,8 @@ class SumoEnvironment(gym.Env):
             "system_total_waiting_time": sum(waiting_times),
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
-            "system_total_CO2": 0.0 if len(vehicles) == 0 else TrafficSignal.get_total_CO2emission(self),
-            "system_total_noise_emission": TrafficSignal.get_total_noise_emission(self)
+            "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
+            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles)
         }
 
     # add further per-agent info output

@@ -209,7 +209,7 @@ class TrafficSignal:
         return -self.get_average_emission.total_emission_avg()
     
     def _CO2_emission_reward(self):
-        return -self.get_total_CO2_emission
+        return - self.get_total_CO2emission()
         
     # TODO : implement emission reward for each vehicle type?
     
@@ -259,7 +259,7 @@ class TrafficSignal:
         if len(vehs) == 0:
             return 0.0
         CO2emission = sum(self.sumo.vehicle.getCO2Emission(veh) for veh in vehs)
-        
+        #print('CO2emission: ', CO2emission)
         return CO2emission
     
     def get_average_emission(self) -> float:
@@ -561,7 +561,7 @@ class TrafficSignal:
         "average-speed": _average_speed_reward,
         "queue": _queue_reward,
         "pressure": _pressure_reward,
-        "CO2-emission": _CO2_emission_reward,
+        "CO2_emission": _CO2_emission_reward,
         "combined_emission": _average_emission_reward,
         "noise_emission": _noise_emission_reward,
     }
