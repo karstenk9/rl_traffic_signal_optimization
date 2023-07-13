@@ -21,7 +21,7 @@ import traci  # noqa
 def run():
 
     # run the simulation for 1000 time steps
-    for i in range(1000):
+    for i in range(43200):
         # get the current simulation time
         current_time = traci.simulation.getCurrentTime()
 
@@ -83,12 +83,12 @@ if __name__ == "__main__":
     # this is the normal way of using traci. sumo is started as a
     # subprocess and then the python script connects and runs
     
-    for i in range(5):
+    #for i in range(5):
         
-        traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
+    traci.start(['sumo', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
                                     "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuated_TL.xml",
                                     "--output-prefix", "TIME",
                                     "--device.emissions.probability", "1.0",
                                     "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_info_actuated_TL.xml"])
 
-        run()
+    run()

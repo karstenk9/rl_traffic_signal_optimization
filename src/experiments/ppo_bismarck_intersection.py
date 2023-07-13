@@ -31,7 +31,7 @@ env = SumoEnvironment(
                 #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
     use_gui=True,
-    num_seconds=10000,
+    num_seconds=43200,
     yellow_time=4,
     min_green=5,
     max_green=60,
