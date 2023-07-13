@@ -2,13 +2,18 @@
 import os
 import sys
 from typing import Callable, List, Union
-#from ast import Dict
 
-if "SUMO_HOME" in os.environ:
-    tools = os.path.join(os.environ["SUMO_HOME"], "tools")
-    sys.path.append(tools)
+import platform
+if platform.system() != "Linux":
+    if 'SUMO_HOME' in os.environ:
+        tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+        sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
+    else:
+        sys.exit("please declare environment variable 'SUMO_HOME'")
+    import traci
 else:
-    raise ImportError("Please declare the environment variable 'SUMO_HOME'")
+    import libsumo as traci
+    
 import numpy as np
 from gymnasium import spaces
 

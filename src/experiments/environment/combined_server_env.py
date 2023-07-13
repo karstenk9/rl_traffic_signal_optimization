@@ -112,7 +112,6 @@ class SumoEnvironment(gym.Env):
         additional_sumo_cmd: Optional[str] = None,
         render_mode: Optional[str] = None,
     ) -> None:
-        
         """Initialize the environment."""
         assert render_mode is None or render_mode in self.metadata["render_modes"], "Invalid render mode."
         self.render_mode = render_mode
@@ -150,10 +149,10 @@ class SumoEnvironment(gym.Env):
         SumoEnvironment.CONNECTION_LABEL += 1
         self.sumo = None
         
-        #self.sumo = traci.start([self.sumoBinary, "-c", "data/"+self._net+".sumocfg", "--start", "--quit-on-end"])
         #if LIBSUMO:
         traci.start([sumolib.checkBinary("sumo"), "-n", self._net])  # Start only to retrieve traffic light information
         conn = traci
+        
         #else:
         #    traci.start([sumolib.checkBinary("sumo"), "-n", self._net], label="init_connection" + self.label)
         #    conn = traci.getConnection("init_connection" + self.label)
@@ -161,7 +160,7 @@ class SumoEnvironment(gym.Env):
 
         #self.ts_ids = list(conn.trafficlight.getIDList())
         
-        #test with two traffic lights
+        #test with one traffic lights
         self.ts_ids = ['cluster_1743822458_1743822558_1743822643_1743822689_1743822737_8039877991_cluster_1120310798_1634545540_1665161322_1665161338_1665161344_1743822496_1743822510_1743822551_1743822648_1743822650_1743822666_1743822667_1743822676_1743822687_1754245066_1756301705_1949670169_2004844603_297701075_412123597_412123598_412123601_412181181']
         self.observation_class = observation_class
 	
@@ -425,7 +424,11 @@ class SumoEnvironment(gym.Env):
             "system_total_waiting_time": sum(waiting_times),
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
+            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles)
         }
+        
+    #TODO add further per-agent info output
 
     def _get_per_agent_info(self):
         stopped = [self.traffic_signals[ts].get_total_queued() for ts in self.ts_ids]

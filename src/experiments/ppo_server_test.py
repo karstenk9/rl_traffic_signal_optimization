@@ -10,7 +10,7 @@ import libsumo as traci
 from sumolib import checkBinary
 
 from stable_baselines3.ppo.ppo import PPO
-from environment.test_env import SumoEnvironment
+from environment.env import SumoEnvironment
 
 env = SumoEnvironment(
     net_file="urban_mobility_simulation/models/20230502_SUMO_MA/osm.net.xml, \
@@ -30,13 +30,12 @@ env = SumoEnvironment(
     min_green=5,
     max_green=60,
 )
+
 model = PPO(
     env=env,
     policy="MlpPolicy",
     learning_rate=3e-4,
-    verbose=1,
-    
-
+    verbose=1
 )
 
 model.learn(total_timesteps=5000)
