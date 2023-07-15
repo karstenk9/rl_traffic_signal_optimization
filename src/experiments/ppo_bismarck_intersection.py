@@ -21,9 +21,6 @@ env = SumoEnvironment(
     net_file="urban_mobility_simulation/models/20230502_SUMO_MA/osm.net.xml, \
               urban_mobility_simulation/models/20230502_SUMO_MA/pt/stops.add.xml, \
               urban_mobility_simulation/models/20230502_SUMO_MA/osm.poly.xml",
-    net_file="urban_mobility_simulation/models/20230502_SUMO_MA/osm.net.xml, \
-              urban_mobility_simulation/models/20230502_SUMO_MA/pt/stops.add.xml, \
-              urban_mobility_simulation/models/20230502_SUMO_MA/osm.poly.xml",
     single_agent=True,
     route_file="urban_mobility_simulation/models/20230502_SUMO_MA/routes.xml, \
                 urban_mobility_simulation/models/20230502_SUMO_MA/osm.bicycle.trips.xml,\
@@ -34,11 +31,6 @@ env = SumoEnvironment(
                 #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrip.trips.xml",
                 #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.truck.trips.xml, \
-                urban_mobility_simulation/models/20230502_SUMO_MA/pt/ptflows.rou.xml, \
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.passenger.trips.xml",
-                #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrip.trips.xml",
-                #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
     use_gui=True,
     num_seconds=43200,
