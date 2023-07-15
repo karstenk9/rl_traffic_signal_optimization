@@ -3,7 +3,13 @@ import os
 import sys
 from typing import Callable, List, Union
 
+# if "SUMO_HOME" in os.environ:
+#     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
+#     sys.path.append(tools)
+# else:
+#     raise ImportError("Please declare the environment variable 'SUMO_HOME'")
 import platform
+
 if platform.system() != "Linux":
     if 'SUMO_HOME' in os.environ:
         tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
@@ -13,9 +19,9 @@ if platform.system() != "Linux":
     import traci
 else:
     import libsumo as traci
-    
 import numpy as np
-from gymnasium import spaces
+#from gymnasium import spaces
+from gym import spaces
 
 
 class TrafficSignal:
@@ -141,9 +147,9 @@ class TrafficSignal:
         logic = programs[0]
         logic.type = 0
         logic.phases = self.all_phases
-        #print('Logic Phases', logic.phases)
-        #print('Len Log Phases', len(logic.phases))
-        #print('current Index', logic.currentPhaseIndex)
+        # print('Logic Phases', logic.phases)
+        # print('Len Log Phases', len(logic.phases))
+        # print('current Index', logic.currentPhaseIndex)
         self.sumo.trafficlight.setProgramLogic(self.id, logic)
         self.sumo.trafficlight.setRedYellowGreenState(self.id, self.all_phases[0].state)
 
@@ -569,3 +575,4 @@ class TrafficSignal:
         "combined_emission": _average_emission_reward,
         "noise_emission": _noise_emission_reward,
     }
+

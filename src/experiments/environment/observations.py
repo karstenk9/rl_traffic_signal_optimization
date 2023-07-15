@@ -2,7 +2,8 @@
 from abc import abstractmethod
 
 import numpy as np
-from gymnasium import spaces
+#from gymnasium import spaces
+from gym import spaces
 
 from .traffic_signal import TrafficSignal
 
@@ -47,5 +48,4 @@ class DefaultObservationFunction(ObservationFunction):
             low=np.zeros(self.ts.num_green_phases + 1 + 2 * len(self.ts.lanes), dtype=np.float32),
             high=np.ones(self.ts.num_green_phases + 1 + 2 * len(self.ts.lanes), dtype=np.float32),
         )
-
 

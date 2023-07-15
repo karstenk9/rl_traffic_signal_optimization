@@ -1,0 +1,15 @@
+
+============================= JOB FEEDBACK =============================
+
+NodeName=uc2n[014-015,024-026,032-036]
+Job ID: 22395645
+Cluster: uc2
+User/Group: ma_jenhahn/ma_ma
+State: TIMEOUT (exit code 0)
+Nodes: 10
+Cores per node: 80
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 333-11:46:40 core-walltime
+Job Wall-clock time: 10:00:17
+Memory Utilized: 8.25 GB
+Memory Efficiency: 0.94% of 878.91 GB

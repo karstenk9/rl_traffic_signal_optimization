@@ -1,32 +1,36 @@
 """SUMO Environment for Traffic Signal Control."""
 import os
-import platform
 import sys
 from pathlib import Path
 from typing import Callable, Optional, Tuple, Union
 
+import platform
 if platform.system() != "Linux":
     if 'SUMO_HOME' in os.environ:
         tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
         sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
     else:
-        sys.exit("Please declare environment variable 'SUMO_HOME'")
+        sys.exit("please declare environment variable 'SUMO_HOME'")
     import traci
 else:
     import libsumo as traci
 
-import gymnasium as gym
+from sumolib import checkBinary
+
+#import gymnasium as gym
+import gym
 import numpy as np
 import pandas as pd
 import sumolib
 #import traci
-from gymnasium.utils import EzPickle, seeding
+from gym.utils import EzPickle, seeding
 from pettingzoo import AECEnv
 from pettingzoo.utils import agent_selector, wrappers
 from pettingzoo.utils.conversions import parallel_wrapper_fn
 
-from sumo_rl.environment.observations import DefaultObservationFunction, ObservationFunction
+from .observations import DefaultObservationFunction, ObservationFunction
 from .traffic_signal import TrafficSignal
+
 
 LIBSUMO = "LIBSUMO_AS_TRACI" in os.environ
 
@@ -90,7 +94,7 @@ class SumoEnvironment(gym.Env):
         use_gui: bool = False,
         virtual_display: Tuple[int, int] = (3200, 1800),
         begin_time: int = 0,
-        num_seconds: int = 500,
+        num_seconds: int = 20000,
         max_depart_delay: int = -1,
         waiting_time_memory: int = 1000,
         time_to_teleport: int = -1,
@@ -99,7 +103,7 @@ class SumoEnvironment(gym.Env):
         min_green: int = 5,
         max_green: int = 50,
         single_agent: bool = False,
-        reward_fn: Union[str, Callable, dict] = "CO2_emission",
+        reward_fn: Union[str, Callable, dict] = "diff-waiting-time",
         observation_class: ObservationFunction = DefaultObservationFunction,
         add_system_info: bool = True,
         add_per_agent_info: bool = True,
@@ -145,20 +149,24 @@ class SumoEnvironment(gym.Env):
         self.label = str(SumoEnvironment.CONNECTION_LABEL)
         SumoEnvironment.CONNECTION_LABEL += 1
         self.sumo = None
+        
+        #if LIBSUMO:
+        traci.start([sumolib.checkBinary("sumo"), "-n", self._net])  # Start only to retrieve traffic light information
+        conn = traci
+        
+        #else:
+        #    traci.start([sumolib.checkBinary("sumo"), "-n", self._net], label="init_connection" + self.label)
+        #    conn = traci.getConnection("init_connection" + self.label)
 
-        if LIBSUMO:
-            traci.start([sumolib.checkBinary("sumo"), "-n", self._net])  # Start only to retrieve traffic light information
-            conn = traci
-        else:
-            traci.start([sumolib.checkBinary("sumo"), "-n", self._net], label="init_connection" + self.label)
-            conn = traci.getConnection("init_connection" + self.label)
 
         #self.ts_ids = list(conn.trafficlight.getIDList())
         
-        #test with two traffic lights
+        #test with one traffic lights
         self.ts_ids = ['cluster_1743822458_1743822558_1743822643_1743822689_1743822737_8039877991_cluster_1120310798_1634545540_1665161322_1665161338_1665161344_1743822496_1743822510_1743822551_1743822648_1743822650_1743822666_1743822667_1743822676_1743822687_1754245066_1756301705_1949670169_2004844603_297701075_412123597_412123598_412123601_412181181']
-        #               'cluster_cluster_1109568391_cluster_1109568409_1109568428_25422076_834022925_834023464_cluster_1364262300_cluster_1109568414_1364262303_1743822792_297701095_4586935111']
         self.observation_class = observation_class
+	
+	#self.ts_ids = list(conn.trafficlight.getIDList())
+        #self.observation_class = observation_class
 
         if isinstance(self.reward_fn, dict):
             self.traffic_signals = {
@@ -188,7 +196,6 @@ class SumoEnvironment(gym.Env):
                     self.reward_fn,
                     conn,
                 )
-                
                 for ts in self.ts_ids
             }
 
@@ -237,12 +244,12 @@ class SumoEnvironment(gym.Env):
                 self.disp.start()
                 print("Virtual display started.")
 
-        if LIBSUMO:
-            traci.start(sumo_cmd)
-            self.sumo = traci
-        else:
-            traci.start(sumo_cmd, label=self.label)
-            self.sumo = traci.getConnection(self.label)
+        #if LIBSUMO:
+        traci.start(sumo_cmd)
+        self.sumo = traci
+        #else:
+        #    traci.start(sumo_cmd, label=self.label)
+        #    self.sumo = traci.getConnection(self.label)
 
         if self.use_gui or self.render_mode is not None:
             self.sumo.gui.setSchema(traci.gui.DEFAULT_VIEW, "real world")
@@ -407,8 +414,6 @@ class SumoEnvironment(gym.Env):
 
     def _sumo_step(self):
         self.sumo.simulationStep()
-        
-    # add further system info output to the info dict for emissions
 
     def _get_system_info(self):
         vehicles = self.sumo.vehicle.getIDList()
@@ -423,9 +428,9 @@ class SumoEnvironment(gym.Env):
             "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
             "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles)
         }
+        
+    #TODO add further per-agent info output
 
-    # add further per-agent info output
-    
     def _get_per_agent_info(self):
         stopped = [self.traffic_signals[ts].get_total_queued() for ts in self.ts_ids]
         accumulated_waiting_time = [
@@ -439,7 +444,6 @@ class SumoEnvironment(gym.Env):
             info[f"{ts}_average_speed"] = average_speed[i]
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
-        #info["agents_total_CO2_emission"] = TrafficSignal.get_total_CO2emission(self)
         return info
 
     def close(self):
@@ -447,8 +451,8 @@ class SumoEnvironment(gym.Env):
         if self.sumo is None:
             return
 
-        if not LIBSUMO:
-            traci.switch(self.label)
+        #if not LIBSUMO:
+        #    traci.switch(self.label)
         traci.close()
 
         if self.disp is not None:
@@ -501,7 +505,7 @@ class SumoEnvironment(gym.Env):
     def _discretize_density(self, density):
         return min(int(density * 10), 9)
 
-# for multiagent
+
 class SumoEnvironmentPZ(AECEnv, EzPickle):
     """A wrapper for the SUMO environment that implements the AECEnv interface from PettingZoo.
 
@@ -547,7 +551,16 @@ class SumoEnvironmentPZ(AECEnv, EzPickle):
         self._cumulative_rewards = {agent: 0 for agent in self.agents}
         self.terminations = {a: False for a in self.agents}
         self.truncations = {a: False for a in self.agents}
-        self.infos = {agent: {} for agent in self.agents}
+        self.compute_info()
+
+    def compute_info(self):
+        """Compute the info for the current step."""
+        self.infos = {a: {} for a in self.agents}
+        infos = self.env._compute_info()
+        for a in self.agents:
+            for k, v in infos.items():
+                if k.startswith(a):
+                    self.infos[a][k] = v
 
     def observation_space(self, agent):
         """Return the observation space for the agent."""
@@ -566,9 +579,9 @@ class SumoEnvironmentPZ(AECEnv, EzPickle):
         """Close the environment and stop the SUMO simulation."""
         self.env.close()
 
-    def render(self, mode="human"):
+    def render(self):
         """Render the environment."""
-        return self.env.render(mode)
+        return self.env.render()
 
     def save_csv(self, out_csv_name, episode):
         """Save metrics of the simulation to a .csv file."""
@@ -591,7 +604,7 @@ class SumoEnvironmentPZ(AECEnv, EzPickle):
             self.env._run_steps()
             self.env._compute_observations()
             self.rewards = self.env._compute_rewards()
-            self.env._compute_info()
+            self.compute_info()
         else:
             self._clear_rewards()
 
@@ -601,3 +614,5 @@ class SumoEnvironmentPZ(AECEnv, EzPickle):
         self.agent_selection = self._agent_selector.next()
         self._cumulative_rewards[agent] = 0
         self._accumulate_rewards()
+
+
