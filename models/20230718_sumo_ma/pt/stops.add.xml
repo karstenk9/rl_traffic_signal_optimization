@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-02-10 23:05:46 by Eclipse SUMO netedit Version 1.14.1
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <!-- StoppingPlaces -->
+    <busStop id="-1208764211" name="Mannheim Hauptbahnhof" lane="-239040885_0" startPos="0.00" endPos="107.41" friendlyPos="true">
+        <access lane="139692110#1_0" pos="29.47" length="19.39" friendlyPos="1"/>
+        <access lane="139692110#2_0" pos="0.00" length="25.99" friendlyPos="1"/>
+        <access lane="396387637_0" pos="0.20" length="35.96" friendlyPos="1"/>
+        <access lane="396387646#1_0" pos="0.20" length="33.67" friendlyPos="1"/>
+        <access lane="461153861#0_0" pos="0.00" length="24.93" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-1208764223" name="Mannheim Hauptbahnhof" lane="-354319535#0_0" startPos="173.34" endPos="280.61" friendlyPos="true" lines="RE60"/>
+    <busStop id="-1283267539" name="Teufelsbrücke" lane="-320252634#9_1" startPos="5.09" endPos="20.74" friendlyPos="true" lines="65 60E 60"/>
+    <busStop id="-1758133056" name="Hochschule" lane="188943835_0" startPos="259.90" endPos="274.90" friendlyPos="true" lines="710 63"/>
+    <busStop id="-2144083512" name="Akademiestraße" lane="-265910769_1" startPos="0.00" endPos="17.01" friendlyPos="true" lines="65 60E 60"/>
+    <busStop id="-2144083516" name="Am Salzkai" lane="-56185657#0_0" startPos="12.44" endPos="27.44" friendlyPos="true" lines="60"/>
+    <busStop id="-2523281928" name="Mannheim Hauptbahnhof" lane="-68643706#1_0" startPos="0.00" endPos="107.73" friendlyPos="true" lines="TGV 101;ICE 82">
+        <access lane="139692110#1_0" pos="29.31" length="39.83" friendlyPos="1"/>
+        <access lane="139692110#2_0" pos="0.00" length="45.24" friendlyPos="1"/>
+        <access lane="461153861#0_0" pos="0.00" length="42.94" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-25629158" name="Mannheim-Handelshafen" lane="-281502114_0" startPos="0.00" endPos="169.65" friendlyPos="true">
+        <access lane="-27429644#1_0" pos="25.48" length="78.56" friendlyPos="1"/>
+        <access lane="-35014373#0_0" pos="144.61" length="24.35" friendlyPos="1"/>
+        <access lane="27429644#1_0" pos="25.33" length="75.56" friendlyPos="1"/>
+        <access lane="556415251_0" pos="1.46" length="80.61" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-418051691" name="Popakademie" lane="-999862407_1" startPos="2.17" endPos="13.73" friendlyPos="true" lines="60E 65 62 60"/>
+    <busStop id="-492664640" name="Landzungenstraße" lane="-40586130#1_1" startPos="157.46" endPos="172.46" friendlyPos="true" lines="62"/>
+    <busStop id="-492679715" name="Jungbuschschule" lane="-376851150_1" startPos="120.00" endPos="132.79" friendlyPos="true" lines="62"/>
+    <busStop id="-674571788" name="Mühldorferstraße" lane="-253488999#1_1" startPos="5.18" endPos="20.18" friendlyPos="true" lines="63"/>
+    <busStop id="-705028991" name="Technoseum Süd" lane="-253488970#1_1" startPos="46.85" endPos="61.85" friendlyPos="true" lines="64">
+        <access lane="350530141_0" pos="11.05" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-7315072990" name="Fahrlach" lane="-4400844#0_0" startPos="0.00" endPos="9.71" friendlyPos="true" lines="64"/>
+    <busStop id="-8751953382" name="Universität" lane="-778989039#0_0" startPos="15.78" endPos="30.78" friendlyPos="true" lines="65 60">
+        <access lane="-97301289#0_0" pos="18.50" length="24.21" friendlyPos="1"/>
+        <access lane="97301289#0_0" pos="13.80" length="27.21" friendlyPos="1"/>
+    </busStop>
+    <busStop id="-878516884" name="Mollgymnasium 1" lane="-53175069#0_1" startPos="6.01" endPos="21.01" friendlyPos="true"/>
+    <busStop id="-9229693857" name="Hochschule West" lane="-778982229#0_2" startPos="27.00" endPos="34.50" friendlyPos="true" lines="65"/>
+    <busStop id="-9229706360" name="Fernmeldeturm" lane="-253540569#0_0" startPos="33.20" endPos="40.70" friendlyPos="true" lines="60"/>
+    <busStop id="10062492097" name="MA hauptbahnhof C" lane="1098222377#5_1" startPos="58.18" endPos="88.18" lines="3 4 4A 8 9"/>
+    <busStop id="1098540447" name="Otto-Beck-Straße" lane="53175165_0" startPos="22.55" endPos="37.55" friendlyPos="true" lines="60"/>
+    <busStop id="1098540757" name="Otto-Beck-Straße" lane="150837582#1_2" startPos="10.74" endPos="25.74" friendlyPos="true" lines="63 64"/>
+    <busStop id="1104051745" name="Maximilianstraße" lane="8067185#3_0" startPos="0.00" endPos="10.30" friendlyPos="true" lines="60"/>
+    <busStop id="1104051885" name="Lanzvilla" lane="188462504_0" startPos="2.25" endPos="9.75" friendlyPos="true" lines="60"/>
+    <busStop id="1109517464" name="Mensa am Schloss" lane="165825311#1_1" startPos="9.00" endPos="24.00" friendlyPos="true" lines="65 60E 60"/>
+    <busStop id="1109517483" name="Universität West" lane="E4_vu3_2" startPos="8.47" endPos="21.87" friendlyPos="true" lines="65 60"/>
+    <busStop id="1109517490" name="Schloss" lane="189877634#0_1" startPos="42.60" endPos="57.60" friendlyPos="true" lines="65 60E 60"/>
+    <busStop id="1109517506" name="Schloss" lane="548514764#2_2" startPos="17.61" endPos="32.61" friendlyPos="true" lines="65 60"/>
+    <busStop id="1208764211" name="Mannheim Hauptbahnhof" lane="239040885_0" startPos="204.90" endPos="312.46" friendlyPos="true" lines="ICE 11 ICE 12 ICE 42 TGV 101;ICE 82 TGV 84;ICE 84 EC 8 ICE 20 EC 6 ICE 43 IC 35 IC 32 EC 114">
+        <access lane="139692110#1_0" pos="29.47" length="19.39" friendlyPos="1"/>
+        <access lane="139692110#2_0" pos="0.00" length="25.99" friendlyPos="1"/>
+        <access lane="396387637_0" pos="0.20" length="35.96" friendlyPos="1"/>
+        <access lane="396387646#1_0" pos="0.20" length="33.67" friendlyPos="1"/>
+        <access lane="461153861#0_0" pos="0.00" length="24.93" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1208764220" name="Mannheim Hauptbahnhof" lane="150843845#0_0" startPos="0.00" endPos="187.89" friendlyPos="true" lines="RE60 IC 30 EC 7 EC 9 EC 115"/>
+    <busStop id="1208764223" name="Mannheim Hauptbahnhof" lane="354319535#0_0" startPos="0.00" endPos="107.27" friendlyPos="true" lines="ICE 20 ICE 42 S6 IC 35 IC 32 EC 151"/>
+    <busStop id="1208764225" name="Mannheim Hauptbahnhof" lane="315261115#1_0" startPos="0.00" endPos="93.77" friendlyPos="true" lines="S9 S2">
+        <access lane="462661598#1_0" pos="0.20" length="45.74" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1208764228" name="Mannheim Hauptbahnhof" lane="354319452_0" startPos="0.00" endPos="7.51" friendlyPos="true" lines="ICE 11 ICE 12 ICE 43 RE1 ICE 90 TGV 84;ICE 84 ICE 22 RE14 IC 32 TGV 101;ICE 82">
+        <access lane="139692110#1_0" pos="29.53" length="46.92" friendlyPos="1"/>
+        <access lane="139692110#2_0" pos="0.00" length="52.04" friendlyPos="1"/>
+        <access lane="461153861#0_0" pos="0.00" length="49.50" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1208764238" name="Mannheim Hauptbahnhof" lane="315261118_0" startPos="48.42" endPos="148.42" friendlyPos="true" lines="RE70"/>
+    <busStop id="1316106863" name="Rosengarten" lane="174743990#3_0" startPos="34.50" endPos="59.50" friendlyPos="true" lines="2 5 5A">
+        <access lane="187060055_0" pos="26.49" length="28.70" friendlyPos="1"/>
+        <access lane="218778912_0" pos="32.54" length="19.93" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1365814287" name="Reichskanzler-Müller-Straße" lane="150851811#2_2" startPos="25.86" endPos="40.86" friendlyPos="true" lines="710">
+        <access lane="189768759_0" pos="29.44" length="40.60" friendlyPos="1"/>
+        <access lane="500527046#1_0" pos="0.83" length="45.18" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1410606896" name="MA hauptbahnhof D" lane="85270636#1_1" startPos="55.99" endPos="85.99" lines="1 60 5 15"/>
+    <busStop id="1411936269" name="Reichskanzler-Müller-Straße" lane="189765883#0_1" startPos="37.27" endPos="52.27" friendlyPos="true" lines="710"/>
+    <busStop id="1435394445" name="Rathaus/REM" lane="258979254#2_0" startPos="0.00" endPos="9.12" friendlyPos="true" lines="6"/>
+    <busStop id="1450516865" name="Tattersall D" lane="189063868_0" startPos="15.67" endPos="39.88" friendlyPos="true" lines="1 8 6 6A 9">
+        <access lane="150770619#1_0" pos="25.58" length="23.01" friendlyPos="1"/>
+        <access lane="203461112#1_0" pos="37.79" length="10.24" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1649132347" name="Fahrlach" lane="8030817#19_0" startPos="27.18" endPos="52.18" friendlyPos="true" lines="6A">
+        <access lane="-46022378#2_0" pos="0.00" length="14.35" friendlyPos="1"/>
+        <access lane="350576236#0_0" pos="4.32" length="16.62" friendlyPos="1"/>
+        <access lane="46022378#2_0" pos="21.74" length="18.94" friendlyPos="1"/>
+    </busStop>
+    <busStop id="169586417" name="Planetarium" lane="189064925#0_0" startPos="49.37" endPos="77.50" friendlyPos="true" lines="6 6A 9">
+        <access lane="53573995#2_0" pos="70.17" length="16.25" friendlyPos="1"/>
+    </busStop>
+    <busStop id="175391568" name="Kurpfalzbrücke" lane="189075375#3_0" startPos="56.42" endPos="81.42" friendlyPos="true" lines="2">
+        <access lane="184478074#2_0" pos="0.20" length="22.07" friendlyPos="1"/>
+        <access lane="184478075#1_0" pos="9.95" length="10.18" friendlyPos="1"/>
+        <access lane="74194498#0_0" pos="102.80" length="19.66" friendlyPos="1"/>
+    </busStop>
+    <busStop id="175391593" name="Dalbergstraße" lane="267411662_0" startPos="355.75" endPos="380.75" friendlyPos="true" lines="2"/>
+    <busStop id="175391606" name="Rheinstraße" lane="27429643#1_0" startPos="0.00" endPos="24.90" friendlyPos="true" lines="2">
+        <access lane="142257341_0" pos="0.00" length="3.22" friendlyPos="1"/>
+        <access lane="267411769#1_0" pos="0.20" length="8.27" friendlyPos="1"/>
+        <access lane="267411769#2_0" pos="0.99" length="4.35" friendlyPos="1"/>
+        <access lane="457490366#2_0" pos="8.53" length="0.34" friendlyPos="1"/>
+        <access lane="768475539_0" pos="0.20" length="8.13" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1756265281" name="Abendakademie" lane="174845336#0_1" startPos="123.86" endPos="148.86" friendlyPos="true" lines="5A 4 5 3 7 1 4A">
+        <access lane="4420855#1_0" pos="0.00" length="54.93" friendlyPos="1"/>
+        <access lane="5073613_0" pos="0.00" length="55.29" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1756265409" name="Dalbergstraße" lane="189075375#8_0" startPos="351.51" endPos="376.51" friendlyPos="true" lines="2"/>
+    <busStop id="1756265413" name="Kurpfalzbrücke" lane="25883964#5_0" startPos="39.70" endPos="64.70" friendlyPos="true" lines="2">
+        <access lane="741029709#1_0" pos="23.02" length="23.37" friendlyPos="1"/>
+        <access lane="74194498#0_0" pos="137.25" length="19.71" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1756265447" name="MVV-Hochhaus" lane="189075375#8_0" startPos="23.11" endPos="48.11" friendlyPos="true" lines="2"/>
+    <busStop id="1757015662" name="Theresienkrankenhaus" lane="249295637.159_0" startPos="198.61" endPos="223.61" friendlyPos="true" lines="4 7 2 5 5A 4A">
+        <access lane="169690255_0" pos="0.00" length="15.98" friendlyPos="1"/>
+        <access lane="258979260_0" pos="3.95" length="16.99" friendlyPos="1"/>
+        <access lane="79721396#0_0" pos="38.68" length="3.60" friendlyPos="1"/>
+        <access lane="79721523#1_0" pos="5.60" length="8.76" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1757095082" name="Luisenpark/Technoseum" lane="309858481#12_0" startPos="58.51" endPos="83.51" friendlyPos="true" lines="6 9">
+        <access lane="377905809#3.32_0" pos="39.72" friendlyPos="1"/>
+        <access lane="350530140_0" pos="13.23" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1757454913" name="Windeckstraße" lane="164087134#2_0" startPos="80.81" endPos="105.81" friendlyPos="true" lines="3">
+        <access lane="1064383441#3_0" pos="98.79" length="13.86" friendlyPos="1"/>
+        <access lane="1064383441#5.9_0" pos="26.74" length="14.57" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1757455624" name="Diesterwegschule" lane="906998365#8_0" startPos="103.68" endPos="125.13" friendlyPos="true" lines="3">
+        <access lane="840943105#1_0" pos="0.20" length="13.61" friendlyPos="1"/>
+        <access lane="840943106_0" pos="0.00" length="9.40" friendlyPos="1"/>
+        <access lane="840943107_0" pos="0.00" length="12.11" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1757455642" name="Windeckstraße" lane="165545297#1_0" startPos="82.02" endPos="107.02" friendlyPos="true" lines="3">
+        <access lane="1064383441#3_0" pos="34.77" length="17.05" friendlyPos="1"/>
+        <access lane="1064383441#5.9_0" pos="91.42" length="9.89" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1758133056" name="Hochschule" lane="240348398#1_0" startPos="30.74" endPos="45.74" friendlyPos="true" lines="710 63"/>
+    <busStop id="1772602008" name="Krappmühlstraße" lane="240348395#5_1" startPos="39.79" endPos="54.48" friendlyPos="true" lines="1 8">
+        <access lane="-240348395#5_0" pos="0.00" length="4.65" friendlyPos="1"/>
+        <access lane="182243899#1_0" pos="0.20" length="3.51" friendlyPos="1"/>
+        <access lane="240348395#5_0" pos="64.71" length="0.45" friendlyPos="1"/>
+        <access lane="240348395#6_0" pos="0.00" length="7.06" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1772602021" name="Pestalozzischule" lane="164152502#11_0" startPos="52.77" endPos="77.77" friendlyPos="true" lines="6 6A 9">
+        <access lane="-431557293#2_0" pos="19.22" length="6.55" friendlyPos="1"/>
+        <access lane="431557293#2_0" pos="32.94" length="1.75" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1772602056" name="Weberstraße" lane="164152502#6_0" startPos="66.25" endPos="91.25" friendlyPos="true" lines="6 6A 9">
+        <access lane="-193582128#0_0" pos="12.83" length="5.65" friendlyPos="1"/>
+        <access lane="193582128#0_0" pos="56.91" length="0.85" friendlyPos="1"/>
+        <access lane="46963142#3_0" pos="82.70" length="39.84" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1772602060" name="Werderstraße" lane="164152502#18.36_0" startPos="3.78" endPos="26.36" friendlyPos="true" lines="6 6A 9">
+        <access lane="-230602997#1_0" pos="12.14" length="4.83" friendlyPos="1"/>
+        <access lane="190441943_0" pos="16.22" length="23.11" friendlyPos="1"/>
+        <access lane="190441947_0" pos="15.77" length="23.12" friendlyPos="1"/>
+        <access lane="230602997#1_0" pos="12.19" length="0.03" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1772602405" name="Krappmühlstraße" lane="-240348395#7_1" startPos="39.50" endPos="64.50" friendlyPos="true" lines="1 8">
+        <access lane="-240348395#7_0" pos="24.59" length="0.13" friendlyPos="1"/>
+        <access lane="240348395#7_0" pos="19.95" length="4.67" friendlyPos="1"/>
+        <access lane="24532391#1_0" pos="0.00" length="38.47" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1772602539" name="Werderstraße" lane="165720108#2.22_0" startPos="10.87" endPos="35.87" friendlyPos="true" lines="6 6A 9">
+        <access lane="-366073490#2_0" pos="0.00" length="4.73" friendlyPos="1"/>
+        <access lane="366073490#1_0" pos="15.91" length="7.02" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1773433930" name="Mannheim-Handelshafen" lane="225907700_0" startPos="3.69" endPos="203.69" friendlyPos="true" lines="S9">
+        <access lane="-27429644#1_0" pos="19.08" length="28.47" friendlyPos="1"/>
+        <access lane="-35014373#0_0" pos="178.35" length="19.50" friendlyPos="1"/>
+        <access lane="27429644#1_0" pos="31.73" length="25.47" friendlyPos="1"/>
+        <access lane="556415250_0" pos="16.09" length="32.53" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1795359092" name="Nationaltheater" lane="237278282#3_1" startPos="26.79" endPos="41.79" friendlyPos="true" lines="62"/>
+    <busStop id="180559029" name="Diesterwegschule" lane="906998364#1_0" startPos="41.38" endPos="66.38" friendlyPos="true" lines="3">
+        <access lane="206833547#1_0" pos="51.06" length="9.17" friendlyPos="1"/>
+        <access lane="254497224_0" pos="0.00" length="20.57" friendlyPos="1"/>
+        <access lane="254498317_0" pos="0.00" length="25.90" friendlyPos="1"/>
+        <access lane="40104609#5_0" pos="0.12" length="19.67" friendlyPos="1"/>
+    </busStop>
+    <busStop id="1922314888" name="Am Friedrichsplatz" lane="253488957#0_1" startPos="61.43" endPos="76.43" friendlyPos="true" lines="60 63 64"/>
+    <busStop id="1922356158" name="Kunstverein" lane="185579896#1_2" startPos="0.93" endPos="15.93" friendlyPos="true" lines="63 64"/>
+    <busStop id="1924052404" name="Otto-Beck-Straße" lane="95170291#4_2" startPos="70.94" endPos="85.94" friendlyPos="true" lines="63 64"/>
+    <busStop id="1960680243" name="Möhlstraße" lane="253488994_1" startPos="9.22" endPos="23.42" friendlyPos="true" lines="63"/>
+    <busStop id="1960680247" name="Möhlstraße" lane="253488995_1" startPos="14.42" endPos="29.42" friendlyPos="true" lines="63"/>
+    <busStop id="2144083519" name="Am Salzkai" lane="56185657#0_1" startPos="42.32" endPos="54.48" friendlyPos="true" lines="62"/>
+    <busStop id="2144083537" name="Kunsthalle G" lane="230602993_1" startPos="10.50" endPos="25.50" friendlyPos="true" lines="60 63 64 6 5"/>
+    <busStop id="2144083544" name="Kunsthalle A" lane="189773010#0_1" startPos="41.36" endPos="56.36" friendlyPos="true" lines="60 7 63 64"/>
+    <busStop id="2144083555" name="Otto-Beck-Straße" lane="185576374#0_0" startPos="13.15" endPos="28.15" friendlyPos="true" lines="60"/>
+    <busStop id="2144083587" name="Wasserturm Steig E" lane="269040907#1_1" startPos="56.33" endPos="68.63" friendlyPos="true" lines="63 60"/>
+    <busStop id="2146402573" name="Am Oberen Luisenpark" lane="163419466#0_1" startPos="20.96" endPos="35.96" friendlyPos="true" lines="62"/>
+    <busStop id="2146402575" name="Carl-Benz-Stadion" lane="190458064#4_1" startPos="13.52" endPos="28.52" friendlyPos="true" lines="62 6">
+        <access lane="-175347881#0_0" pos="16.74" length="17.19" friendlyPos="1"/>
+        <access lane="175346072#3_0" pos="16.46" length="4.60" friendlyPos="1"/>
+        <access lane="175347881#0_0" pos="26.92" length="12.39" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2146402576" name="Carl-Benz-Stadion" lane="114389127#2_0" startPos="95.85" endPos="110.85" friendlyPos="true" lines="62 6"/>
+    <busStop id="2146402578" name="Kolpingstraße" lane="319999605#4_1" startPos="36.25" endPos="51.25" friendlyPos="true" lines="62"/>
+    <busStop id="2146402579" name="Luisenpark/Technoseum" lane="1085759979#0_2" startPos="32.39" endPos="47.39" friendlyPos="true" lines="62 6"/>
+    <busStop id="2146402580" name="Luisenpark/Technoseum" lane="377905809#3_2" startPos="12.39" endPos="27.39" friendlyPos="true" lines="62 6"/>
+    <busStop id="2146402591" name="Theresienkrankenhaus" lane="323709010_0" startPos="14.56" endPos="29.56" friendlyPos="true" lines="7 5"/>
+    <busStop id="2390911963" name="Rathaus/REM" lane="249295642#4_0" startPos="20.68" endPos="45.68" friendlyPos="true" lines="6 6A 2">
+        <access lane="267204148#1_0" pos="85.20" length="23.95" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2434533614" name="Gewerkschaftshaus" lane="162791133#3_0" startPos="41.00" endPos="66.00" friendlyPos="true" lines="4 7 4A">
+        <access lane="220227405_0" pos="12.08" length="8.85" friendlyPos="1"/>
+        <access lane="220227407#3_0" pos="2.80" length="21.18" friendlyPos="1"/>
+        <access lane="220227407#4_0" pos="0.00" length="20.10" friendlyPos="1"/>
+        <access lane="252024823#2_0" pos="12.43" length="17.21" friendlyPos="1"/>
+        <access lane="269001620#0_0" pos="39.22" length="19.73" friendlyPos="1"/>
+    </busStop>
+    <busStop id="244371429" name="Kunsthalle" lane="906995409#3_0" startPos="69.65" endPos="94.65" friendlyPos="true" lines="4 3 6 6A 5 5A 4A">
+        <access lane="131849518_0" pos="54.28" length="8.61" friendlyPos="1"/>
+        <access lane="131849520_0" pos="52.36" length="16.34" friendlyPos="1"/>
+        <access lane="131849521_0" pos="22.99" length="3.92" friendlyPos="1"/>
+        <access lane="150000852_0" pos="80.61" length="16.22" friendlyPos="1"/>
+    </busStop>
+    <busStop id="244371625" name="Am Friedrichsplatz" lane="112562464_1" startPos="10.83" endPos="25.83" friendlyPos="true" lines="60 63 64"/>
+    <busStop id="2452045803" name="Gewerkschaftshaus" lane="229239389#1_0" startPos="99.96" endPos="124.96" friendlyPos="true" lines="4 7 4A">
+        <access lane="220227406_0" pos="24.19" length="10.17" friendlyPos="1"/>
+        <access lane="252024823#2_0" pos="127.02" length="12.90" friendlyPos="1"/>
+        <access lane="269001621#3_0" pos="15.98" length="21.54" friendlyPos="1"/>
+    </busStop>
+    <busStop id="248787901" name="Paradeplatz" lane="249295627_1" startPos="9.01" endPos="34.01" friendlyPos="true" lines="5A 5 7 1">
+        <access lane="92156243#3_0" pos="0.00" length="17.97" friendlyPos="1"/>
+    </busStop>
+    <busStop id="248787902" name="Paradeplatz" lane="En16_1" startPos="12.13" endPos="39.97" friendlyPos="true" lines="4 3 6 6A 2 4A">
+        <access lane="126752282#0_0" pos="0.00" length="31.92" friendlyPos="1"/>
+        <access lane="92156240#1_0" pos="29.29" length="18.72" friendlyPos="1"/>
+        <access lane="92156253#2_0" pos="21.90" length="31.66" friendlyPos="1"/>
+    </busStop>
+    <busStop id="248787903" name="Marktplatz" lane="E6_n5_1" startPos="65.39" endPos="90.39" friendlyPos="true" lines="5A 4 5 3 7 1 4A">
+        <access lane="358953099_0" pos="1.07" length="11.71" friendlyPos="1"/>
+        <access lane="358953101#0_0" pos="1.29" length="11.73" friendlyPos="1"/>
+        <access lane="358953104_0" pos="0.00" length="14.42" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2523281928" name="Mannheim Hauptbahnhof" lane="68643706#1_0" startPos="185.29" endPos="293.02" friendlyPos="true" lines="ICE 43 ICE 20 S6 ICE 22">
+        <access lane="139692110#1_0" pos="29.31" length="39.83" friendlyPos="1"/>
+        <access lane="139692110#2_0" pos="0.00" length="45.24" friendlyPos="1"/>
+        <access lane="461153861#0_0" pos="0.00" length="42.94" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2523282301" name="MA hauptbahnhof A" lane="947141672#3_0" startPos="9.06" endPos="39.06" lines="1 8 9 60 63"/>
+    <busStop id="25422078" name="Wasserturm" lane="En11_1" startPos="45.97" endPos="70.97" friendlyPos="true" lines="4 3 2 6 6A 4A"/>
+    <busStop id="2559199763" name="Paradeplatz" lane="-En16_1" startPos="9.24" endPos="27.74" friendlyPos="true" lines="4 3 2 5 6 6A 4A">
+        <access lane="126752282#0_0" pos="0.20" length="1.88" friendlyPos="1"/>
+        <access lane="126752282#1_0" pos="0.00" length="3.17" friendlyPos="1"/>
+        <access lane="126752282#2_0" pos="0.00" length="2.29" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2575674925" name="Konrad-Adenauer-Brücke" lane="164043801_0" startPos="203.80" endPos="219.58" friendlyPos="true" lines="4 7 4A">
+        <access lane="854928372_0" pos="0.00" length="9.07" friendlyPos="1"/>
+        <access lane="94991338#0_0" pos="0.20" length="5.70" friendlyPos="1"/>
+        <access lane="94991338#2_0" pos="0.00" length="9.19" friendlyPos="1"/>
+        <access lane="94991338#3_0" pos="0.00" length="7.63" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2575674942" name="Konrad-Adenauer-Brücke" lane="164043806#1_0" startPos="25.90" endPos="40.37" friendlyPos="true" lines="4 7 4A">
+        <access lane="232479211#1_0" pos="0.47" length="37.96" friendlyPos="1"/>
+        <access lane="854928372_0" pos="36.39" length="5.74" friendlyPos="1"/>
+    </busStop>
+    <busStop id="258933791" name="Theresienkrankenhaus" lane="150694606#4_0" startPos="26.50" endPos="51.50" friendlyPos="true" lines="5A 4 5 2 7 4A">
+        <access lane="-24909174#11_0" pos="0.00" length="21.86" friendlyPos="1"/>
+        <access lane="169690489#0_0" pos="0.00" length="13.29" friendlyPos="1"/>
+        <access lane="79721396#0_0" pos="30.49" length="9.04" friendlyPos="1"/>
+        <access lane="79721523#1_0" pos="13.87" length="3.45" friendlyPos="1"/>
+        <access lane="79721523#2_0" pos="0.00" length="15.25" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2642795519" name="Gewerkschaftshaus" lane="269001620#0_2" startPos="1.66" endPos="16.66" friendlyPos="true" lines="62"/>
+    <busStop id="2642795905" name="MVV-Hochhaus" lane="25883964#1_0" startPos="14.16" endPos="39.16" friendlyPos="true" lines="2">
+        <access lane="258979292_0" pos="12.80" length="4.94" friendlyPos="1"/>
+        <access lane="266823965_0" pos="21.40" length="22.21" friendlyPos="1"/>
+        <access lane="189899976_0" pos="114.90" length="23.15" friendlyPos="1"/>
+    </busStop>
+    <busStop id="2642796123" name="Theresienkrankenhaus" lane="251065565_0" startPos="5.74" endPos="20.74" friendlyPos="true" lines="7">
+        <access lane="100442337#2_0" pos="8.75" length="9.32" friendlyPos="1"/>
+        <access lane="100442337#3_0" pos="1.14" length="2.24" friendlyPos="1"/>
+        <access lane="169690680_0" pos="1.91" length="13.98" friendlyPos="1"/>
+        <access lane="237027411_0" pos="2.33" length="8.08" friendlyPos="1"/>
+        <access lane="237027675_0" pos="1.03" length="11.24" friendlyPos="1"/>
+    </busStop>
+    <busStop id="266980751" name="Universität" lane="-778989039#0_0" startPos="31.00" endPos="46.96" friendlyPos="true" lines="5A 4 5 1 4A">
+        <access lane="-97301289#0_0" pos="18.94" length="22.21" friendlyPos="1"/>
+        <access lane="97301289#0_0" pos="13.35" length="25.21" friendlyPos="1"/>
+    </busStop>
+    <busStop id="268941327" name="Universität" lane="906995420_0" startPos="23.81" endPos="36.31" friendlyPos="true" lines="4 7 4A">
+        <access lane="-122000746#1_0" pos="0.00" length="15.85" friendlyPos="1"/>
+        <access lane="-122000746#2_0" pos="48.03" length="9.06" friendlyPos="1"/>
+        <access lane="122000746#1_0" pos="20.63" length="18.95" friendlyPos="1"/>
+        <access lane="122000746#2_0" pos="0.00" length="13.83" friendlyPos="1"/>
+        <access lane="87712914#2_0" pos="0.72" length="18.90" friendlyPos="1"/>
+    </busStop>
+    <busStop id="269015002" name="Schloss" lane="278441980#3_0" startPos="52.12" endPos="81.30" friendlyPos="true" lines="5A 5 7 1">
+        <access lane="162513804#6_0" pos="15.65" length="20.95" friendlyPos="1"/>
+        <access lane="729989698#1_0" pos="0.00" length="33.80" friendlyPos="1"/>
+    </busStop>
+    <busStop id="26936899" name="Rosengarten" lane="189075367#3_0" startPos="22.60" endPos="47.60" friendlyPos="true" lines="5A 5 2">
+        <access lane="218778912_0" pos="45.57" length="15.79" friendlyPos="1"/>
+        <access lane="268931658_0" pos="0.00" length="22.30" friendlyPos="1"/>
+        <access lane="80599555#0_0" pos="0.00" length="24.55" friendlyPos="1"/>
+    </busStop>
+    <busStop id="27088447" name="Handelshafen" lane="740014433#1_0" startPos="338.87" endPos="363.87" friendlyPos="true" lines="6 6A">
+        <access lane="-35014373#0_0" pos="213.01" length="20.56" friendlyPos="1"/>
+        <access lane="-556415250_0" pos="0.00" length="21.90" friendlyPos="1"/>
+        <access lane="556415246_0" pos="0.00" length="4.79" friendlyPos="1"/>
+        <access lane="556415247_0" pos="0.00" length="13.32" friendlyPos="1"/>
+    </busStop>
+    <busStop id="271084469" name="Nationaltheater" lane="52362434#0_0" startPos="21.35" endPos="46.35" friendlyPos="true" lines="5A 5">
+        <access lane="237278282#3_0" pos="14.57" length="18.49" friendlyPos="1"/>
+        <access lane="52362317_0" pos="31.44" length="3.78" friendlyPos="1"/>
+    </busStop>
+    <busStop id="280441885" name="MA Hauptbahnhof B" lane="174743991#2_1" startPos="34.70" endPos="59.58" friendlyPos="true" lines="4 3 4A">
+        <access lane="1098919000#9_0" pos="58.24" length="6.52" friendlyPos="1"/>
+    </busStop>
+    <busStop id="282275782" name="Meeräckerplatz" lane="906998365#4_0" startPos="34.37" endPos="59.37" friendlyPos="true" lines="3">
+        <access lane="-18639552#4_0" pos="39.02" length="12.98" friendlyPos="1"/>
+        <access lane="146948331_0" pos="31.73" length="20.50" friendlyPos="1"/>
+        <access lane="146948336#0_0" pos="28.63" length="23.10" friendlyPos="1"/>
+        <access lane="146948336#1_0" pos="10.16" length="4.20" friendlyPos="1"/>
+        <access lane="18639552#4_0" pos="17.22" length="15.98" friendlyPos="1"/>
+    </busStop>
+    <busStop id="282811321" name="Tattersall E" lane="131849522#0_0" startPos="12.26" endPos="37.26" friendlyPos="true" lines="6 6A 1 9 8">
+        <access lane="150770619#1_0" pos="58.33" length="18.48" friendlyPos="1"/>
+        <access lane="203461112#1_0" pos="5.80" length="14.23" friendlyPos="1"/>
+    </busStop>
+    <busStop id="293781513" name="Markuskirche" lane="906998364#9_0" startPos="54.88" endPos="74.38" friendlyPos="true" lines="3"/>
+    <busStop id="293781517" name="MA Hauptbahnhof Süd" lane="214788243_0" startPos="4.15" endPos="29.15" friendlyPos="true" lines="3">
+        <access lane="148359952#0_0" pos="0.00" length="21.70" friendlyPos="1"/>
+        <access lane="218025853#0_0" pos="30.82" length="12.51" friendlyPos="1"/>
+        <access lane="219005866#1_0" pos="0.00" length="22.15" friendlyPos="1"/>
+    </busStop>
+    <busStop id="295730454" name="Universität West" lane="216879574#3_1" startPos="0.00" endPos="13.90" friendlyPos="true" lines="65 60E 60"/>
+    <busStop id="299014397" name="Carl-Benz-Stadion" lane="309858481#6_0" startPos="60.49" endPos="85.49" friendlyPos="true" lines="6 9">
+        <access lane="163474880#2_0" pos="41.55" length="24.01" friendlyPos="1"/>
+        <access lane="175346072#1_0" pos="46.97" length="26.80" friendlyPos="1"/>
+        <access lane="175346072#2_0" pos="0.00" length="27.92" friendlyPos="1"/>
+        <access lane="175348078_0" pos="0.20" length="23.68" friendlyPos="1"/>
+    </busStop>
+    <busStop id="299050001" name="Hochschule" lane="27247881#20_0" startPos="54.62" endPos="79.62" friendlyPos="true" lines="1 8">
+        <access lane="188943832_0" pos="2.42" length="9.86" friendlyPos="1"/>
+        <access lane="188943833_0" pos="57.54" length="4.57" friendlyPos="1"/>
+    </busStop>
+    <busStop id="303549810" name="Kopernikusstraße" lane="150851814#3_1" startPos="18.00" endPos="43.00" friendlyPos="true" lines="1">
+        <access lane="-150851814#5_0" pos="39.87" length="5.00" friendlyPos="1"/>
+    </busStop>
+    <busStop id="318324199" name="Rheinstraße" lane="740014433#1_0" startPos="9.65" endPos="34.65" friendlyPos="true" lines="6 6A">
+        <access lane="457490366#1_0" pos="24.22" length="6.54" friendlyPos="1"/>
+        <access lane="457490366#2_0" pos="0.00" length="5.16" friendlyPos="1"/>
+        <access lane="768475540_0" pos="5.47" length="8.33" friendlyPos="1"/>
+        <access lane="768475541_0" pos="0.00" length="6.08" friendlyPos="1"/>
+    </busStop>
+    <busStop id="3469625196" name="Collini Center" lane="195651740#0.117_0" startPos="14.09" endPos="51.08" friendlyPos="true" lines="5">
+        <access lane="-224885819#0_0" pos="223.81" length="8.28" friendlyPos="1"/>
+        <access lane="123554997#4_0" pos="227.72" length="16.60" friendlyPos="1"/>
+        <access lane="224885819#0_0" pos="4.18" length="11.28" friendlyPos="1"/>
+    </busStop>
+    <busStop id="418507397" name="Akademiestraße" lane="320252634#0_1" startPos="0.00" endPos="18.04" friendlyPos="true" lines="65 60"/>
+    <busStop id="4311212549" name="MA Hauptbahnhof" lane="280873251#0_0" startPos="82.84" endPos="97.84" friendlyPos="true" lines="65"/>
+    <busStop id="4580339372" name="Mannheim Hauptbahnhof" lane="463101348#0_0" startPos="0.00" endPos="100.00" friendlyPos="true" lines="S9">
+        <access lane="462661598#1_0" pos="0.00" length="43.85" friendlyPos="1"/>
+    </busStop>
+    <busStop id="475212909" name="Kolpingstraße" lane="319999605#4_1" startPos="21.27" endPos="36.27" friendlyPos="true" lines="62"/>
+    <busStop id="4827143321" name="Mannheim ZOB" lane="860204581#4_0" startPos="3.65" endPos="11.15" friendlyPos="true" lines="109 N109 009 N177 N33 N1971 N971 N1961 N110 N07 N14 122 N122 027 108 N950 012 N36 N952 900 N948 N1720"/>
+    <busStop id="492664627" name="Verlängerte Jungbuschstraße" lane="149956819#2_1" startPos="15.01" endPos="29.47" friendlyPos="true" lines="62"/>
+    <busStop id="492664628" name="Landgüterhalle" lane="149951202#1_1" startPos="20.39" endPos="35.39" friendlyPos="true" lines="62"/>
+    <busStop id="492664629" name="Güteramt" lane="149951202#2_1" startPos="323.15" endPos="338.15" friendlyPos="true" lines="62"/>
+    <busStop id="492664631" name="Hauptgüterbahnhof" lane="149951202#2_1" startPos="532.18" endPos="547.18" friendlyPos="true" lines="62"/>
+    <busStop id="492664633" name="Neckarspitze" lane="149951202#5_1" startPos="1.96" endPos="16.96" friendlyPos="true" lines="62"/>
+    <busStop id="492664635" name="Neckarvorlandstraße" lane="149951202#7_1" startPos="71.03" endPos="86.03" friendlyPos="true" lines="62"/>
+    <busStop id="492664637" name="Verbindungskanal" lane="306032456_0" startPos="4.76" endPos="19.76" friendlyPos="true" lines="62">
+        <access lane="306029385#0_0" pos="5.62" length="1.71" friendlyPos="1"/>
+        <access lane="306029385#1_0" pos="0.00" length="27.06" friendlyPos="1"/>
+        <access lane="306031940#0_0" pos="0.00" length="25.90" friendlyPos="1"/>
+    </busStop>
+    <busStop id="534690919" name="Gewerkschaftshaus" lane="252024823#2_2" startPos="45.40" endPos="60.40" friendlyPos="true" lines="62 7"/>
+    <busStop id="534690922" name="Kurpfalzbrücke" lane="999614640_0" startPos="15.79" endPos="23.29" friendlyPos="true" lines="62 53 61 2">
+        <access lane="-252028886#1_0" pos="20.71" length="18.40" friendlyPos="1"/>
+        <access lane="252028886#1_0" pos="43.41" length="21.40" friendlyPos="1"/>
+    </busStop>
+    <busStop id="534696588" name="Am Oberen Luisenpark" lane="163419466#0_1" startPos="9.25" endPos="24.25" friendlyPos="true" lines="62"/>
+    <busStop id="534696600" name="Lanzvilla" lane="208426931_1" startPos="0.98" endPos="15.98" friendlyPos="true" lines="62"/>
+    <busStop id="534696602" name="Lanzvilla" lane="8067185#1_0" startPos="13.04" endPos="28.04" friendlyPos="true" lines="60"/>
+    <busStop id="534696605" name="Kutzerweiher" lane="163419466#1_0" startPos="175.60" endPos="190.60" friendlyPos="true" lines="62"/>
+    <busStop id="534696607" name="Kutzerweiher" lane="163419466#1_0" startPos="140.82" endPos="155.82" friendlyPos="true" lines="62"/>
+    <busStop id="6205213035" name="Mannheim ZOB" lane="662854960_0" startPos="0.00" endPos="7.50" friendlyPos="true"/>
+    <busStop id="672071147" name="Nationaltheater" lane="880134845_2" startPos="33.14" endPos="48.14" friendlyPos="true" lines="62"/>
+    <busStop id="674571791" name="Mühldorferstraße" lane="253488999#1_1" startPos="5.18" endPos="20.18" friendlyPos="true" lines="63 64"/>
+    <busStop id="689927829" name="Kunstverein" lane="724854350#1_2" startPos="4.99" endPos="19.44" friendlyPos="true" lines="63 64"/>
+    <busStop id="7001519160" name="Glücksteinallee" lane="309717596#3_2" startPos="11.07" endPos="26.07" friendlyPos="true" lines="65"/>
+    <busStop id="7001519162" name="Glücksteinallee" lane="251816548_1" startPos="13.28" endPos="28.28" friendlyPos="true" lines="65"/>
+    <busStop id="7001519164" name="Hauptbahnhof Süd" lane="388280855#4_1" startPos="62.31" endPos="77.31" friendlyPos="true" lines="65"/>
+    <busStop id="705025885" name="Markuskirche" lane="EMk1_1" startPos="1.81" endPos="8.62" friendlyPos="true" lines="63"/>
+    <busStop id="705025886" name="Markuskirche" lane="EMk3_1" startPos="1.58" endPos="8.87" friendlyPos="true" lines="63"/>
+    <busStop id="705028992" name="Technoseum Süd" lane="253488970#1_1" startPos="15.13" endPos="30.13" friendlyPos="true" lines="64"/>
+    <busStop id="705047161" name="Wasserturm Steig D" lane="315426061_1" startPos="4.58" endPos="19.58" friendlyPos="true" lines="60 63">
+        <access lane="149898018#10_0" pos="22.40" length="4.23" friendlyPos="1"/>
+        <access lane="190434422_0" pos="49.55" length="45.34" friendlyPos="1"/>
+    </busStop>
+    <busStop id="705047162" name="Wasserturm" lane="53175058_1" startPos="13.14" endPos="27.67" friendlyPos="true" lines="60 7 63 64">
+        <access lane="149898018#3_0" pos="14.97" length="9.42" friendlyPos="1"/>
+        <access lane="149898018#4_0" pos="0.00" length="12.09" friendlyPos="1"/>
+        <access lane="409050025#2_0" pos="0.00" length="22.15" friendlyPos="1"/>
+        <access lane="409050027_0" pos="0.00" length="13.71" friendlyPos="1"/>
+    </busStop>
+    <busStop id="705049671" name="Universität" lane="778989039#3_0" startPos="8.74" endPos="33.74" friendlyPos="true" lines="15 1 7 5">
+        <access lane="-35899348#0_0" pos="26.62" length="15.72" friendlyPos="1"/>
+        <access lane="-97301278#2_0" pos="76.03" length="4.18" friendlyPos="1"/>
+        <access lane="191128491_0" pos="17.18" length="41.74" friendlyPos="1"/>
+        <access lane="97301278#2_0" pos="40.46" length="7.18" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7297758574" name="Hochschule" lane="164152421_0" startPos="266.90" endPos="281.90" friendlyPos="true" lines="1 8">
+        <access lane="188943832_0" pos="56.45" length="4.31" friendlyPos="1"/>
+        <access lane="188943833_0" pos="3.53" length="10.59" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7300715081" name="Kopernikusstraße" lane="-150851814#4_1" startPos="1.17" endPos="21.95" friendlyPos="true" lines="1">
+        <access lane="366073467#1_0" pos="14.81" length="13.26" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7304372577" name="Strohmarkt" lane="-En4_1" startPos="20.06" endPos="45.06" friendlyPos="true" lines="4 3 6 2 4A">
+        <access lane="5073601#0_0" pos="76.08" length="45.56" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7304372578" name="Strohmarkt" lane="En4_1" startPos="29.34" endPos="54.34" friendlyPos="true" lines="4 3 2 6 6A 4A">
+        <access lane="5073608#1_0" pos="0.00" length="30.59" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7304372583" name="Rathaus/REM" lane="189075356#4_0" startPos="23.10" endPos="48.10" friendlyPos="true" lines="2 6 6A"/>
+    <busStop id="7306708509" name="Abendakademie" lane="E8_n5_1" startPos="33.77" endPos="58.77" friendlyPos="true" lines="15 4 1 7 5 4A">
+        <access lane="4420855#1_0" pos="0.00" length="73.30" friendlyPos="1"/>
+        <access lane="5073613_0" pos="0.00" length="72.62" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7306708511" name="Marktplatz" lane="-E6_n5_1" startPos="40.55" endPos="65.55" friendlyPos="true" lines="15 4 1 3 7 5 4A">
+        <access lane="358953074#3_0" pos="23.08" length="25.09" friendlyPos="1"/>
+        <access lane="358953075#3_0" pos="29.33" length="25.49" friendlyPos="1"/>
+        <access lane="358953105_0" pos="5.69" length="32.62" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7306708512" name="Wasserturm" lane="-En11_1" startPos="46.18" endPos="71.18" friendlyPos="true" lines="4 3 6 6A 2 4A">
+        <access lane="191965714#1_0" pos="0.00" length="73.49" friendlyPos="1"/>
+        <access lane="317150964_0" pos="43.55" length="76.42" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7306708513" name="Kunsthalle" lane="906995407#1_0" startPos="50.40" endPos="75.40" friendlyPos="true" lines="4 3 6 6A 4A">
+        <access lane="131849518_0" pos="16.87" length="4.23" friendlyPos="1"/>
+        <access lane="131849520_0" pos="14.96" length="12.00" friendlyPos="1"/>
+        <access lane="131849521_0" pos="60.39" length="8.28" friendlyPos="1"/>
+        <access lane="150000852_0" pos="43.24" length="21.28" friendlyPos="1"/>
+        <access lane="269040907#1_0" pos="26.98" length="24.68" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7306708514" name="MA Hauptbahnhof Süd" lane="116638555#2_0" startPos="33.75" endPos="58.75" friendlyPos="true" lines="3">
+        <access lane="148359952#0_0" pos="0.00" length="23.53" friendlyPos="1"/>
+        <access lane="218025853#0_0" pos="29.18" length="7.89" friendlyPos="1"/>
+        <access lane="219005866#1_0" pos="0.00" length="22.61" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7306708516" name="Meeräckerplatz" lane="906998364#5_0" startPos="41.87" endPos="66.87" friendlyPos="true" lines="3">
+        <access lane="-18639552#4_0" pos="5.31" length="7.27" friendlyPos="1"/>
+        <access lane="146948336#0_0" pos="9.92" length="8.89" friendlyPos="1"/>
+        <access lane="18639552#4_0" pos="50.93" length="10.27" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314575181" name="Kunsthalle" lane="906995408#1_0" startPos="50.68" endPos="75.68" friendlyPos="true" lines="5A 5">
+        <access lane="131849518_0" pos="16.59" length="3.76" friendlyPos="1"/>
+        <access lane="131849520_0" pos="14.67" length="4.00" friendlyPos="1"/>
+        <access lane="131849521_0" pos="60.68" length="16.28" friendlyPos="1"/>
+        <access lane="190435120_0" pos="0.00" length="26.81" friendlyPos="1"/>
+        <access lane="269040907#1_0" pos="27.28" length="16.69" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314635815" name="Carl-Benz-Stadion" lane="230602989#2_0" startPos="222.99" endPos="247.99" friendlyPos="true" lines="6 9">
+        <access lane="-175347881#2_0" pos="15.45" length="39.04" friendlyPos="1"/>
+        <access lane="163474880#1_0" pos="65.95" length="28.39" friendlyPos="1"/>
+        <access lane="175346072#1_0" pos="22.61" length="21.96" friendlyPos="1"/>
+        <access lane="175347881#2_0" pos="23.02" length="34.24" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314635829" name="Luisenpark/Technoseum" lane="164048740#1_0" startPos="61.43" endPos="86.43" friendlyPos="true" lines="6 9">
+        <access lane="350530140_0" pos="68.85" length="3.59" friendlyPos="1"/>
+        <access lane="-230827923#0_0" pos="-1.00" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314635830" name="Planetarium" lane="25890866#9_0" startPos="29.69" endPos="58.74" friendlyPos="true" lines="6 6A 9">
+        <access lane="189764716#1_0" pos="18.63" length="15.74" friendlyPos="1"/>
+        <access lane="350528761_0" pos="34.06" length="14.72" friendlyPos="1"/>
+        <access lane="350528762_0" pos="38.48" length="15.00" friendlyPos="1"/>
+        <access lane="53573995#2_0" pos="33.54" length="17.75" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314635837" name="Pestalozzischule" lane="165720108#4_0" startPos="141.12" endPos="166.12" friendlyPos="true" lines="6 6A 9">
+        <access lane="-40521208#1_0" pos="4.67" length="0.47" friendlyPos="1"/>
+        <access lane="40521208#1_0" pos="9.43" length="4.33" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314635844" name="Weberstraße" lane="165720108#7_0" startPos="42.67" endPos="67.67" friendlyPos="true" lines="6 6A 9">
+        <access lane="-193582128#2_0" pos="59.45" length="0.04" friendlyPos="1"/>
+        <access lane="193582128#2_0" pos="12.50" length="4.76" friendlyPos="1"/>
+        <access lane="24532431#1_0" pos="0.00" length="27.84" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733466" name="Technoseum Süd" lane="8030817#6_0" startPos="36.72" endPos="61.72" friendlyPos="true" lines="6A">
+        <access lane="-253488970#1_0" pos="32.91" length="11.84" friendlyPos="1"/>
+        <access lane="253488970#1_0" pos="44.17" length="16.64" friendlyPos="1"/>
+        <access lane="56183514#0_0" pos="0.00" length="32.56" friendlyPos="1"/>
+        <access lane="56183515#0_0" pos="0.00" length="30.99" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733467" name="Technoseum Süd" lane="171178249#15_0" startPos="42.82" endPos="67.82" friendlyPos="true" lines="6A">
+        <access lane="-253488970#1_0" pos="61.38" length="16.47" friendlyPos="1"/>
+        <access lane="253488970#1_0" pos="15.70" length="21.27" friendlyPos="1"/>
+        <access lane="253489010#2_0" pos="0.00" length="25.96" friendlyPos="1"/>
+        <access lane="39006741#1_0" pos="5.28" length="16.17" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733468" name="Fahrlach" lane="171178249#2_0" startPos="21.74" endPos="46.74" friendlyPos="true" lines="6A">
+        <access lane="-46022378#2_0" pos="0.00" length="19.12" friendlyPos="1"/>
+        <access lane="350576236#0_0" pos="4.39" length="11.65" friendlyPos="1"/>
+        <access lane="350576238#4_0" pos="21.35" length="18.46" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733473" name="Handelshafen" lane="27529606#1_0" startPos="128.20" endPos="153.20" friendlyPos="true" lines="6 6A">
+        <access lane="-27429648#0_0" pos="28.65" length="21.73" friendlyPos="1"/>
+        <access lane="-556415248_0" pos="0.00" length="19.94" friendlyPos="1"/>
+        <access lane="556415246_0" pos="0.00" length="10.31" friendlyPos="1"/>
+        <access lane="556415247_0" pos="0.00" length="7.85" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733474" name="Rheinstraße" lane="189075375#8_0" startPos="720.89" endPos="744.36" friendlyPos="true" lines="2">
+        <access lane="142257339#1_0" pos="1.06" length="4.81" friendlyPos="1"/>
+        <access lane="142257343#0_0" pos="0.20" length="8.97" friendlyPos="1"/>
+        <access lane="142257343#2_0" pos="0.00" length="5.96" friendlyPos="1"/>
+        <access lane="457490372#2_0" pos="13.25" length="1.19" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7314733475" name="Rheinstraße" lane="27529606#1_0" startPos="453.92" endPos="478.74" friendlyPos="true" lines="6 6A">
+        <access lane="-253605121#1_0" pos="11.88" length="7.61" friendlyPos="1"/>
+        <access lane="457490366#1_0" pos="22.00" length="9.61" friendlyPos="1"/>
+        <access lane="457490372#1_0" pos="22.18" length="5.35" friendlyPos="1"/>
+        <access lane="768475545_0" pos="0.00" length="9.45" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7315072986" name="Nationaltheater" lane="258979195#0_0" startPos="27.55" endPos="52.55" friendlyPos="true" lines="4 2 7 4A">
+        <access lane="52362317_0" pos="27.65" length="3.65" friendlyPos="1"/>
+        <access lane="880134845_0" pos="37.81" length="14.19" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7315072987" name="Nationaltheater" lane="52362342_0" startPos="37.21" endPos="62.21" friendlyPos="true" lines="2 5 5A">
+        <access lane="268931665_0" pos="14.43" length="24.10" friendlyPos="1"/>
+        <access lane="42760135#2_0" pos="14.38" length="14.47" friendlyPos="1"/>
+        <access lane="52362445_0" pos="19.57" length="4.17" friendlyPos="1"/>
+        <access lane="52362450_0" pos="19.45" length="12.29" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7315072988" name="Nationaltheater" lane="150663772_0" startPos="48.88" endPos="73.88" friendlyPos="true" lines="4 7 4A">
+        <access lane="268931665_0" pos="13.31" length="15.25" friendlyPos="1"/>
+        <access lane="42760135#2_0" pos="15.51" length="23.32" friendlyPos="1"/>
+        <access lane="52362445_0" pos="20.72" length="4.67" friendlyPos="1"/>
+        <access lane="52362450_0" pos="20.56" length="3.44" friendlyPos="1"/>
+    </busStop>
+    <busStop id="7315072989" name="Fahrlach" lane="270684576#1_0" startPos="3.21" endPos="18.21" friendlyPos="true" lines="64"/>
+    <busStop id="7315096513" name="Schloss" lane="906995422#4_0" startPos="32.93" endPos="57.93" friendlyPos="true" lines="15 1 7 5">
+        <access lane="162513804#6_0" pos="41.76" length="25.40" friendlyPos="1"/>
+    </busStop>
+    <busStop id="8751953383" name="Universität" lane="778989039#3_0" startPos="34.18" endPos="49.18" friendlyPos="true" lines="60">
+        <access lane="-35899348#0_0" pos="27.42" length="18.61" friendlyPos="1"/>
+        <access lane="-97301278#2_0" pos="76.79" length="1.26" friendlyPos="1"/>
+        <access lane="191128491_0" pos="17.18" length="41.22" friendlyPos="1"/>
+        <access lane="97301278#2_0" pos="39.70" length="4.26" friendlyPos="1"/>
+    </busStop>
+    <busStop id="8764658150" name="Paradeplatz" lane="278441979_1" startPos="25.07" endPos="50.07" friendlyPos="true" lines="15 1 7 5 5A">
+        <access lane="92156243#3_0" pos="0.00" length="13.93" friendlyPos="1"/>
+    </busStop>
+    <busStop id="877901017" name="Teufelsbrücke" lane="320252634#5_1" startPos="2.29" endPos="17.29" friendlyPos="true" lines="65 60"/>
+    <busStop id="9229693855" name="Popakademie" lane="190340310#1_1" startPos="4.29" endPos="17.73" friendlyPos="true" lines="65 60"/>
+    <busStop id="9229693857" name="Hochschule West" lane="121541411#1_2" startPos="73.87" endPos="81.37" friendlyPos="true" lines="65"/>
+    <busStop id="9229706360" name="Fernmeldeturm" lane="999857917#1_1" startPos="17.50" endPos="24.50" friendlyPos="true" lines="60"/>
+    <busStop id="9229709918" name="Pfalzplatz" lane="945388804_1" startPos="0.00" endPos="7.50" friendlyPos="true" lines="63"/>
+    <busStop id="9252496160" name="Mannheim Hauptbahnhof departure" lane="191128493#1_0" startPos="110.00" endPos="117.50" friendlyPos="true" lines="710"/>
+    <busStop id="9252496161" name="Mannheim Hauptbahnhof arrival" lane="191128493#1_0" startPos="38.55" endPos="46.05" friendlyPos="true" lines="710"/>
+    <busStop id="988748035" name="Johannes-Kepler-Schule" lane="320185500#0_0" startPos="17.84" endPos="32.84" friendlyPos="true"/>
+    <busStop id="bsColliniCenter1" name="Collini Center" lane="E5_y10.48_0" startPos="25.48" endPos="61.81" friendlyPos="true" lines="5"/>
+    <busStop id="bs_4" name="Markuskirche" lane="E8_P7_0" startPos="5.74" endPos="26.41" friendlyPos="true" lines="3"/>
+    <busStop id="bs_Fernmeldeturm1" name="Fernmeldturm" lane="E3_y10_0" startPos="1183.94" endPos="1214.96" friendlyPos="true" lines="5"/>
+    <busStop id="bs_Lessingstra1" name="Lessingstraße" lane="E1_y10_0" startPos="580.46" endPos="603.61" friendlyPos="true" lines="5"/>
+    <busStop id="bs_augustbebel1" name="August-Bebel-Straße" lane="39381687#5_1" startPos="55.83" endPos="65.83" friendlyPos="true" lines="63"/>
+    <busStop id="bs_augustbebel2" name="August-Bebel-Straße" lane="251816566#3_1" startPos="8.02" endPos="18.02" friendlyPos="true" lines="63"/>
+    <busStop id="bs_fernmeldeturm2" name="Fernmeldturm" lane="E8_y10_0" startPos="586.08" endPos="612.66" friendlyPos="true" lines="5"/>
+    <busStop id="bs_lessingstra2" name="Lessingstraße" lane="E7_y10_0" startPos="341.14" endPos="364.46" friendlyPos="true" lines="5"/>
+</additional>

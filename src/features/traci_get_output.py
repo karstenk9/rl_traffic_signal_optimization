@@ -85,10 +85,10 @@ if __name__ == "__main__":
     
     #for i in range(5):
         
-    traci.start(['sumo', "-c", "urban_mobility_simulation/models/20230502_SUMO_MA/osm.sumocfg",
-                                    "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuated_TL.xml",
+    traci.start(['sumo-gui', "-c", "models/20230718_sumo_ma/osm.sumocfg",
+                                    "--tripinfo-output", "src/data/actuated_output/tripinfo_actuated_TL.xml",
                                     "--output-prefix", "TIME",
                                     "--device.emissions.probability", "1.0",
-                                    "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_info_actuated_TL.xml"])
+                                    "--emission-output", "src/data/actuated_output/emission_info_actuated_TL.xml"])
 
     run()
