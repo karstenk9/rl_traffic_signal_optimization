@@ -86,6 +86,8 @@ if __name__ == "__main__":
     #for i in range(5):
         
     traci.start(['sumo-gui', "-c", "models/20230718_sumo_ma/osm.sumocfg",
+                                    #"--scale", "0.75",
+                                    "--time-to-teleport", "300",
                                     "--tripinfo-output", "src/data/actuated_output/tripinfo_actuated_TL.xml",
                                     "--output-prefix", "TIME",
                                     "--device.emissions.probability", "1.0",
