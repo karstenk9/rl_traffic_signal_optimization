@@ -51,6 +51,11 @@ model = PPO(
     policy="MlpPolicy",
     learning_rate=3e-4,
     verbose=1,
+    gamma=0.95,
+    gae_lambda=0.9,
+    ent_coef=0.1,
+    vf_coef=0.25,
+    batch_size=64
 )
 
 model.learn(total_timesteps=43200)
