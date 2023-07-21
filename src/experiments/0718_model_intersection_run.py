@@ -23,7 +23,7 @@ from environment.env import SumoEnvironment
 
 
 env = SumoEnvironment(
-    net_file="urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
+    net_file="urban_mobility_simulation/models/20230718_sumo_ma/osm.net_1.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
@@ -53,4 +53,4 @@ model = PPO(
     verbose=1,
 )
 
-model.learn(total_timesteps=10000)
+model.learn(total_timesteps=43200)
