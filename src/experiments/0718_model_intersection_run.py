@@ -36,7 +36,7 @@ env = SumoEnvironment(
                 urban_mobility_simulation/models/20230718_sumo_ma/trucks_routes.xml, \
                 urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml",
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_new_local_test",
-    use_gui=True,
+    use_gui=False,
     num_seconds=43200,
     yellow_time=4,
     min_green=5,
