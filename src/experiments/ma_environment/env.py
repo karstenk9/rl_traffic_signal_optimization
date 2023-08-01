@@ -31,11 +31,12 @@ LIBSUMO = "LIBSUMO_AS_TRACI" in os.environ
 def env(**kwargs):
     """Instantiate a PettingoZoo environment."""
     env = SumoEnvironmentPZ(**kwargs)
-    env = wrappers.AssertOutOfBoundsWrapper(env)
-    env = wrappers.OrderEnforcingWrapper(env)
+    
     # align different observation and action spaces
     env = ss.multiagent_wrappers.pad_observations_v0(env)
     env = ss.multiagent_wrappers.pad_action_space_v0(env)
+    env = wrappers.AssertOutOfBoundsWrapper(env)
+    env = wrappers.OrderEnforcingWrapper(env)
     return env
 
 

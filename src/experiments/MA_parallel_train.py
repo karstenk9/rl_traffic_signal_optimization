@@ -1,21 +1,4 @@
 import os
-import shutil
-import subprocess
-
-import numpy as np
-import supersuit as ss
-import traci
-from pyvirtualdisplay.smartdisplay import SmartDisplay
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3.common.vec_env import VecMonitor
-from tqdm import trange
-
-import environment.MA_parallel_env as environment
-
-
-import os
 import sys
 
 
@@ -34,18 +17,18 @@ from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
 from ray.tune.registry import register_env
 import supersuit as ss
 
-import environment.MA_parallel_env as environment
-
+#import sumo_rl
+import ma_environment.env as custom_env
 
 if __name__ == "__main__":
     ray.init()
 
-    env_name = "MannheimNetwork"
+    env_name = "MA_grid"
 
     register_env(
         env_name,
         lambda _: ParallelPettingZooEnv(
-            environment.parallel_env(
+            custom_env.parallel_env(
                 net_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net_1.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
@@ -88,8 +71,6 @@ if __name__ == "__main__":
         .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
     )
 
-    print("Starting training")
-    
     tune.run(
         "PPO",
         name="PPO",
