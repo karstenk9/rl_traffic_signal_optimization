@@ -19,17 +19,17 @@ import numpy as np
 #import traci
 from stable_baselines3.ppo.ppo import PPO
 
-from environment.env import SumoEnvironment
+from environment.env import SumoEnvironmentPZ
 
 
-env = SumoEnvironment(
+env = SumoEnvironmentPZ(
     net_file="urban_mobility_simulation/models/20230718_sumo_ma/osm.net_1.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
               urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml",
             # urban_mobility_simulation/models/20230718_sumo_ma/additional_tls.xml, \
-    single_agent=True,
+    single_agent=False,
     route_file="urban_mobility_simulation/models/20230718_sumo_ma/routes_nm.xml, \
                 urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
                 urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
@@ -48,7 +48,7 @@ env = SumoEnvironment(
 )
 model = PPO(
     env=env,
-    policy="MlpPolicy",
+    policy="MultiInputPolicy",
     learning_rate=3e-4,
     verbose=1,
     gamma=0.95,
