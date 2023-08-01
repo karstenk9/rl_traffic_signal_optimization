@@ -3,6 +3,17 @@ urban_mobility_simulation
 
 The project investigates traffic polciies, and more specifically intelligent traffic signal control, based on reinforcement learning to identify measures that can reduce pollutant emissions within cities. SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
 
+How to run this repository
+------------
+
+Install sumo
+Important:
+
+In case there are any issues running ray, try pip install -U pyarrow and install numpy version 1.19
+In case there are any issues with the reset function within pettingzoo_env, exchange the original ray/rllib/env/wrappers/pettingzoo_env.py with the following script/commit
+https://github.com/ray-project/ray/blob/f24f94ca36a79366e935d842d657a25470216faa/rllib/env/wrappers/pettingzoo_env.py
+
+
 Project Organization
 ------------
 
