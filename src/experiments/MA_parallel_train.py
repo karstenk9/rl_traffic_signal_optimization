@@ -15,71 +15,86 @@ from tqdm import trange
 import environment.MA_parallel_env as environment
 
 
-RESOLUTION = (3200, 1800)
+import os
+import sys
 
-env = environment.Mannheim_Network(use_gui=True, 
-                                   out_csv_name='../data/model_outputs/MA_parallelEnv_ppo_test',
-                                   additional_sumo_cmd="--scale 0.5",
-                                   time_to_teleport=300,
-                                   virtual_display=RESOLUTION)
 
-max_time = env.unwrapped.env.sim_max_time
-delta_time = env.unwrapped.env.delta_time
+if "SUMO_HOME" in os.environ:
+    tools = os.path.join(os.environ["SUMO_HOME"], "tools")
+    sys.path.append(tools)
+else:
+    sys.exit("Please declare the environment variable 'SUMO_HOME'")
+import numpy as np
+import pandas as pd
+import ray
+import traci
+from ray import tune
+from ray.rllib.algorithms.ppo import PPOConfig
+from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv
+from ray.tune.registry import register_env
+import supersuit as ss
 
-print("Environment created")
+import environment.MA_parallel_env as environment
 
-env = ss.pettingzoo_env_to_vec_env_v1(env)
-env = ss.concat_vec_envs_v1(env, 2, num_cpus=1, base_class="stable_baselines3")
-env = VecMonitor(env)
 
-model = PPO(
-    "MlpPolicy",
-    env,
-    verbose=3,
-    gamma=0.95,
-    n_steps=256,
-    ent_coef=0.0905168,
-    learning_rate=0.00062211,
-    vf_coef=0.042202,
-    max_grad_norm=0.9,
-    gae_lambda=0.99,
-    n_epochs=5,
-    clip_range=0.3,
-    batch_size=256,
-    tensorboard_log="./logs/grid4x4/ppo_test",
-)
+if __name__ == "__main__":
+    ray.init()
 
-print("Starting training")
-model.learn(total_timesteps=50000)
+    env_name = "MannheimNetwork"
 
-print("Training finished. Starting evaluation")
-mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
+    register_env(
+        env_name,
+        lambda _: ParallelPettingZooEnv(
+            environment.parallel_env(
+                net_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net_1.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml',
+                route_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/routes_nm.xml, \
+                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
+                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
+                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/trucks_routes.xml, \
+                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
+                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/',
+                use_gui=True,
+                num_seconds=80000,
+                begin_time=19800,
+                time_to_teleport=300,
+                additional_sumo_cmd="--scale 0.75"
+            )
+        ),
+    )
 
-print(mean_reward)
-print(std_reward)
+    config = (
+        PPOConfig()
+        .environment(env=env_name, disable_env_checking=True)
+        .rollouts(num_rollout_workers=4, rollout_fragment_length=128)
+        .training(
+            train_batch_size=512,
+            lr=2e-5,
+            gamma=0.95,
+            lambda_=0.9,
+            use_gae=True,
+            clip_param=0.4,
+            grad_clip=None,
+            entropy_coeff=0.1,
+            vf_loss_coeff=0.25,
+            sgd_minibatch_size=64,
+            num_sgd_iter=10,
+        )
+        .debugging(log_level="ERROR")
+        .framework(framework="torch")
+        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+    )
 
-# Maximum number of steps before reset, +1 because I'm scared of OBOE
-print("Starting rendering")
-num_steps = (max_time // delta_time) + 1
-
-obs = env.reset()
-
-if os.path.exists("temp"):
-    shutil.rmtree("temp")
-
-os.mkdir("temp")
-# img = disp.grab()
-# img.save(f"temp/img0.jpg")
-
-img = env.render()
-for t in trange(num_steps):
-    actions, _ = model.predict(obs, state=None, deterministic=False)
-    obs, reward, done, info = env.step(actions)
-    img = env.render()
-    img.save(f"temp/img{t}.jpg")
-
-subprocess.run(["ffmpeg", "-y", "-framerate", "5", "-i", "temp/img%d.jpg", "output.mp4"])
-
-print("All done, cleaning up")
-shutil.rmtree("temp")
-env.close()
+    print("Starting training")
+    
+    tune.run(
+        "PPO",
+        name="PPO",
+        stop={"timesteps_total": 100000},
+        checkpoint_freq=10,
+        local_dir="~/ray_results/" + env_name,
+        config=config.to_dict(),
+    )
