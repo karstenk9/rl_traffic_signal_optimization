@@ -36,14 +36,14 @@ env = SumoEnvironment(
                 urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml",
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_newModel_local_test",
     use_gui=True,
-    num_seconds=43200,
+    num_seconds=32400,
     # yellow_time=4,
     # min_green=5,
     # max_green=60,
     time_to_teleport=300,
     fixed_ts=False,
     # additional_sumo_cmd="--scale 0.25",
-    begin_time=10800,
+    begin_time=18000,
 )
 model = PPO(
     env=env,
