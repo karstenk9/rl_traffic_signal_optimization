@@ -7,7 +7,7 @@
 
     <input>
         <net-file value="osm.net.xml"/>
-        <route-files value="routes_nm.xml, pt/gtfs_pt_vehicles.add.xml, trucks_routes.xml, bicycle_routes.xml, motorcycle_routes.xml"/>
+        <route-files value="veh_routes.xml, pt/gtfs_pt_vehicles.xml, truck_routes.xml, bicycle_routes.xml, motorcycle_routes.xml"/>
         <!--<route-files value="osm.car.trips.xml"/> -->
         <additional-files value="pt/stops.add.xml, osm.poly.xml, additional_tls.xml,  pt/vtypes.xml, pt/gtfs_pt_stops.add.xml"/>
     </input>
@@ -15,6 +15,12 @@
     <processing>
         <ignore-route-errors value="true"/>
     </processing>
+
+    <time>
+        <begin value="10800"/>
+        <end value="86400"/>
+        <step-length value="1"/>
+    </time>
 
     <routing>
         <device.rerouting.adaptation-steps value="18"/>
