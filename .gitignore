@@ -5,6 +5,7 @@ __pycache__/
 /src/data/
 src/team_rl_test/
 src/test_RL/
+src/experiments/team_RL_MA_test/
 
 # C extensions
 *.so
