@@ -19,7 +19,7 @@ from ray.tune.logger import pretty_print
 import supersuit as ss
 
 #import sumo_rl
-import ma_environment.resco_envs as custom_env
+import ma_environment.custom_envs as custom_env
 
 # if __name__ == "__main__":
 #     ray.init()
@@ -65,10 +65,13 @@ def env_creator(args):
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
+                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_emissionTest',
                 use_gui=False,
                 num_seconds=30000,
                 begin_time=19800,
-                time_to_teleport=300)
+                time_to_teleport=300,
+                reward_fn='CO2_emission',
+                sumo_warnings=False)
     return env
 
 # def env_creator(args):
@@ -113,7 +116,7 @@ config = (
     .environment(env=env_name, disable_env_checking=True)
     .rollouts(num_rollout_workers=1, rollout_fragment_length='auto')
     .training(
-        train_batch_size=1024,
+        train_batch_size=512,
         lr=2e-5,
         gamma=0.95,
         lambda_=0.9,
@@ -130,21 +133,24 @@ config = (
     .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
 )
 
-ppo = config.build()
+# ppo = config.build()
 
-result = ppo.train()
+# for i in range(10):
+    
+#     #print("Training iteration {}...".format(i))
+#     result = ppo.train()
+#     print("Training iteration {}...".format(i))
+#     print(pretty_print(result))
+
+#ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_1")
+
+result =  tune.run(
+        "PPO",
+        name="PPO",
+        stop={"timesteps_total": 100000},
+        checkpoint_freq=10,
+        local_dir="~/ray_results/" + env_name,
+        config=config.to_dict(),
+    )
+
 print(pretty_print(result))
-
-result.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_1")
-
-
-# tune.run(
-#     "PPO",
-#     name="PPO",
-#     stop={"timesteps_total": 100000},
-#     checkpoint_freq=10,
-#     local_dir="~/ray_results/" + env_name,
-#     config=config.to_dict(),
-# )
-
-# tune.save()

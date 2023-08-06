@@ -8,15 +8,7 @@
 #     parallel_env,
 # )
 
-from experiments.ma_environment.resco_envs import (
-    arterial4x4,
-    cologne1,
-    cologne3,
-    cologne8,
-    grid4x4,
-    ingolstadt1,
-    ingolstadt7,
-    ingolstadt21,
+from experiments.ma_environment.custom_envs import (
     MA_grid
 )
 
