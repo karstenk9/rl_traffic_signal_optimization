@@ -114,9 +114,9 @@ policy_ids = list(policies.keys())
 config = (
     PPOConfig()
     .environment(env=env_name, disable_env_checking=True)
-    .rollouts(num_rollout_workers=1, rollout_fragment_length='auto')
+    .rollouts(num_rollout_workers=3, rollout_fragment_length='auto')
     .training(
-        train_batch_size=512,
+        train_batch_size=1024,
         lr=2e-5,
         gamma=0.95,
         lambda_=0.9,
@@ -133,24 +133,24 @@ config = (
     .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
 )
 
-# ppo = config.build()
+ppo = config.build()
 
-# for i in range(10):
+for i in range(300):
     
-#     #print("Training iteration {}...".format(i))
-#     result = ppo.train()
-#     print("Training iteration {}...".format(i))
-#     print(pretty_print(result))
+    #print("Training iteration {}...".format(i))
+    result = ppo.train()
+    print("Training iteration {}...".format(i))
+    print(pretty_print(result))
 
-#ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_1")
+ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_1")
 
-result =  tune.run(
-        "PPO",
-        name="PPO",
-        stop={"timesteps_total": 100000},
-        checkpoint_freq=10,
-        local_dir="~/ray_results/" + env_name,
-        config=config.to_dict(),
-    )
+# result =  tune.run(
+#         "PPO",
+#         name="PPO",
+#         stop={"timesteps_total": 100000},
+#         checkpoint_freq=10,
+#         local_dir="~/Documents/ray_results/" + env_name,
+#         config=config.to_dict(),
+#    )
 
 print(pretty_print(result))

@@ -416,6 +416,8 @@ class SumoEnvironment(gym.Env):
             "system_total_waiting_time": sum(waiting_times),
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
+            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
         }
 
     def _get_per_agent_info(self):
