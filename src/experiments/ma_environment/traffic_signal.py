@@ -205,7 +205,7 @@ class TrafficSignal:
     
     # TODO : implement (average) emission reward
     def _average_emission_reward(self):
-        return -self.get_average_emission.total_emission_avg()
+        return -self.get_average_emission()
     
     def _CO2_emission_reward(self):
         return - self.get_total_CO2emission()
@@ -291,7 +291,7 @@ class TrafficSignal:
         NOx_avg = NOx_emission / len(vehs)
         fuel_avg = fuel_consumption / len(vehs)
         
-        return total_emission_avg, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
+        return total_emission_avg #, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
     
 
     def get_emission_per_lane(self) -> List[List[float]]:
