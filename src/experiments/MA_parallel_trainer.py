@@ -1,12 +1,17 @@
 import os
 import sys
 
-
-if "SUMO_HOME" in os.environ:
-    tools = os.path.join(os.environ["SUMO_HOME"], "tools")
-    sys.path.append(tools)
+import platform
+if platform.system() != "Linux":
+    if 'SUMO_HOME' in os.environ:
+        tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
+        sys.path.append(tools)  # we need to import python modules from the $SUMO_HOME/tools directory
+    else:
+        sys.exit("please declare environment variable 'SUMO_HOME'")
+    import traci
 else:
-    sys.exit("Please declare the environment variable 'SUMO_HOME'")
+    import libsumo as traci
+    
 import numpy as np
 import pandas as pd
 import ray
@@ -54,7 +59,7 @@ import ma_environment.custom_envs as custom_env
 env_name = "MA_grid"
 
 def env_creator(args):
-    env = custom_env.MA_grid(
+    env = custom_env.MA_grid_new(
                 net_file = "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
                             /Users/jenniferhahn/Documents/GitHub//urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
@@ -83,7 +88,7 @@ print('Action space:', act_space)
 
 def gen_policy(i):
     config = {
-        "gamma": 0.99,
+        "gamma": 0.95,
     }
     return (None, obs_space, act_space, config)
 
@@ -113,24 +118,25 @@ config = (
     .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
 )
 
-ppo = config.build()
+# ppo = config.build()
 
-for i in range(300):
+# for i in range(300):
     
-    #print("Training iteration {}...".format(i))
-    result = ppo.train()
-    print("Training iteration {}...".format(i))
-    print(pretty_print(result))
+#     #print("Training iteration {}...".format(i))
+#     result = ppo.train()
+#     print("Training iteration {}...".format(i))
+#     print(pretty_print(result))
 
-ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_AllEmission")
+#ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_AllEmission")
 
-# result =  tune.run(
-#         "PPO",
-#         name="PPO",
-#         stop={"timesteps_total": 100000},
-#         checkpoint_freq=10,
-#         local_dir="~/Documents/ray_results/" + env_name,
-#         config=config.to_dict(),
-#    )
+#result =  
+tune.run(
+    "PPO",
+    name="PPO",
+    stop={"timesteps_total": 100000},
+    checkpoint_freq=10,
+    local_dir="~/Documents/ray_results/" + env_name,
+    config=config.to_dict(),
+   )
 
-print(pretty_print(result))
+#print(pretty_print(result))

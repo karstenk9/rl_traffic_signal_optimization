@@ -6,7 +6,7 @@ from ma_environment.env import env, parallel_env
 #PATH = os.path.dirname(sumo_rl.__file__)
 
 
-def MA_grid(parallel=True, **kwargs):
+def MA_grid_new(parallel=True, **kwargs):
     """Mannheim Simulaton Network.
 
     Number of agents = 3
@@ -24,7 +24,41 @@ def MA_grid(parallel=True, **kwargs):
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-            "out_csv_name":'/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_emissionTest',
+            "out_csv_name":'/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_emissionAllTest',
+        "num_seconds": 30000,
+        "begin_time": 19800,
+        "time_to_teleport": 300,
+        }
+    )
+    if parallel:
+        return parallel_env(**kwargs)
+    else:
+        return env(**kwargs)
+    
+    
+    
+
+def MA_grid_old(parallel=False, **kwargs):
+    """Previous Mannheim Simulaton Network.
+
+    Number of agents = 1
+    Number of actions = variable
+    """
+    kwargs.update(
+        {
+            "net_file": "urban_mobility_simulation/models/20230502_SUMO_MA/osm.net.xml, \
+                        urban_mobility_simulation/models/20230502_SUMO_MA/pt/stops.add.xml, \
+                        urban_mobility_simulation/models/20230502_SUMO_MA/osm.poly.xml",
+            "single_agent":True,
+            "route_file":"urban_mobility_simulation/models/20230502_SUMO_MA/routes.xml, \
+                        urban_mobility_simulation/models/20230502_SUMO_MA/osm.bicycle.trips.xml,\
+                        urban_mobility_simulation/models/20230502_SUMO_MA/osm.motorcycle.trips.xml,\
+                        urban_mobility_simulation/models/20230502_SUMO_MA/osm.truck.trips.xml, \
+                        urban_mobility_simulation/models/20230502_SUMO_MA/pt/ptflows.rou.xml, \
+                        urban_mobility_simulation/models/20230502_SUMO_MA/osm.passenger.trips.xml",
+                        #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrip.trips.xml",
+                        #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
+            "out_csv_name":"urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
         "num_seconds": 30000,
         "begin_time": 19800,
         "time_to_teleport": 300,
