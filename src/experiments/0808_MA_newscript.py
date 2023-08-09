@@ -38,7 +38,7 @@ import supersuit as ss
 def env_creator(args):
         env = custom_env.MA_grid_new(
                     net_file = "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-                                /Users/jenniferhahn/Documents/GitHub//urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
                                 /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
                                 /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml, \
                                 /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml",
@@ -111,13 +111,15 @@ if __name__ == "__main__":
         #)
         .debugging(log_level="ERROR")
         .framework(framework="torch")
-        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "2")))
+        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "4")))
         .evaluation(evaluation_num_workers=1)
     )
     
     algo = config.build()  # 2. build the algorithm,
 
     for _ in range(10):
+        
+        print('Training iteration: ', _)
         print(algo.train())  # 3. train it,
 
     algo.evaluate()  # 4. and evaluate it.
