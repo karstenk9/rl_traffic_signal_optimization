@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 import ray
 import traci
-from ray import tune
+from ray import air, tune
 #from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.ppo import (
     PPOConfig,
@@ -25,6 +25,7 @@ from ray.rllib.algorithms.ppo import (
     PPOTorchPolicy,
 )
 from ray.rllib.env.wrappers.pettingzoo_env import ParallelPettingZooEnv, PettingZooEnv
+from ray.rllib.algorithms.registry import get_trainer_class
 from ray.tune.registry import register_env
 from ray.tune.logger import pretty_print
 
@@ -70,7 +71,7 @@ def policy_mapping_fn(agent_id, episode, worker, **kwargs):
 
 
 if __name__ == "__main__":
-    ray.init()
+    ray.init(num_cpus=4, num_gpus=2)
    
     env_name = "MA_grid_new"
 
@@ -79,28 +80,49 @@ if __name__ == "__main__":
     # create env
     env = ParallelPettingZooEnv(env_creator({}))
     #get obs and action space
-    obs_space = env.observation_space
-    act_space = env.action_space
+    #obs_space = env.observation_space
+    #act_space = env.action_space
     
+    algo = (
+    PPOConfig()
+    .rollouts(num_rollout_workers=1)
+    .resources(num_gpus=2)
+    .environment(env=env_name, disable_env_checking=True)
+    .framework(framework="torch")
+    .build()
+)
+
+    for i in range(10):
+        result = algo.train()
+        print(pretty_print(result))
+
+        if i % 5 == 0:
+            checkpoint_dir = algo.save()
+            print(f"Checkpoint saved in directory {checkpoint_dir}")
 
     
-    config = (
-        PPOConfig()
-        .environment(env=env_name, disable_env_checking=True)
-        .rollouts(num_rollout_workers=3, rollout_fragment_length='auto')
-        .training(
-            train_batch_size=512,
-            lr=2e-5,
-            gamma=0.95,
-            lambda_=0.9,
-            use_gae=True,
-            clip_param=0.4,
-            grad_clip=None,
-            entropy_coeff=0.1,
-            vf_loss_coeff=0.25,
-            sgd_minibatch_size=64,
-            num_sgd_iter=10,
-        )
+    # config = (
+    #     PPOConfig()
+    #     .environment(env=env_name, 
+    #                  disable_env_checking=True
+    #                  )
+    #     .rollouts(num_rollout_workers=2, 
+    #               rollout_fragment_length='auto',
+    #               num_envs_per_worker=1)
+    #     .training(
+    #         train_batch_size=1024,
+    #         lr=2e-5,
+    #         gamma=0.95,
+    #         lambda_=0.9,
+    #         use_gae=True,
+    #         clip_param=0.4,
+    #         grad_clip=None,
+    #         entropy_coeff=0.1,
+    #         vf_loss_coeff=0.25,
+    #         sgd_minibatch_size=64,
+    #         num_sgd_iter=10,
+    #     )
+    
         # .multiagent(
         #     policies=env.get_agent_ids(),
         #     policy_mapping_fn=policy_mapping_fn#(lambda agent_id, *args, **kwargs: agent_id)
@@ -109,20 +131,23 @@ if __name__ == "__main__":
         #     policies={id: (PPOTF1Policy, env.observation_spaces[id], env.action_spaces[id], {}) for id in env.agents},
         #     policy_mapping_fn= (lambda id: id) 
         #)
-        .debugging(log_level="ERROR")
-        .framework(framework="torch")
-        .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "4")))
-        .evaluation(evaluation_num_workers=1)
-    )
+    #     .debugging(log_level="ERROR")
+    #     .framework(framework="tf2")
+    #     .resources(num_gpus=2)
+    #     .evaluation(evaluation_num_workers=1, 
+    #                 evaluation_parallel_to_training=True, 
+    #                 evaluation_interval=1)
+    # )
     
-    algo = config.build()  # 2. build the algorithm,
+    # algo = config.build()
 
-    for _ in range(10):
+    # for _ in range(100):
         
-        print('Training iteration: ', _)
-        print(algo.train())  # 3. train it,
+    #     print('Training iteration: ', _)
+    #     print(algo.train())
 
-    algo.evaluate()  # 4. and evaluate it.
+    # print('Evaluating...')
+    # algo.evaluate() 
     
     # tune.Tuner(
     #     "PPO",
@@ -156,8 +181,10 @@ if __name__ == "__main__":
     #     stop={"timesteps_total": 100000},
     #     checkpoint_freq=10,
     #     local_dir="~/ray_results/" + env_name,
-    #     config=config.to_dict(),
-    #)#.fit()
+    #     config=config.to_dict()
+    # ).fit()
+    
+    #ä######## here
     
     # results = tune.Tuner(
     # args.run,
@@ -172,7 +199,7 @@ if __name__ == "__main__":
     #         "No results returned from tune.run(). Something must have gone wrong."
     #     )
     
-    ray.shutdown()
+    # ray.shutdown()
 
     # print("Starting training")
     # model.learn(total_timesteps=50000)

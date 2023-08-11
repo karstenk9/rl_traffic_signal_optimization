@@ -61,7 +61,7 @@ env_name = "MA_grid"
 def env_creator(args):
     env = custom_env.MA_grid_new(
                 net_file = "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-                            /Users/jenniferhahn/Documents/GitHub//urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml",
@@ -70,7 +70,7 @@ def env_creator(args):
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_emissionAllTest',
+                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_combinedemissionAllTest',
                 use_gui=False,
                 num_seconds=30000,
                 begin_time=19800,
@@ -115,19 +115,19 @@ config = (
     )
 #    .debugging(log_level="ERROR")
     .framework(framework="torch")
-    .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "0")))
+    .resources(num_gpus=int(os.environ.get("RLLIB_NUM_GPUS", "4")))
 )
 
-# ppo = config.build()
+ppo = config.build()
 
-# for i in range(300):
+for i in range(100):
     
-#     #print("Training iteration {}...".format(i))
-#     result = ppo.train()
-#     print("Training iteration {}...".format(i))
-#     print(pretty_print(result))
+    #print("Training iteration {}...".format(i))
+    result = ppo.train()
+    print("Training iteration {}...".format(i))
+    print(pretty_print(result))
 
-#ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_AllEmission")
+ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_AllEmission")
 
 #result =  
 tune.run(

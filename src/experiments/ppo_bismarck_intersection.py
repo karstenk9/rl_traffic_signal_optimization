@@ -13,23 +13,22 @@ import numpy as np
 import traci
 from stable_baselines3.ppo.ppo import PPO
 
-from environment.env import SumoEnvironment
+from environment.test_env import SumoEnvironment
 
 
 env = SumoEnvironment(
-    net_file="urban_mobility_simulation/models/20230502_SUMO_MA/osm.net.xml, \
-              urban_mobility_simulation/models/20230502_SUMO_MA/pt/stops.add.xml, \
-              urban_mobility_simulation/models/20230502_SUMO_MA/osm.poly.xml",
-    single_agent=True,
-    route_file="urban_mobility_simulation/models/20230502_SUMO_MA/routes.xml, \
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.bicycle.trips.xml,\
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.motorcycle.trips.xml,\
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.truck.trips.xml, \
-                urban_mobility_simulation/models/20230502_SUMO_MA/pt/ptflows.rou.xml, \
-                urban_mobility_simulation/models/20230502_SUMO_MA/osm.passenger.trips.xml",
-                #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrip.trips.xml",
-                #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
-    out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
+    net_file='urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
+            urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+            urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
+            urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
+            urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml',
+    route_file='urban_mobility_simulation/models/20230718_sumo_ma/veh_routes.xml, \
+                urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
+                urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
+                urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
+                urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml',\
+    out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_multi_test",
+    single_agent=False,
     use_gui=True,
     num_seconds=3600,
     yellow_time=4,
@@ -37,14 +36,13 @@ env = SumoEnvironment(
     max_green=60,
     time_to_teleport=300,
     fixed_ts=False,
-    additional_sumo_cmd="--scale 0.5",
 )
 model = PPO(
     env=env,
     policy="MlpPolicy",
     learning_rate=3e-4,
     verbose=1,
-
+    n_steps=50
 )
 
 model.learn(total_timesteps=10000)

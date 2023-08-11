@@ -416,8 +416,10 @@ class SumoEnvironment(gym.Env):
             "system_total_waiting_time": sum(waiting_times),
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            # add further system metrics for emissions and rewards to analyze
             "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
             "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            "average_reward": 0.0 if all(value == None for value in self.rewards.values()) else np.mean(list(self.rewards.values())),
         }
 
     def _get_per_agent_info(self):
@@ -431,6 +433,8 @@ class SumoEnvironment(gym.Env):
             info[f"{ts}_stopped"] = stopped[i]
             info[f"{ts}_accumulated_waiting_time"] = accumulated_waiting_time[i]
             info[f"{ts}_average_speed"] = average_speed[i]
+            # add reward info for each agent
+            info[f"{ts}_reward"] = self.rewards[ts]
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
         return info
