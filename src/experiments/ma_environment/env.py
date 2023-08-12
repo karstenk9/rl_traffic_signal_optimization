@@ -22,7 +22,6 @@ from pettingzoo.utils.conversions import parallel_wrapper_fn
 
 from .observations import DefaultObservationFunction, ObservationFunction
 from .traffic_signal import TrafficSignal
-import supersuit as ss
 
 
 LIBSUMO = "LIBSUMO_AS_TRACI" in os.environ
@@ -31,17 +30,12 @@ LIBSUMO = "LIBSUMO_AS_TRACI" in os.environ
 def env(**kwargs):
     """Instantiate a PettingoZoo environment."""
     env = SumoEnvironmentPZ(**kwargs)
-    
-    # align different observation and action spaces
-    env = ss.multiagent_wrappers.pad_observations_v0(env)
-    env = ss.multiagent_wrappers.pad_action_space_v0(env)
     env = wrappers.AssertOutOfBoundsWrapper(env)
     env = wrappers.OrderEnforcingWrapper(env)
     return env
 
 
 parallel_env = parallel_wrapper_fn(env)
-
 
 
 class SumoEnvironment(gym.Env):
@@ -58,7 +52,7 @@ class SumoEnvironment(gym.Env):
         use_gui (bool): Whether to run SUMO simulation with the SUMO GUI
         virtual_display (Optional[Tuple[int,int]]): Resolution of the virtual display for rendering
         begin_time (int): The time step (in seconds) the simulation starts. Default: 0
-        num_seconds (int): Number of simulated seconds on SUMO. The time in seconds the simulation must end. Default: 3600
+        num_seconds (int): Number of simulated seconds on SUMO. The duration in seconds of the simulation. Default: 20000
         max_depart_delay (int): Vehicles are discarded if they could not be inserted after max_depart_delay seconds. Default: -1 (no delay)
         waiting_time_memory (int): Number of seconds to remember the waiting time of a vehicle (see https://sumo.dlr.de/pydoc/traci._vehicle.html#VehicleDomain-getAccumulatedWaitingTime). Default: 1000
         time_to_teleport (int): Time in seconds to teleport a vehicle to the end of the edge if it is stuck. Default: -1 (no teleport)
@@ -128,7 +122,7 @@ class SumoEnvironment(gym.Env):
         assert delta_time > yellow_time, "Time between actions must be at least greater than yellow time."
 
         self.begin_time = begin_time
-        self.sim_max_time = num_seconds
+        self.sim_max_time = begin_time + num_seconds
         self.delta_time = delta_time  # seconds on sumo at each step
         self.max_depart_delay = max_depart_delay  # Max wait time to insert a vehicle
         self.waiting_time_memory = waiting_time_memory  # Number of seconds to remember the waiting time of a vehicle (see https://sumo.dlr.de/pydoc/traci._vehicle.html#VehicleDomain-getAccumulatedWaitingTime)
@@ -156,7 +150,8 @@ class SumoEnvironment(gym.Env):
             conn = traci.getConnection("init_connection" + self.label)
 
         #self.ts_ids = list(conn.trafficlight.getIDList())
-        self.ts_ids = ['tls_160', 'tls_161', 'tls_159']
+        self.ts_ids = ['tls_159', 'tls_160', 'tls_161']
+        #self.ts_ids = ['cluster_306484187_cluster_1200363791_1200363826_1200363834_1200363898_1200363927_1200363938_1200363947_1200364074_1200364103_1507566554_1507566556_255882157_306484190', '32564122']
         self.observation_class = observation_class
 
         if isinstance(self.reward_fn, dict):
@@ -364,7 +359,7 @@ class SumoEnvironment(gym.Env):
             info.update(self._get_system_info())
         if self.add_per_agent_info:
             info.update(self._get_per_agent_info())
-        self.metrics.append(info)
+        self.metrics.append(info.copy())
         return info
 
     def _compute_observations(self):
@@ -416,10 +411,6 @@ class SumoEnvironment(gym.Env):
             "system_total_waiting_time": sum(waiting_times),
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
-            # add further system metrics for emissions and rewards to analyze
-            "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
-            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
-            "average_reward": 0.0 if all(value == None for value in self.rewards.values()) else np.mean(list(self.rewards.values())),
         }
 
     def _get_per_agent_info(self):
@@ -433,8 +424,6 @@ class SumoEnvironment(gym.Env):
             info[f"{ts}_stopped"] = stopped[i]
             info[f"{ts}_accumulated_waiting_time"] = accumulated_waiting_time[i]
             info[f"{ts}_average_speed"] = average_speed[i]
-            # add reward info for each agent
-            info[f"{ts}_reward"] = self.rewards[ts]
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
         return info
@@ -552,7 +541,7 @@ class SumoEnvironmentPZ(AECEnv, EzPickle):
         infos = self.env._compute_info()
         for a in self.agents:
             for k, v in infos.items():
-                if k.startswith(a):
+                if k.startswith(a) or k.startswith("system"):
                     self.infos[a][k] = v
 
     def observation_space(self, agent):
