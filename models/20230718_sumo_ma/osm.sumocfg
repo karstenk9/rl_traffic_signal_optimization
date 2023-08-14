@@ -17,7 +17,7 @@
     </processing>
 
     <time>
-        <begin value="10800"/>
+        <begin value="25200"/> <!-- starts running at 7:00 am --> 
         <end value="86400"/>
         <step-length value="1"/>
     </time>

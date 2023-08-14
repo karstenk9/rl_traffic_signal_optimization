@@ -10,7 +10,7 @@ def MA_grid_new(parallel=True, **kwargs):
     """Mannheim Simulaton Network.
 
     Number of agents = 3
-    Number of actions = variable
+    Number of actions = variable (wrapped so that largest action space is taken)
     """
     kwargs.update(
         {
@@ -24,8 +24,8 @@ def MA_grid_new(parallel=True, **kwargs):
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-        "num_seconds": 30000,
-        "begin_time": 19800,
+        "num_seconds": 28800,
+        "begin_time": 25200,
         "time_to_teleport": 300,
         }
     )
@@ -41,7 +41,7 @@ def MA_grid_old(parallel=False, **kwargs):
     """Previous Mannheim Simulaton Network.
 
     Number of agents = 1
-    Number of actions = variable
+    Number of actions = variable (wrapped so that largest action space is taken)
     """
     kwargs.update(
         {
@@ -58,8 +58,8 @@ def MA_grid_old(parallel=False, **kwargs):
                         #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrip.trips.xml",
                         #urban_mobility_simulation/models/20230502_SUMO_MA/osm.pedestrian.trips.xml", \
             "out_csv_name":"urban_mobility_simulation/src/data/model_outputs/ppo_withPT_10000",
-        "num_seconds": 30000,
-        "begin_time": 19800,
+        "num_seconds": 28800,
+        "begin_time": 25200,
         "time_to_teleport": 300,
         }
     )

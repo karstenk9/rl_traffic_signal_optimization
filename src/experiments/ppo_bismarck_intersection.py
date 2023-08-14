@@ -13,7 +13,7 @@ import numpy as np
 import traci
 from stable_baselines3.ppo.ppo import PPO
 
-from environment.test_env import SumoEnvironment
+from environment.env import SumoEnvironment
 
 
 env = SumoEnvironment(
@@ -37,6 +37,7 @@ env = SumoEnvironment(
     time_to_teleport=300,
     fixed_ts=False,
 )
+
 model = PPO(
     env=env,
     policy="MlpPolicy",

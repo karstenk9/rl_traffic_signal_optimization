@@ -96,6 +96,7 @@ class SumoEnvironment(gym.Env):
         max_green: int = 50,
         single_agent: bool = False,
         reward_fn: Union[str, Callable, dict] = "diff-waiting-time",
+        traffic_lights = [],
         observation_class: ObservationFunction = DefaultObservationFunction,
         add_system_info: bool = True,
         add_per_agent_info: bool = True,
@@ -150,7 +151,7 @@ class SumoEnvironment(gym.Env):
             conn = traci.getConnection("init_connection" + self.label)
 
         #self.ts_ids = list(conn.trafficlight.getIDList())
-        self.ts_ids = ['tls_159', 'tls_160', 'tls_161']
+        self.ts_ids = traffic_lights
         #self.ts_ids = ['cluster_306484187_cluster_1200363791_1200363826_1200363834_1200363898_1200363927_1200363938_1200363947_1200364074_1200364103_1507566554_1507566556_255882157_306484190', '32564122']
         self.observation_class = observation_class
 
@@ -407,11 +408,17 @@ class SumoEnvironment(gym.Env):
         waiting_times = [self.sumo.vehicle.getWaitingTime(vehicle) for vehicle in vehicles]
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
-            "system_total_stopped": sum(int(speed < 0.1) for speed in speeds),
-            "system_total_waiting_time": sum(waiting_times),
-            "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
-            "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            "total_stopped": sum(int(speed < 0.1) for speed in speeds),
+            "total_waiting_time": sum(waiting_times),
+            "average_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
+            "average_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            "total_CO2_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
+            "total_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            #TODO add further system info
+            #"total_acceleration": 0.0 if len(vehicles) == 0 else 1,
+            #"total_braking": 0.0 if len(vehicles) == 0 else 1,
         }
+
 
     def _get_per_agent_info(self):
         stopped = [self.traffic_signals[ts].get_total_queued() for ts in self.ts_ids]
