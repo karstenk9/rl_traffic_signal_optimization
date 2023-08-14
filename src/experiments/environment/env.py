@@ -430,22 +430,30 @@ class SumoEnvironment(gym.Env):
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
             "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
-            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles)
+            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            "system_average_reward": 0.0 if len(vehicles) == 0 else np.mean()
         }
         
-    #TODO add further per-agent info output
 
     def _get_per_agent_info(self):
         stopped = [self.traffic_signals[ts].get_total_queued() for ts in self.ts_ids]
-        accumulated_waiting_time = [
-            sum(self.traffic_signals[ts].get_accumulated_waiting_time_per_lane()) for ts in self.ts_ids
-        ]
+        accumulated_waiting_time = [sum(self.traffic_signals[ts].get_accumulated_waiting_time_per_lane()) for ts in self.ts_ids]
         average_speed = [self.traffic_signals[ts].get_average_speed() for ts in self.ts_ids]
+        controlled_lane_emission = [self.traffic_signals[ts].get_ts_emissions() for ts in self.ts_ids]
+        ts_phases = [self.traffic_signals[ts].getPhase() for ts in self.ts_ids]
+        ts_states = [self.traffic_signals[ts].getRedYellowGreenState() for ts in self.ts_ids]
+        ts_program = [self.traffic_signals[ts].getProgram() for ts in self.ts_ids]
+        rewards = [self.traffic_signals[ts].last_reward() for ts in self.ts_ids]
         info = {}
         for i, ts in enumerate(self.ts_ids):
             info[f"{ts}_stopped"] = stopped[i]
             info[f"{ts}_accumulated_waiting_time"] = accumulated_waiting_time[i]
             info[f"{ts}_average_speed"] = average_speed[i]
+            info[f'{ts}_controlled_lane_emission'] = controlled_lane_emission[i]
+            info[f"{ts}_phase"] = ts_phases[i]
+            info[f"{ts}_state"] = ts_states[i]
+            info[f"{ts}_program"] = ts_program[i]
+            info[f"{ts}_reward"] = rewards[i]
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
         return info
