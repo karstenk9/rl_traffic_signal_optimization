@@ -150,9 +150,7 @@ class SumoEnvironment(gym.Env):
             traci.start([sumolib.checkBinary("sumo"), "-n", self._net], label="init_connection" + self.label)
             conn = traci.getConnection("init_connection" + self.label)
 
-        #self.ts_ids = list(conn.trafficlight.getIDList())
         self.ts_ids = traffic_lights
-        #self.ts_ids = ['cluster_306484187_cluster_1200363791_1200363826_1200363834_1200363898_1200363927_1200363938_1200363947_1200364074_1200364103_1507566554_1507566556_255882157_306484190', '32564122']
         self.observation_class = observation_class
 
         if isinstance(self.reward_fn, dict):

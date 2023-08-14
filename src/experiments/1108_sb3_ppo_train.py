@@ -13,98 +13,85 @@ from stable_baselines3.common.vec_env import VecMonitor
 from tqdm import trange
 
 import ma_environment.custom_envs as custom_env
-#import sumo_rl
 
 
-if __name__ == "__main__":
-    #RESOLUTION = (3200, 1800)
 
-    #env = sumo_rl.grid4x4(use_gui=False, out_csv_name="outputs/grid4x4/ppo_test", virtual_display=RESOLUTION,sumo_warnings=False)
-
-    #env = ss.multiagent_wrappers.pad_observations_v0(env)
-    #env = ss.multiagent_wrappers.pad_action_space_v0(env)
+#env = sumo_rl.grid4x4(use_gui=False, out_csv_name="outputs/grid4x4/ppo_test", virtual_display=RESOLUTION,sumo_warnings=False)
 
 
-    #print("Environment created")
+env = custom_env.MA_grid_new(use_gui=False,
+                                traffic_lights= ['tls_157','tls_159','tls_160'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
+                                sumo_warnings=False,
+                                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
+                                additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml")
+max_time = env.unwrapped.env.sim_max_time
+delta_time = env.unwrapped.env.delta_time
 
-    # env = ss.multiagent_wrappers.pad_observations_v0(env)
-    # env = ss.pad_action_space_v0(env)
-    # env = ss.concat_vec_envs_v1(env, 2, num_cpus=1, base_class="stable_baselines3")
-    # env = VecMonitor(env)
+#wrap observation space to have one common observation space for all agents
+env = ss.pad_observations_v0(env)
+
+#wrap action space to have one common action space for all agents (based on largest action space)
+env = ss.pad_action_space_v0(env)
+
+#wrap pettingzoo env 
+env = ss.pettingzoo_env_to_vec_env_v1(env)
+
+#concatenate envs
+env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
     
-    env = custom_env.MA_grid_new(use_gui=False,
-                                 traffic_lights= ['tls_157','tls_159','tls_160'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
-                                 sumo_warnings=False,
-                                 out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
-                                 additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml")
-    max_time = env.unwrapped.env.sim_max_time
-    delta_time = env.unwrapped.env.delta_time
-    
-    #wrap observation space to have one common observation space for all agents
-    env = ss.multiagent_wrappers.pad_observations_v0(env)
-    
-    #wrap action space to have one common action space for all agents (based on largest action space)
-    env = ss.multiagent_wrappers.pad_action_space_v0(env)
-    
-    #wrap pettingzoo env 
-    env = ss.pettingzoo_env_to_vec_env_v1(env)
-    
-    #concatenate envs
-    env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
-        
-    env = VecMonitor(env)
+env = VecMonitor(env)
 
-    model = PPO(
-        policy="MlpPolicy",
-        env=env,
-        verbose=3,
-        gamma=0.95,
-        n_steps=512,
-        ent_coef=0.01,
-        learning_rate=0.00025,
-        vf_coef=0.05,
-        max_grad_norm=0.9,
-        gae_lambda=0.95,
-        n_epochs=10,
-        clip_range=0.3,
-        batch_size=256,
-        tensorboard_log="./logs/MA_grid/diff_waiting_time",
-        device='mps' # use 'auto' for cpu only
-    )
+model = PPO(
+    policy="MlpPolicy",
+    env=env,
+    verbose=3,
+    gamma=0.95,
+    n_steps=512,
+    ent_coef=0.01,
+    learning_rate=0.00025,
+    vf_coef=0.05,
+    max_grad_norm=0.9,
+    gae_lambda=0.95,
+    n_epochs=10,
+    clip_range=0.3,
+    batch_size=256,
+    tensorboard_log="./logs/MA_grid/diff_waiting_time",
+    device='mps' # use 'auto' for cpu only
+)
 
-    print("Starting training")
-    model.learn(total_timesteps=200000)
-    
-    model.save('urban_mobility_simulation/src/data/logs/1408_diff_waiting_time_200')
+print("Starting training")
+model.learn(total_timesteps=200000)
 
-    print("Training finished. Starting evaluation")
-    mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
+model.save('urban_mobility_simulation/src/data/logs/1408_diff_waiting_time_200')
 
-    print('Mean Reward: ', mean_reward)
-    print('Std Reward: ', std_reward)
+print("Training finished. Starting evaluation")
+mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
 
-    # Maximum number of steps before reset, +1 because I'm scared of OBOE
-    # print("Starting rendering")
-    # num_steps = (max_time // delta_time) + 1
+print('Mean Reward: ', mean_reward)
+print('Std Reward: ', std_reward)
 
-    # obs = env.reset()
+# Maximum number of steps before reset, +1 because I'm scared of OBOE
+# print("Starting rendering")
+# num_steps = (max_time // delta_time) + 1
 
-    # if os.path.exists("temp"):
-    #     shutil.rmtree("temp")
+# obs = env.reset()
 
-    # os.mkdir("temp")
-    # # img = disp.grab()
-    # # img.save(f"temp/img0.jpg")
+# if os.path.exists("temp"):
+#     shutil.rmtree("temp")
 
-    # img = env.render()
-    # for t in trange(num_steps):
-    #     actions, _ = model.predict(obs, state=None, deterministic=False)
-    #     obs, reward, done, info = env.step(actions)
-    #     img = env.render()
-    #     img.save(f"temp/img{t}.jpg")
+# os.mkdir("temp")
+# # img = disp.grab()
+# # img.save(f"temp/img0.jpg")
 
-    # subprocess.run(["ffmpeg", "-y", "-framerate", "5", "-i", "temp/img%d.jpg", "output.mp4"])
+# img = env.render()
+# for t in trange(num_steps):
+#     actions, _ = model.predict(obs, state=None, deterministic=False)
+#     obs, reward, done, info = env.step(actions)
+#     img = env.render()
+#     img.save(f"temp/img{t}.jpg")
 
-    # print("All done, cleaning up")
-    # shutil.rmtree("temp")
-    env.close()
+# subprocess.run(["ffmpeg", "-y", "-framerate", "5", "-i", "temp/img%d.jpg", "output.mp4"])
+
+# print("All done, cleaning up")
+# shutil.rmtree("temp")
+env.close()

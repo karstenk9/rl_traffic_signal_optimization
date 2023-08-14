@@ -154,7 +154,7 @@ class TrafficSignal:
         """
         self.time_since_last_phase_change += 1
         if self.is_yellow and self.time_since_last_phase_change == self.yellow_time:
-            # self.sumo.trafficlight.setPhase(self.id, self.green_phase) ## dropped comment here 
+            # self.sumo.trafficlight.setPhase(self.id, self.green_phase) 
             self.sumo.trafficlight.setRedYellowGreenState(self.id, self.all_phases[self.green_phase].state)
             self.is_yellow = False
 
@@ -166,7 +166,7 @@ class TrafficSignal:
         """
         new_phase = int(new_phase)
         if self.green_phase == new_phase or self.time_since_last_phase_change < self.yellow_time + self.min_green:
-            # self.sumo.trafficlight.setPhase(self.id, self.green_phase) ## dropped comment here 
+            # self.sumo.trafficlight.setPhase(self.id, self.green_phase) 
             self.sumo.trafficlight.setRedYellowGreenState(self.id, self.all_phases[self.green_phase].state)
             self.next_action_time = self.env.sim_step + self.delta_time
         else:
@@ -203,8 +203,7 @@ class TrafficSignal:
         self.last_measure = ts_wait
         return reward
     
-    # TODO : implement (average) emission reward
-    def _average_emission_reward(self):
+    def _average_emission_reward(self): #combined reward for all emission types
         return -self.get_average_emission()
     
     def _CO2_emission_reward(self):
@@ -251,19 +250,18 @@ class TrafficSignal:
 
     def get_total_CO2emission(self) -> float:
         '''
-        Return the total CO2 pollutant emission of all vehicles in a simulation.
+        Returns the total CO2 pollutant emission of all vehicles in a simulation.
         '''
         CO2emission = 0.0
         vehs = self._get_veh_list()
         if len(vehs) == 0:
             return 0.0
         CO2emission = sum(self.sumo.vehicle.getCO2Emission(veh) for veh in vehs)
-        #print('CO2emission: ', CO2emission)
         return CO2emission
     
     def get_average_emission(self) -> float:
         '''
-        Return the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
+        Returns the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
         '''
         CO_emission = 0.0
         CO2_emission = 0.0
@@ -386,32 +384,6 @@ class TrafficSignal:
                                     ])
             
         return emission_per_lane
-    
-    # def get_emission_per_eclass(self) -> Dict[str: float]:
-    #     '''
-    #     Get current emission per vehicle class.
-        
-    #     Returns:
-    #         Dict(str: float): Dictionary containing the current emission per emission class.
-    #     '''
-    #     emission_per_type = {}
-    #     emission_classes = self._get_vehicle_eclasses()
-    #     for emission_class in emission_classes:
-    #         emission_per_type[emission_class] = 0.0
-    #     if emission_classes is None:
-    #         emission_per_type = {'None' : 0.0}
-    #         return emission_per_type
-    #     vehs = self._get_veh_list()
-    #     if len(vehs) == 0:
-    #         return 0.0
-    #     for veh in vehs:
-    #         eclass = self._get_vehicle_type(veh)
-    #         emission_per_type[eclass] += self.sumo.vehicle.getCO2Emission(veh)
-        
-    #     for emission_class in emission_classes:
-    #         emission_per_type[emission_class] /= len(vehs)
-        
-    #     return emission_per_type
 
     
     # TODO get emission for specific crossing (where agent is active) - can i get emission for lanes involved in crossing instead?
