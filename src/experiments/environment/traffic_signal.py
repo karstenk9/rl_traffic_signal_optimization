@@ -416,7 +416,7 @@ class TrafficSignal:
         
         Returns:
             List[float]: List containing the total emissions per lane.
-            [CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption]
+            [CO2_emission,CO_emission, HC_emission,Px_emission,NOx_emission, emission_combined,fuel_consumption]
         '''
     
         emission_on_lanes = []
