@@ -1,4 +1,4 @@
-urban_mobility_simulation
+Urban Mobility Simulation - Multi Agent RL (PPO) based on a Traffic Simulation in Mannheim
 ==============================
 
 The project investigates traffic polciies, and more specifically intelligent traffic signal control, based on reinforcement learning to identify measures that can reduce pollutant emissions within cities. SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
