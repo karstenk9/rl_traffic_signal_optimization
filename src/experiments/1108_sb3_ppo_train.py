@@ -20,10 +20,12 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_new(use_gui=False,
-                                traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
-                                sumo_warnings=False,
-                                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
-                                additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml")
+                            reward_fn = 'diff-waiting-time',
+                            traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
+                            sumo_warnings=False,
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
+                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml"
+                            )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time
 

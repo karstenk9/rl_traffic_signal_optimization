@@ -200,11 +200,12 @@ class TrafficSignal:
         return -self.get_total_queued()
 
     def _diff_waiting_time_reward(self):
+        # only considers local lanes of the traffic light (agent)
         ts_wait = sum(self.get_accumulated_waiting_time_per_lane()) / 100.0
         reward = self.last_measure - ts_wait
         self.last_measure = ts_wait
         return reward
-    
+
     def _average_emission_reward(self):
         return -self.get_average_emission.total_emission_avg()
     
@@ -213,8 +214,7 @@ class TrafficSignal:
     
     def _ts_emission_reward(self):
         # emission for all lanes controlled by all choen traffic signals
-        # get respective list element for type of emission 
-        # [CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption]
+        # get respective list element for type of emission [CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption]
         return -self.get_emission_for_controlled_lanes()[0]
     
     def _noise_emission_reward(self):
@@ -237,10 +237,10 @@ class TrafficSignal:
         return observation
 
     def get_accumulated_waiting_time_per_lane(self) -> List[float]:
-        """Returns the accumulated waiting time per lane.
+        """Returns the accumulated waiting time for incoming lanes of the respective traffic light.
 
         Returns:
-            List[float]: List of accumulated waiting time of each intersection lane.
+            List[float]: List of accumulated waiting time of each (incoming) intersection lane.
         """
         wait_time_per_lane = []
         for lane in self.lanes:
@@ -258,6 +258,7 @@ class TrafficSignal:
                 wait_time += self.env.vehicles[veh][veh_lane]
             wait_time_per_lane.append(wait_time)
         return wait_time_per_lane
+    
 
     def get_total_CO2emission(self) -> float:
         '''
@@ -704,6 +705,7 @@ class TrafficSignal:
 
     reward_fns = {
         "diff-waiting-time": _diff_waiting_time_reward,
+        "local-diff-waiting-time": _local_diff_waiting_time_reward,
         "average-speed": _average_speed_reward,
         "queue": _queue_reward,
         "pressure": _pressure_reward,
