@@ -183,6 +183,8 @@ class TrafficSignal:
         """Computes the observation of the traffic signal."""
         return self.observation_fn()
 
+    ### REWARDS ###
+
     def compute_reward(self):
         """Computes the reward of the traffic signal."""
         self.last_reward = self.reward_fn(self)
@@ -203,20 +205,29 @@ class TrafficSignal:
         self.last_measure = ts_wait
         return reward
     
-    def _average_emission_reward(self): #combined reward for all emission types
-        return -self.get_average_emission()
+    def _average_emission_reward(self):
+        return -self.get_average_emission.total_emission_avg()
     
     def _CO2_emission_reward(self):
         return - self.get_total_CO2emission()
-        
-    # TODO : implement emission reward for each vehicle type?
     
-    # TODO : implement emission reward for specific crossing?
+    def _ts_emission_reward(self):
+        # emission for all lanes controlled by all choen traffic signals
+        # get respective list element for type of emission 
+        # [CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption]
+        return -self.get_emission_for_controlled_lanes()[0]
     
     def _noise_emission_reward(self):
         return -self.get_average_noise_emission
     
+    def _brake_reward(self):
+        return self.get_total_braking()
 
+    def _acceleration_reward(self):
+        return self.get_total_acceleration()
+    
+    ### COMPUTE REWARD COMPONENTS ###
+    
     def _observation_fn_default(self):
         phase_id = [1 if self.green_phase == i else 0 for i in range(self.num_green_phases)]  # one-hot encoding
         min_green = [0 if self.time_since_last_phase_change < self.min_green + self.yellow_time else 1]
@@ -250,7 +261,7 @@ class TrafficSignal:
 
     def get_total_CO2emission(self) -> float:
         '''
-        Returns the total CO2 pollutant emission of all vehicles in a simulation.
+        Return the total CO2 pollutant emission of all vehicles in a simulation.
         '''
         CO2emission = 0.0
         vehs = self._get_veh_list()
@@ -261,7 +272,7 @@ class TrafficSignal:
     
     def get_average_emission(self) -> float:
         '''
-        Returns the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
+        Return the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
         '''
         CO_emission = 0.0
         CO2_emission = 0.0
@@ -289,15 +300,16 @@ class TrafficSignal:
         NOx_avg = NOx_emission / len(vehs)
         fuel_avg = fuel_consumption / len(vehs)
         
-        return total_emission_avg #, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
+        return total_emission_avg, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
     
 
     def get_emission_per_lane(self) -> List[List[float]]:
         '''
-        Function to get average emissions per lane, storing different emission values in a list element for each lane.
+        Function to get average emissions for all lanes, storing different emission values in a list element for each lane.
         
         Returns:
             List[List[float]]: List of lists containing the average emissions per lane.
+            [CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption]
         '''
         
         emission_per_lane = []
@@ -384,9 +396,148 @@ class TrafficSignal:
                                     ])
             
         return emission_per_lane
-
     
-    # TODO get emission for specific crossing (where agent is active) - can i get emission for lanes involved in crossing instead?
+    
+    def get_emission_for_controlled_lanes(self) -> List[float]:
+        '''
+        Function to get average emissions for all relevant lanes, storing different emission values in a list element for each lane.
+        Relevant lanes = Lanes controlled by the chosen traffic signal
+        
+        Returns:
+            List[float]: List containing the total emissions per lane.
+            [CO2_emission,CO_emission, HC_emission,Px_emission,NOx_emission, emission_combined,fuel_consumption]
+        '''
+    
+        emission_on_lanes = []
+        lanes = []
+            
+        #ger all lanes that are controlled by all traffic lights in self.ts_ids
+        for ts in self.ts_ids:
+            lanes.append(self.sumo.trafficlight.getControlledLanes(ts))
+            #get all vehicles in the lane
+            veh_list = []
+            for lane in lanes:
+                veh_list += self.sumo.lane.getLastStepVehicleIDs(lane)
+            CO_emission = 0.0
+            CO2_emission = 0.0
+            HC_emission = 0.0
+            PMx_emission = 0.0
+            NOx_emission = 0.0
+            fuel_consumption = 0.0
+            #for every vehicle located on the lanes
+            for veh in veh_list:
+                # get CO2 emission
+                CO2 = self.sumo.vehicle.getCO2Emission(veh)
+                CO2_emission += CO2
+                # get CO emission
+                CO = self.sumo.vehicle.getCOEmission(veh)
+                CO_emission += CO
+                # get HC emission
+                HC = self.sumo.vehicle.getHCEmission(veh)
+                HC_emission += HC
+                # get PMx emission
+                PMx = self.sumo.vehicle.getPMxEmission(veh)
+                PMx_emission += PMx
+                # get NOx emission
+                NOx = self.sumo.vehicle.getNOxEmission(veh)
+                NOx_emission += NOx
+                # get fuel consumption
+                fuel = self.sumo.vehicle.getFuelConsumption(veh)
+                fuel_consumption += fuel
+            
+                emission_combined = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / 5
+                
+            emission_on_lanes.append(CO2_emission,
+                                    CO_emission,
+                                    HC_emission,
+                                    PMx_emission,
+                                    NOx_emission,
+                                    emission_combined,
+                                    fuel_consumption
+                                    )
+            
+        return emission_on_lanes
+    
+    def get_ts_emissions(self, ts_id):
+        '''
+        Function to get emissions for all lanes that the traffic light controls.
+        
+        Returns:
+            Dict: Containing total emissions for all controlled lanes (per emission type).
+            {CO2_emission,CO_emission, HC_emission,Mx_emission,NOx_emission, emission_combined,fuel_consumption}
+        '''
+        
+        ts_lane_emissions = []
+        
+        #get all lanes that are controlled by the traffic light
+        lanes = self.sumo.trafficlight.getControlledLanes(ts_id)
+        
+        #get all vehicles on the lanes
+        veh_list = []
+        for lane in lanes:
+            veh_list += self.sumo.lane.getLastStepVehicleIDs(lane)
+            
+        for veh in veh_list:
+            #veh_lane = self.sumo.vehicle.getLaneID(veh)
+            # get CO2 emission
+            CO2 = self.sumo.vehicle.getCO2Emission(veh)
+            CO2_emission += CO2
+            # get CO emission
+            CO = self.sumo.vehicle.getCOEmission(veh)
+            CO_emission += CO
+            # get HC emission
+            HC = self.sumo.vehicle.getHCEmission(veh)
+            HC_emission += HC
+            # get PMx emission
+            PMx = self.sumo.vehicle.getPMxEmission(veh)
+            PMx_emission += PMx
+            # get NOx emission
+            NOx = self.sumo.vehicle.getNOxEmission(veh)
+            NOx_emission += NOx
+            # get fuel consumption
+            fuel = self.sumo.vehicle.getFuelConsumption(veh)
+            fuel_consumption += fuel
+            
+            emission_combined = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / 5
+        
+        if len(veh_list) != 0: 
+            ts_lane_emissions = {'CO2_emission': CO2_emission,
+                                'CO_emission': CO_emission,
+                                'HC_emission': HC_emission,
+                                'PMx_emission': PMx_emission,
+                                'NOx_emission': NOx_emission,
+                                'emission_combined': emission_combined,
+                                'fuel_consumption': fuel_consumption}
+        
+        return ts_lane_emissions
+            
+    
+    # def get_emission_per_eclass(self):
+    #     '''
+    #     Get current emission per vehicle class.
+        
+    #     Returns:
+    #         Dict(str: float): Dictionary containing the current emission per emission class.
+    #     '''
+    #     emission_per_type = {}
+    #     emission_classes = self._get_vehicle_eclasses()
+    #     for emission_class in emission_classes:
+    #         emission_per_type[emission_class] = 0.0
+    #     if emission_classes is None:
+    #         emission_per_type = {'None' : 0.0}
+    #         return emission_per_type
+    #     vehs = self._get_veh_list()
+    #     if len(vehs) == 0:
+    #         return 0.0
+    #     for veh in vehs:
+    #         eclass = self._get_vehicle_type(veh)
+    #         emission_per_type[eclass] += self.sumo.vehicle.getCO2Emission(veh)
+        
+    #     for emission_class in emission_classes:
+    #         emission_per_type[emission_class] /= len(vehs)
+        
+    #     return emission_per_type
+
     
     def get_total_noise_emission(self) -> float:
         '''
@@ -400,10 +551,29 @@ class TrafficSignal:
             
         return noise_emission
     
+    def get_total_braking(self) -> float:
+        '''
+        Returns the total braking of all vehicles in a simulation.
+        '''
+        vehs = self._get_veh_list()
+        accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
+        brake = np.sum(accelerations[accelerations < 0])
+        return brake
+
+
+    def get_total_acceleration(self) -> float:
+        '''
+        Returns the total acceleration of all vehicles in a simulation.
+        '''
+        vehs = self._get_veh_list()
+        accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
+        accel = np.sum(accelerations[accelerations > 0])
+        return accel
     
+
     def get_average_noise_emission(self) -> float:
         '''
-        Return the average noise emission of all vehicles in a simulation.
+        Returns the average noise emission of all vehicles in a simulation.
         '''
         noise_emission = 0.0
         vehs = self._get_veh_list()
@@ -535,5 +705,6 @@ class TrafficSignal:
         "CO2_emission": _CO2_emission_reward,
         "combined_emission": _average_emission_reward,
         "noise_emission": _noise_emission_reward,
+        "local_emission": _ts_emission_reward,
     }
 

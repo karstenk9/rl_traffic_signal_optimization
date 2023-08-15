@@ -62,6 +62,7 @@ class SumoEnvironment(gym.Env):
         max_green (int): Max green time in a phase. Default: 60 seconds. Warning: This parameter is currently ignored!
         single_agent (bool): If true, it behaves like a regular gym.Env. Else, it behaves like a MultiagentEnv (returns dict of observations, rewards, dones, infos).
         reward_fn (str/function/dict): String with the name of the reward function used by the agents, a reward function, or dictionary with reward functions assigned to individual traffic lights by their keys.
+        traffic_lights [] : List of traffic lights to be controlled by the agent
         observation_class (ObservationFunction): Inherited class which has both the observation function and observation space.
         add_system_info (bool): If true, it computes system metrics (total queue, total waiting time, average speed) in the info dictionary.
         add_per_agent_info (bool): If true, it computes per-agent (per-traffic signal) metrics (average accumulated waiting time, average queue) in the info dictionary.
@@ -406,29 +407,48 @@ class SumoEnvironment(gym.Env):
         waiting_times = [self.sumo.vehicle.getWaitingTime(vehicle) for vehicle in vehicles]
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
-            "total_stopped": sum(int(speed < 0.1) for speed in speeds),
-            "total_waiting_time": sum(waiting_times),
-            "average_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
-            "average_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
-            "total_CO2_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
-            "total_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
-            #TODO add further system info
-            #"total_acceleration": 0.0 if len(vehicles) == 0 else 1,
-            #"total_braking": 0.0 if len(vehicles) == 0 else 1,
+            "system_total_stopped": sum(int(speed < 0.1) for speed in speeds),
+            "system_total_waiting_time": sum(waiting_times),
+            "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
+            "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
+            "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
+            "system_total_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in vehicles),
+            "system_total_NOx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in vehicles),
+            "system_local_CO2": 0.0 if len(vehicles) == 0 else sum(self.traffic_signals.get_emission_for_controlled_lanes()[0] for ts in self.ts_ids),
+            "system_local_PMx": 0.0 if len(vehicles) == 0 else self.get_emission_for_controlled_lanes()[3],
+            "system_local_NOx": 0.0 if len(vehicles) == 0 else self.get_emission_for_controlled_lanes()[4],
+            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            "system_last_reward": 0.0 if len(vehicles) == 0 else self.last_reward(),
+            'total_brake_traffic_signals': sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
         }
-
+        
 
     def _get_per_agent_info(self):
         stopped = [self.traffic_signals[ts].get_total_queued() for ts in self.ts_ids]
-        accumulated_waiting_time = [
-            sum(self.traffic_signals[ts].get_accumulated_waiting_time_per_lane()) for ts in self.ts_ids
-        ]
+        accumulated_waiting_time = [sum(self.traffic_signals[ts].get_accumulated_waiting_time_per_lane()) for ts in self.ts_ids]
         average_speed = [self.traffic_signals[ts].get_average_speed() for ts in self.ts_ids]
+        braking = [self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids]
+        controlled_lane_emission = [self.traffic_signals[ts].get_ts_emissions(ts) for ts in self.ts_ids]
+        #TODO make sure phase, state, program are not empty / available
+        #ts_phases = [self.traffic_signals[ts].getPhase(ts) for ts in self.ts_ids] if self.traffic_signals[ts].phase
+        #ts_states = [self.traffic_signals[ts].getRedYellowGreenState() for ts in self.ts_ids]
+        #ts_program = [self.traffic_signals[ts].getProgram() for ts in self.ts_ids]
+        rewards =  []
+        for ts in self.ts_ids:
+            if self.traffic_signals[ts].last_reward:
+                rewards.append(self.traffic_signals[ts].last_reward())
+        
         info = {}
         for i, ts in enumerate(self.ts_ids):
             info[f"{ts}_stopped"] = stopped[i]
             info[f"{ts}_accumulated_waiting_time"] = accumulated_waiting_time[i]
             info[f"{ts}_average_speed"] = average_speed[i]
+            info[f"{ts}_braking"] = braking[i]
+            info[f'{ts}_controlled_lane_emission'] = controlled_lane_emission[i]
+            #info[f"{ts}_phase"] = ts_phases[i]
+            #info[f"{ts}_state"] = ts_states[i]
+            #info[f"{ts}_program"] = ts_program[i]
+            info[f"{ts}_reward"] = rewards[i] if rewards else None
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
         return info
