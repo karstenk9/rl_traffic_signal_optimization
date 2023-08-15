@@ -405,6 +405,8 @@ class SumoEnvironment(gym.Env):
         vehicles = self.sumo.vehicle.getIDList()
         speeds = [self.sumo.vehicle.getSpeed(vehicle) for vehicle in vehicles]
         waiting_times = [self.sumo.vehicle.getWaitingTime(vehicle) for vehicle in vehicles]
+        rel_lanes = [self.sumo.trafficlight.getControlledLanes(ts) for ts in self.ts_ids]
+        rel_vehicles = [self.sumo.lane.getLastStepVehicleIDs(lane) for lane in rel_lanes]
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
             "system_total_stopped": sum(int(speed < 0.1) for speed in speeds),
@@ -414,10 +416,11 @@ class SumoEnvironment(gym.Env):
             "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
             "system_total_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in vehicles),
             "system_total_NOx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in vehicles),
-            "system_local_CO2": 0.0 if len(vehicles) == 0 else sum(self.traffic_signals.get_emission_for_controlled_lanes()[0] for ts in self.ts_ids),
-            "system_local_PMx": 0.0 if len(vehicles) == 0 else self.get_emission_for_controlled_lanes()[3],
-            "system_local_NOx": 0.0 if len(vehicles) == 0 else self.get_emission_for_controlled_lanes()[4],
-            "system_total_noise_emission": 0.0 if len(vehicles) ==0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            "system_total_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
+            "system_local_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2emission(vehicle) for vehicle in rel_vehicles),
+            "system_local_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in rel_vehicles),
+            "system_local_NOx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in rel_vehicles),
+            "system_local_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in rel_vehicles),
             "system_last_reward": 0.0 if len(vehicles) == 0 else self.last_reward(),
             'total_brake_traffic_signals': sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
         }

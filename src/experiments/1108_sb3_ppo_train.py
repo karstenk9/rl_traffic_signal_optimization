@@ -20,7 +20,7 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_new(use_gui=False,
-                                traffic_lights= ['tls_157','tls_159','tls_160'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
+                                traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
                                 sumo_warnings=False,
                                 out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
                                 additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml")
@@ -56,7 +56,7 @@ model = PPO(
     clip_range=0.3,
     batch_size=256,
     tensorboard_log="./logs/MA_grid/diff_waiting_time",
-    device='mps' # use 'auto' for cpu only
+    device='auto' # use 'auto' for cpu only
 )
 
 print("Starting training")

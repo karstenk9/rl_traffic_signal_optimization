@@ -400,7 +400,7 @@ class TrafficSignal:
     
     def get_emission_for_controlled_lanes(self) -> List[float]:
         '''
-        Function to get average emissions for all relevant lanes, storing different emission values in a list element for each lane.
+        Function to get total for all relevant lanes, storing different emission values in a list element for each lane.
         Relevant lanes = Lanes controlled by the chosen traffic signal
         
         Returns:
