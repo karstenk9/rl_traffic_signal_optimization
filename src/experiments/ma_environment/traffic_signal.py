@@ -705,7 +705,6 @@ class TrafficSignal:
 
     reward_fns = {
         "diff-waiting-time": _diff_waiting_time_reward,
-        "local-diff-waiting-time": _local_diff_waiting_time_reward,
         "average-speed": _average_speed_reward,
         "queue": _queue_reward,
         "pressure": _pressure_reward,
