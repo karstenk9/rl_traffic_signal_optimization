@@ -398,7 +398,7 @@ class TrafficSignal:
         return emission_per_lane
     
     
-    def get_emission_for_controlled_lanes(self) -> List[float]:
+    def get_emission_for_controlled_lanes(self, lanes):
         '''
         Function to get total for all relevant lanes, storing different emission values in a list element for each lane.
         Relevant lanes = Lanes controlled by the chosen traffic signal
@@ -408,55 +408,55 @@ class TrafficSignal:
             [CO2_emission,CO_emission, HC_emission,Px_emission,NOx_emission, emission_combined,fuel_consumption]
         '''
     
-        emission_on_lanes = []
+        emission_on_lane = []
         lanes = []
             
-        #ger all lanes that are controlled by all traffic lights in self.ts_ids
-        for ts in self.ts_ids:
-            lanes.append(self.sumo.trafficlight.getControlledLanes(ts))
-            #get all vehicles in the lane
-            veh_list = []
-            for lane in lanes:
-                veh_list += self.sumo.lane.getLastStepVehicleIDs(lane)
-            CO_emission = 0.0
-            CO2_emission = 0.0
-            HC_emission = 0.0
-            PMx_emission = 0.0
-            NOx_emission = 0.0
-            fuel_consumption = 0.0
-            #for every vehicle located on the lanes
-            for veh in veh_list:
-                # get CO2 emission
-                CO2 = self.sumo.vehicle.getCO2Emission(veh)
-                CO2_emission += CO2
-                # get CO emission
-                CO = self.sumo.vehicle.getCOEmission(veh)
-                CO_emission += CO
-                # get HC emission
-                HC = self.sumo.vehicle.getHCEmission(veh)
-                HC_emission += HC
-                # get PMx emission
-                PMx = self.sumo.vehicle.getPMxEmission(veh)
-                PMx_emission += PMx
-                # get NOx emission
-                NOx = self.sumo.vehicle.getNOxEmission(veh)
-                NOx_emission += NOx
-                # get fuel consumption
-                fuel = self.sumo.vehicle.getFuelConsumption(veh)
-                fuel_consumption += fuel
+        # #ger all lanes that are controlled by all traffic lights in self.ts_ids
+        # for ts in self.ts_ids:
+        #     lanes.append(self.sumo.trafficlight.getControlledLanes(ts))
+        #     #get all vehicles in the lane
+        #     veh_list = []
+        for lane in lanes:
+            veh_list += self.sumo.lane.getLastStepVehicleIDs(lane)
+        CO_emission = 0.0
+        CO2_emission = 0.0
+        HC_emission = 0.0
+        PMx_emission = 0.0
+        NOx_emission = 0.0
+        fuel_consumption = 0.0
+        #for every vehicle located on the lanes
+        for veh in veh_list:
+            # get CO2 emission
+            CO2 = self.sumo.vehicle.getCO2Emission(veh)
+            CO2_emission += CO2
+            # get CO emission
+            CO = self.sumo.vehicle.getCOEmission(veh)
+            CO_emission += CO
+            # get HC emission
+            HC = self.sumo.vehicle.getHCEmission(veh)
+            HC_emission += HC
+            # get PMx emission
+            PMx = self.sumo.vehicle.getPMxEmission(veh)
+            PMx_emission += PMx
+            # get NOx emission
+            NOx = self.sumo.vehicle.getNOxEmission(veh)
+            NOx_emission += NOx
+            # get fuel consumption
+            fuel = self.sumo.vehicle.getFuelConsumption(veh)
+            fuel_consumption += fuel
+        
+            emission_combined = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / 5
             
-                emission_combined = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / 5
-                
-            emission_on_lanes.append(CO2_emission,
-                                    CO_emission,
-                                    HC_emission,
-                                    PMx_emission,
-                                    NOx_emission,
-                                    emission_combined,
-                                    fuel_consumption
-                                    )
+        emission_on_lane.append(CO2_emission,
+                                CO_emission,
+                                HC_emission,
+                                PMx_emission,
+                                NOx_emission,
+                                emission_combined,
+                                fuel_consumption
+                                )
             
-        return emission_on_lanes
+        return emission_on_lane
     
     def get_ts_emissions(self, ts_id):
         '''
@@ -471,7 +471,12 @@ class TrafficSignal:
         
         #get all lanes that are controlled by the traffic light
         lanes = self.sumo.trafficlight.getControlledLanes(ts_id)
-        
+        CO_emission = 0.0
+        CO2_emission = 0.0
+        HC_emission = 0.0
+        PMx_emission = 0.0
+        NOx_emission = 0.0
+        fuel_consumption = 0.0
         #get all vehicles on the lanes
         veh_list = []
         for lane in lanes:

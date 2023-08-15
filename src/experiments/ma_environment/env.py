@@ -151,6 +151,7 @@ class SumoEnvironment(gym.Env):
             traci.start([sumolib.checkBinary("sumo"), "-n", self._net], label="init_connection" + self.label)
             conn = traci.getConnection("init_connection" + self.label)
 
+        # input traffic lights to learn/control
         self.ts_ids = traffic_lights
         self.observation_class = observation_class
 
@@ -405,8 +406,21 @@ class SumoEnvironment(gym.Env):
         vehicles = self.sumo.vehicle.getIDList()
         speeds = [self.sumo.vehicle.getSpeed(vehicle) for vehicle in vehicles]
         waiting_times = [self.sumo.vehicle.getWaitingTime(vehicle) for vehicle in vehicles]
-        rel_lanes = [self.sumo.trafficlight.getControlledLanes(ts) for ts in self.ts_ids]
-        rel_vehicles = [self.sumo.lane.getLastStepVehicleIDs(lane) for lane in rel_lanes]
+        if len(vehicles) != 0:
+            rel_lanes = list(set(item for sublist in (self.sumo.trafficlight.getControlledLanes(ts) for ts in self.ts_ids) for item in sublist))
+            rel_vehicles = [item for sublist in (self.sumo.lane.getLastStepVehicleIDs(lane) for lane in rel_lanes) for item in sublist]
+            if len(rel_vehicles) != 0:
+                local_CO2 = sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in rel_vehicles)
+                local_PMx = sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in rel_vehicles)
+                local_NOx = sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in rel_vehicles)
+                local_noise = sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in rel_vehicles)
+                local_avg_speed = np.mean([self.sumo.vehicle.getSpeed(vehicle) for vehicle in rel_vehicles])
+            else: 
+                local_CO2 = 0.0
+                local_PMx = 0.0
+                local_NOx = 0.0
+                local_noise = 0.0
+                local_avg_speed = 0.0
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
             "system_total_stopped": sum(int(speed < 0.1) for speed in speeds),
@@ -417,11 +431,12 @@ class SumoEnvironment(gym.Env):
             "system_total_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in vehicles),
             "system_total_NOx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in vehicles),
             "system_total_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in vehicles),
-            "system_local_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2emission(vehicle) for vehicle in rel_vehicles),
-            "system_local_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in rel_vehicles),
-            "system_local_NOx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in rel_vehicles),
-            "system_local_noise_emission": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in rel_vehicles),
-            "system_last_reward": 0.0 if len(vehicles) == 0 else self.last_reward(),
+            "system_local_CO2": 0.0 if len(vehicles) == 0 else local_CO2,
+            "system_local_PMx": 0.0 if len(vehicles) == 0 else local_PMx,
+            "system_local_NOx": 0.0 if len(vehicles) == 0 else local_NOx,
+            "system_local_noise_emission": 0.0 if len(vehicles) == 0 else local_noise,
+            "system_local_avg_speed": 0.0 if len(vehicles) == 0 else local_avg_speed,
+            "system_last_reward": 0.0 if len(vehicles) == 0 else np.mean(list(self.rewards.values())),
             'total_brake_traffic_signals': sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
         }
         
@@ -433,14 +448,12 @@ class SumoEnvironment(gym.Env):
         braking = [self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids]
         controlled_lane_emission = [self.traffic_signals[ts].get_ts_emissions(ts) for ts in self.ts_ids]
         #TODO make sure phase, state, program are not empty / available
-        #ts_phases = [self.traffic_signals[ts].getPhase(ts) for ts in self.ts_ids] if self.traffic_signals[ts].phase
-        #ts_states = [self.traffic_signals[ts].getRedYellowGreenState() for ts in self.ts_ids]
-        #ts_program = [self.traffic_signals[ts].getProgram() for ts in self.ts_ids]
+        ts_phases = [traci.trafficlight.getPhase(ts) for ts in self.ts_ids]
+        ts_states = [traci.trafficlight.getRedYellowGreenState(ts) for ts in self.ts_ids]
+        ts_program = [traci.trafficlight.getProgram(ts) for ts in self.ts_ids]
         rewards =  []
         for ts in self.ts_ids:
-            if self.traffic_signals[ts].last_reward:
-                rewards.append(self.traffic_signals[ts].last_reward())
-        
+            rewards.append(self.rewards.get(ts))
         info = {}
         for i, ts in enumerate(self.ts_ids):
             info[f"{ts}_stopped"] = stopped[i]
@@ -448,9 +461,9 @@ class SumoEnvironment(gym.Env):
             info[f"{ts}_average_speed"] = average_speed[i]
             info[f"{ts}_braking"] = braking[i]
             info[f'{ts}_controlled_lane_emission'] = controlled_lane_emission[i]
-            #info[f"{ts}_phase"] = ts_phases[i]
-            #info[f"{ts}_state"] = ts_states[i]
-            #info[f"{ts}_program"] = ts_program[i]
+            info[f"{ts}_phase"] = ts_phases[i]
+            info[f"{ts}_state"] = ts_states[i]
+            info[f"{ts}_program"] = ts_program[i]
             info[f"{ts}_reward"] = rewards[i] if rewards else None
         info["agents_total_stopped"] = sum(stopped)
         info["agents_total_accumulated_waiting_time"] = sum(accumulated_waiting_time)
