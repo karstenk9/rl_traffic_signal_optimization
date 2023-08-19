@@ -28,9 +28,10 @@ env = SumoEnvironment(
                 urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                 urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml',\
     out_csv_name="urban_mobility_simulation/src/data/model_outputs/ppo_multi_test",
-    single_agent=False,
+    single_agent=True,
     use_gui=True,
-    num_seconds=3600,
+    num_seconds=28800,
+    begin_time=25200,
     yellow_time=4,
     min_green=5,
     max_green=60,
@@ -43,7 +44,8 @@ model = PPO(
     policy="MlpPolicy",
     learning_rate=3e-4,
     verbose=1,
-    n_steps=50
+    n_steps=50,
+    batch_size=50,
 )
 
 model.learn(total_timesteps=10000)

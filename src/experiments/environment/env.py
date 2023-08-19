@@ -165,8 +165,7 @@ class SumoEnvironment(gym.Env):
         #self.ts_ids = list(conn.trafficlight.getIDList())
         
         #test with one traffic lights
-        self.ts_ids = ['tls_159', 'tls_160', 'tls_161']
-        #self.ts_ids=['cluster_1743822458_1743822558_1743822643_1743822689_1743822737_8039877991_cluster_1120310798_1634545540_1665161322_1665161338_1665161344_1743822496_1743822510_1743822551_1743822648_1743822650_1743822666_1743822667_1743822676_1743822687_1754245066_1756301705_1949670169_2004844603_297701075_412123597_412123598_412123601_412181181']
+        self.ts_ids = ['tls_159']
         self.observation_class = observation_class
 	
 	#self.ts_ids = list(conn.trafficlight.getIDList())
@@ -453,7 +452,7 @@ class SumoEnvironment(gym.Env):
             "system_local_NOx": 0.0 if len(vehicles) == 0 else local_NOx,
             "system_local_noise_emission": 0.0 if len(vehicles) == 0 else local_noise,
             "system_local_avg_speed": 0.0 if len(vehicles) == 0 else local_avg_speed,
-            "system_last_reward": 0.0 if len(vehicles) == 0 else np.mean(list(self.rewards.values())),
+            "system_last_reward": 0.0 if len(vehicles) == 0 else self.rewards[self.ts_ids[0]],
             'total_brake_traffic_signals': sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
         }
         

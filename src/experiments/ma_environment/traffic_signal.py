@@ -221,7 +221,7 @@ class TrafficSignal:
         return -self.get_average_noise_emission
     
     def _brake_reward(self):
-        return self.get_total_braking()
+        return self.get_total_braking() # already negative
 
     def _acceleration_reward(self):
         return self.get_total_acceleration()
@@ -563,7 +563,7 @@ class TrafficSignal:
         '''
         vehs = self._get_veh_list()
         accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
-        brake = np.sum(accelerations[accelerations < 0])
+        brake = np.sum(accelerations[accelerations < 0]) # more braking "more negative"
         return brake
 
 
@@ -712,5 +712,7 @@ class TrafficSignal:
         "combined_emission": _average_emission_reward,
         "noise_emission": _noise_emission_reward,
         "local_emission": _ts_emission_reward,
+        "brake_reward": _brake_reward,
+        "acceleration_reward": _acceleration_reward,
     }
 

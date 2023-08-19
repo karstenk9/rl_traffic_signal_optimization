@@ -24,7 +24,7 @@ def MA_grid_new(parallel=True, **kwargs):
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-        "num_seconds": 28800,
+        "num_seconds": 4500,
         "begin_time": 25200,
         "time_to_teleport": 300,
         }

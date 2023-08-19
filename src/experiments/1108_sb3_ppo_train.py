@@ -20,11 +20,14 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_new(use_gui=False,
-                            reward_fn = 'diff-waiting-time',
+                            reward_fn = 'brake_reward',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
                             sumo_warnings=False,
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
-                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/1408_ppo_waitingTime.xml"
+                            begin_time=25200,
+                            num_seconds=4500, # sim_max_time = begin_time + num_seconds
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/minimizebrake_speed_200000',
+                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_minimizebrake.xml, \
+                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_minimizebrake.xml",
                             )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time
@@ -48,7 +51,7 @@ model = PPO(
     env=env,
     verbose=3,
     gamma=0.95,
-    n_steps=512,
+    n_steps=256,
     ent_coef=0.01,
     learning_rate=0.00025,
     vf_coef=0.05,
@@ -56,15 +59,15 @@ model = PPO(
     gae_lambda=0.95,
     n_epochs=10,
     clip_range=0.3,
-    batch_size=256,
-    tensorboard_log="./logs/MA_grid/diff_waiting_time",
+    batch_size=64,
+    tensorboard_log="./logs/MA_grid/minimizebrake",
     device='auto' # use 'auto' for cpu only
 )
 
 print("Starting training")
 model.learn(total_timesteps=200000)
 
-model.save('urban_mobility_simulation/src/data/logs/1408_diff_waiting_time_200')
+model.save('urban_mobility_simulation/src/data/logs/minimizebrake_200')
 
 print("Training finished. Starting evaluation")
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
@@ -72,28 +75,21 @@ mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
 print('Mean Reward: ', mean_reward)
 print('Std Reward: ', std_reward)
 
-# Maximum number of steps before reset, +1 because I'm scared of OBOE
-# print("Starting rendering")
-# num_steps = (max_time // delta_time) + 1
+#model = PPO.load("ppo_saved", print_system_info=True)
 
-# obs = env.reset()
+#Maximum number of steps before reset, +1 because I'm scared of OBOE
+print("Starting rendering")
+num_steps = (max_time // delta_time) + 1
 
-# if os.path.exists("temp"):
-#     shutil.rmtree("temp")
+obs = env.reset()
 
-# os.mkdir("temp")
-# # img = disp.grab()
-# # img.save(f"temp/img0.jpg")
+if os.path.exists("temp"):
+    shutil.rmtree("temp")
 
-# img = env.render()
-# for t in trange(num_steps):
-#     actions, _ = model.predict(obs, state=None, deterministic=False)
-#     obs, reward, done, info = env.step(actions)
-#     img = env.render()
-#     img.save(f"temp/img{t}.jpg")
+for t in trange(num_steps):
+    actions, _ = model.predict(obs, state=None, deterministic=False)
+    obs, reward, done, info = env.step(actions)
+    img = env.render()
+    img.save('temp/{}.png'.format(t))
 
-# subprocess.run(["ffmpeg", "-y", "-framerate", "5", "-i", "temp/img%d.jpg", "output.mp4"])
-
-# print("All done, cleaning up")
-# shutil.rmtree("temp")
 env.close()
