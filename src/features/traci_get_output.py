@@ -93,33 +93,4 @@ if __name__ == "__main__":
                                     "--emission-output", "urban_mobility_simulation/src/data/actuated_output/newModelDemand_emission_actuated_TL.xml"])
 
     run()
-    
-    import traci
 
-# Connect to SUMO
-traci.start(["sumo", "-c", "your_config_file.sumocfg"])
-
-# Initialize the variables to hold data
-num_vehicles = []
-vehicle_types = []
-avg_speeds = []
-
-# Loop through the simulation steps
-for step in range(25200, 29701):  # Adjust the range according to your needs
-    # Advance the simulation by one step
-    traci.simulationStep()
-
-    # Get vehicle IDs on the lane
-    vehicle_ids = traci.lane.getLastStepVehicleIDs(lane_id)
-    num_vehicles.append(len(vehicle_ids))
-
-    # Get vehicle types
-    vehicle_types_step = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids]
-    vehicle_types.append(vehicle_types_step)
-
-    # Get average speed of vehicles on the lane
-    avg_speed = traci.lane.getLastStepMeanSpeed(lane_id)
-    avg_speeds.append(avg_speed)
-
-# Close the TraCI connection
-traci.close()

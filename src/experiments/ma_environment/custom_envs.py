@@ -6,7 +6,7 @@ from ma_environment.env import env, parallel_env
 #PATH = os.path.dirname(sumo_rl.__file__)
 
 
-def MA_grid_new(parallel=True, **kwargs):
+def MA_grid_train(parallel=True, **kwargs):
     """Mannheim Simulaton Network.
 
     Number of agents = 3
@@ -34,7 +34,34 @@ def MA_grid_new(parallel=True, **kwargs):
     else:
         return env(**kwargs)
     
-    
+
+def MA_grid_eval(parallel=True, **kwargs):
+    """Mannheim Simulaton Network.
+
+    Number of agents = 3
+    Number of actions = variable (wrapped so that largest action space is taken)
+    """
+    kwargs.update(
+        {
+            "net_file": "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml",
+            "route_file": "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/veh_routes.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
+                        /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
+        "num_seconds": 7200,
+        "begin_time": 25200,
+        "time_to_teleport": 300,
+        }
+    )
+    if parallel:
+        return parallel_env(**kwargs)
+    else:
+        return env(**kwargs)
     
 
 def MA_grid_old(parallel=False, **kwargs):
