@@ -14,7 +14,7 @@ import numpy as np
 
 
 # Initialize SUMO environment as same as you trained the model (you need to replace with your own implementation)
-env = custom_env.MA_grid_new(use_gui=False,
+env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'average-speed',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
                             begin_time=25200,

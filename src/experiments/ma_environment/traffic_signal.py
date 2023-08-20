@@ -226,6 +226,10 @@ class TrafficSignal:
     def _acceleration_reward(self):
         return self.get_total_acceleration()
     
+    def _speed_brake_reward(self):
+        speed_brake = (0.5*self._average_speed_reward()) + (0.5*self._brake_reward())
+        return speed_brake
+    
     ### COMPUTE REWARD COMPONENTS ###
     
     def _observation_fn_default(self):
@@ -714,5 +718,6 @@ class TrafficSignal:
         "local_emission": _ts_emission_reward,
         "brake_reward": _brake_reward,
         "acceleration_reward": _acceleration_reward,
+        "speed_brake_reward": _speed_brake_reward
     }
 

@@ -417,13 +417,14 @@ class SumoEnvironment(gym.Env):
         local_HC = sum(traci.lane.getHCEmission(lane_id) for lane_id in rel_lanes)
         local_PMx = sum(traci.lane.getPMxEmission(lane_id) for lane_id in rel_lanes)
         local_noise = sum(traci.lane.getNoiseEmission(lane_id) for lane_id in rel_lanes)
-        # get mean speed for all controlled lanes
-        mean_speeds = [traci.lane.getLastStepMeanSpeed(lane_id) for lane_id in rel_lanes if traci.lane.getLastStepMeanSpeed(lane_id) is not None]
-        local_avg_speed = np.mean(mean_speeds) if mean_speeds else None  
         
         # get number of vehicles (and types) on relevant lanes
         vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
         num_vehicles = len(vehicle_ids)
+        # get mean speed for all controlled lanes
+        local_avg_speed = 0.0 if num_vehicles==0 else np.mean([self.sumo.vehicle.getSpeed(vehicle_id) for vehicle_id in vehicle_ids])
+        #local_avg_speed = np.mean(mean_speeds) if mean_speeds else None  
+        
         # get mean speed for each lane and different vehicle types
         for vehicle_id in vehicle_ids:
             vehicle_type = traci.vehicle.getTypeID(vehicle_id)
