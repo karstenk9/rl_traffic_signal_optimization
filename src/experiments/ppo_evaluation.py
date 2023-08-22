@@ -17,8 +17,10 @@ import numpy as np
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'average-speed',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/speed_200_1800steps',
                             begin_time=25200,
-                            num_seconds=7200)
+                            num_seconds=9000,
+                            time_to_teleport=300)
 
 #wrap observation space to have one common observation space for all agents
 env = ss.pad_observations_v0(env)
@@ -62,7 +64,7 @@ traci.start(["sumo", "-c", "urban_mobility_simulation/models/20230718_sumo_ma/os
 data = []
 
 # Run the simulation for step from 25200 to 29700
-for step in range(1440):
+for step in range(1800):
     # Advance simulation step
     traci.simulationStep()
 
@@ -70,7 +72,7 @@ for step in range(1440):
     actions, _ = model.predict(observation, state=None, deterministic=True)
 
     # Apply the model's action to simulation
-    observation, reward, done, information = env.step(actions)
+    observation, reward, done, information = env.step(actions) # step takes 5 seconds for one simulation step --> 1800 steps = 9000 seconds = 2.5 hours
 
     # Collect your required data
     local_vehicles = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in lane_ids) for item in sublist]

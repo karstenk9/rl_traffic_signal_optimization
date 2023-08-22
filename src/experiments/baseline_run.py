@@ -22,24 +22,18 @@ lane_ids = ['251161865#1_2', '189068695#4_0', '276412658_1', ':cluster_174382245
 # Connect to SUMO
 traci.start(['sumo', "-c", "urban_mobility_simulation/models/20230718_sumo_ma/osm.sumocfg",
                                     "--time-to-teleport", "300",
-                                    "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuated_TL.xml",
-                                    "--output-prefix", "TIME",
-                                    "--device.emissions.probability", "1.0",
-                                    "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_actuated_TL.xml"])
+                                    #"--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuated_TL.xml",
+                                    #"--output-prefix", "TIME",
+                                    #"--device.emissions.probability", "1.0",
+                                    #"--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_actuated_TL.xml"
+                                    ])
 
-# Initialize the lists to hold data
+# Initialize a list to hold data
 data = []
-
-# # Create a dictionary to store vehicle data by lanes
-# lane_data = {lane: {'num_vehicles': 0, 'vehicle_types': [], 'avg_speed': 0.0,
-#                     'CO2_emission': 0.0, 'CO_emission': 0.0, 'HC_emission': 0.0,
-#                     'PMx_emission': 0.0, 'NOx_emission': 0.0,'fuel_consumption': 0.0,
-#                     'noise_emission': 0.0, 'num_stopped': 0, 'waiting_time': 0.0} 
-#              for lane in lane_ids}
              
 # Loop through the simulation steps
-for step in range(25200, 29701):  # Adjust the range according to your needs
-    traci.simulationStep()  # Advance the simulation by one step
+for step in range(25200, 34200):  # Adjust the range according to your needs
+    traci.simulationStep() 
     
     all_vehicles = traci.vehicle.getIDList()
     
@@ -95,5 +89,5 @@ columns = ['Step', 'num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emissi
 
 df = pd.DataFrame(data, columns=columns)
 
-# Write the DataFrame to a CSV file
-df.to_csv('urban_mobility_simulation/src/data/actuated_output/actuated_output.csv', index=False)
+# Write the DataFrame to a csv file
+df.to_csv('urban_mobility_simulation/src/data/actuated_output/actuated_output_9000steps.csv', index=False)

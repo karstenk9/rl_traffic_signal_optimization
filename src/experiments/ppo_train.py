@@ -20,14 +20,14 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_train(use_gui=False,
-                            reward_fn = 'speed_brake_reward',
+                            reward_fn = 'brake_acceleration_reward',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
                             sumo_warnings=False,
                             begin_time=25200,
                             num_seconds=4500, # sim_max_time = begin_time + num_seconds
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/speedbrake_speed_200000',
-                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_speedbrake.xml, \
-                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_speedbrake.xml",
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/brake_acceleration_200000',
+                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_brake_acceleration.xml, \
+                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_brake_acceleration.xml",
                             )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time
@@ -60,14 +60,14 @@ model = PPO(
     n_epochs=10,
     clip_range=0.3,
     batch_size=64,
-    tensorboard_log="./logs/MA_grid/speedbrake",
+    tensorboard_log="./logs/MA_grid/brake_acceleration",
     device='auto' # use 'auto' for cpu only
 )
 
 print("Starting training")
 model.learn(total_timesteps=200000)
 
-model.save('urban_mobility_simulation/src/data/logs/speedbrake_200')
+model.save('urban_mobility_simulation/src/data/logs/brake_acceleration_200')
 
 print("Training finished. Starting evaluation")
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)

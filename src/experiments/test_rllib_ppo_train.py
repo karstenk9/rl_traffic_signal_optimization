@@ -101,27 +101,27 @@ if __name__ == "__main__":
             print(f"Checkpoint saved in directory {checkpoint_dir}")
 
     
-    # config = (
-    #     PPOConfig()
-    #     .environment(env=env_name, 
-    #                  disable_env_checking=True
-    #                  )
-    #     .rollouts(num_rollout_workers=2, 
-    #               rollout_fragment_length='auto',
-    #               num_envs_per_worker=1)
-    #     .training(
-    #         train_batch_size=1024,
-    #         lr=2e-5,
-    #         gamma=0.95,
-    #         lambda_=0.9,
-    #         use_gae=True,
-    #         clip_param=0.4,
-    #         grad_clip=None,
-    #         entropy_coeff=0.1,
-    #         vf_loss_coeff=0.25,
-    #         sgd_minibatch_size=64,
-    #         num_sgd_iter=10,
-    #     )
+    config = (
+        PPOConfig()
+        .environment(env=env_name, 
+                     disable_env_checking=True
+                     )
+        .rollouts(num_rollout_workers=2, 
+                  rollout_fragment_length='auto',
+                  num_envs_per_worker=1)
+        .training(
+            train_batch_size=1024,
+            lr=2e-5,
+            gamma=0.95,
+            lambda_=0.9,
+            use_gae=True,
+            clip_param=0.4,
+            grad_clip=None,
+            entropy_coeff=0.1,
+            vf_loss_coeff=0.25,
+            sgd_minibatch_size=64,
+            num_sgd_iter=10,
+        )
     
         # .multiagent(
         #     policies=env.get_agent_ids(),
@@ -131,23 +131,23 @@ if __name__ == "__main__":
         #     policies={id: (PPOTF1Policy, env.observation_spaces[id], env.action_spaces[id], {}) for id in env.agents},
         #     policy_mapping_fn= (lambda id: id) 
         #)
-    #     .debugging(log_level="ERROR")
-    #     .framework(framework="tf2")
-    #     .resources(num_gpus=2)
-    #     .evaluation(evaluation_num_workers=1, 
-    #                 evaluation_parallel_to_training=True, 
-    #                 evaluation_interval=1)
-    # )
+        .debugging(log_level="ERROR")
+        .framework(framework="tf2")
+        .resources(num_gpus=2)
+        .evaluation(evaluation_num_workers=1, 
+                    evaluation_parallel_to_training=True, 
+                    evaluation_interval=1)
+    )
     
-    # algo = config.build()
+    algo = config.build()
 
-    # for _ in range(100):
+    for _ in range(100):
         
-    #     print('Training iteration: ', _)
-    #     print(algo.train())
+        print('Training iteration: ', _)
+        print(algo.train())
 
-    # print('Evaluating...')
-    # algo.evaluate() 
+    print('Evaluating...')
+    algo.evaluate() 
     
     # tune.Tuner(
     #     "PPO",
@@ -201,29 +201,8 @@ if __name__ == "__main__":
     
     # ray.shutdown()
 
-    # print("Starting training")
-    # model.learn(total_timesteps=50000)
-    
-    # print("Training finished. Starting evaluation")
-    # mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
 
-    # print(mean_reward)
-    # print(std_reward)
 
-    
-    
-    
-    # trainer = PPOConfig(env="4x4grid", config={
-    #     "multiagent": {
-    #         "policies": {
-    #             id: (PPO, env.observation_spaces[id], env.action_spaces[id], {}) for id in env.agents
-    #         },
-    #         "policy_mapping_fn": (lambda id: id)  # Traffic lights are always controlled by this policy
-    #     },
-    #     "lr": 0.001,
-    #     "no_done_at_end": True
-    # })
-    
 
 
 

@@ -405,7 +405,6 @@ class SumoEnvironment(gym.Env):
     def _get_system_info(self):
         vehicles = self.sumo.vehicle.getIDList()
         speeds = [self.sumo.vehicle.getSpeed(vehicle) for vehicle in vehicles]
-        waiting_times = [self.sumo.vehicle.getWaitingTime(vehicle) for vehicle in vehicles]
         avg_speeds_by_type = {}
         #if len(vehicles) != 0:
         
@@ -418,40 +417,34 @@ class SumoEnvironment(gym.Env):
         local_PMx = sum(traci.lane.getPMxEmission(lane_id) for lane_id in rel_lanes)
         local_noise = sum(traci.lane.getNoiseEmission(lane_id) for lane_id in rel_lanes)
         
+        local_waiting_times = [traci.lane.getWaitingTime(lane_id) for lane_id in rel_lanes]
         # get number of vehicles (and types) on relevant lanes
-        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
-        num_vehicles = len(vehicle_ids)
+        #vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
+        vehicle_ids = list(self.vehicles.keys())
+        num_vehicles = len(self.vehicles)
+        #vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids]
         # get mean speed for all controlled lanes
-        local_avg_speed = 0.0 if num_vehicles==0 else np.mean([self.sumo.vehicle.getSpeed(vehicle_id) for vehicle_id in vehicle_ids])
+        local_avg_speed = 0.0 if num_vehicles==0 else np.mean([traci.lane.getLastStepMeanSpeed(lane_id) for lane_id in rel_lanes])
+        #local_avg_speed = 0.0 if num_vehicles==0 else np.mean([self.sumo.vehicle.getSpeed(vehicle_id) for vehicle_id in vehicle_ids])
         #local_avg_speed = np.mean(mean_speeds) if mean_speeds else None  
         
         # get mean speed for each lane and different vehicle types
-        for vehicle_id in vehicle_ids:
-            vehicle_type = traci.vehicle.getTypeID(vehicle_id)
-            vehicle_speed = traci.vehicle.getSpeed(vehicle_id)
-            avg_speeds_by_type[vehicle_type] = []
-            avg_speeds_by_type[vehicle_type].append(vehicle_speed)
-        average_speeds_dict = {}
-        for vehicle_type, speeds in avg_speeds_by_type.items():
-            average_speeds_dict[vehicle_type] = np.mean(speeds) if speeds else None
-            # rel_vehicles = [item for sublist in (self.sumo.lane.getLastStepVehicleIDs(lane) for lane in rel_lanes) for item in sublist]
-            # if len(rel_vehicles) != 0:
-            #     local_CO2 = sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in rel_vehicles)
-            #     local_PMx = sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in rel_vehicles)
-            #     local_NOx = sum(self.sumo.vehicle.getNOxEmission(vehicle) for vehicle in rel_vehicles)
-            #     local_noise = sum(self.sumo.vehicle.getNoiseEmission(vehicle) for vehicle in rel_vehicles)
-            #     local_avg_speed = np.mean([self.sumo.vehicle.getSpeed(vehicle) for vehicle in rel_vehicles])
-            # else: 
-            #     local_CO2 = 0.0
-            #     local_PMx = 0.0
-            #     local_NOx = 0.0
-            #     local_noise = 0.0
-            #     local_avg_speed = 0.0
+        #pos = traci.vehicle.getPosition(vehID)
+        ''' following vehicle information crashed in the last sumo simulation runs - cannot access direkt veh info anymore'''
+        # for vehicle_id in vehicle_ids:
+        #     vehicle_type = traci.vehicle.getTypeID(vehicle_id)
+        #     vehicle_speed = traci.vehicle.getSpeed(vehicle_id)
+        #     avg_speeds_by_type[vehicle_type] = []
+        #     avg_speeds_by_type[vehicle_type].append(vehicle_speed)
+        # average_speeds_dict = {}
+        # for vehicle_type, speeds in avg_speeds_by_type.items():
+        #     average_speeds_dict[vehicle_type] = np.mean(speeds) if speeds else None
+    
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
             "system_total_stopped": sum(int(speed < 0.1) for speed in speeds),
-            "system_total_waiting_time": sum(waiting_times),
-            "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
+            "system_total_waiting_time": sum(local_waiting_times),
+            "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(local_waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
             "system_total_CO2": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getCO2Emission(vehicle) for vehicle in vehicles),
             "system_total_PMx": 0.0 if len(vehicles) == 0 else sum(self.sumo.vehicle.getPMxEmission(vehicle) for vehicle in vehicles),
@@ -464,8 +457,8 @@ class SumoEnvironment(gym.Env):
             "system_local_NOx": 0.0 if len(vehicles) == 0 else local_NOx,
             "system_local_noise_emission": 0.0 if len(vehicles) == 0 else local_noise,
             "system_local_#vehicles": 0.0 if len(vehicles) == 0 else num_vehicles,
-            "system_local_avgSpeedsperType": average_speeds_dict if len(vehicles) != 0 else None,
-            #"system_local_veh_types": vehicle_types if len(vehicles) != 0 else None,
+            #"system_local_avgSpeedsperType": average_speeds_dict if len(vehicles) != 0 else None,
+            "system_local_veh_types": vehicle_ids if len(vehicle_ids) != 0 else None, # changed from type to id; includes key to v-type
             "system_local_avg_speed": 0.0 if len(vehicles) == 0 else local_avg_speed,
             "system_last_reward": 0.0 if len(vehicles) == 0 else np.mean(list(self.rewards.values())),
             "total_brake_traffic_signals": sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
@@ -480,7 +473,6 @@ class SumoEnvironment(gym.Env):
         braking = [self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids]
         acceleration = [self.traffic_signals[ts].get_total_acceleration() for ts in self.ts_ids]
         controlled_lane_emission = [self.traffic_signals[ts].get_ts_emissions(ts) for ts in self.ts_ids]
-        #TODO make sure phase, state, program are not empty / available
         ts_phases = [traci.trafficlight.getPhase(ts) for ts in self.ts_ids]
         ts_states = [traci.trafficlight.getRedYellowGreenState(ts) for ts in self.ts_ids]
         rewards =  []
