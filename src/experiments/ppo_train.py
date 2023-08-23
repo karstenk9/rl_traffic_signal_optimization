@@ -15,10 +15,6 @@ from tqdm import trange
 import ma_environment.custom_envs as custom_env
 
 
-
-#env = sumo_rl.grid4x4(use_gui=False, out_csv_name="outputs/grid4x4/ppo_test", virtual_display=RESOLUTION,sumo_warnings=False)
-
-
 env = custom_env.MA_grid_train(use_gui=False,
                             reward_fn = 'brake_acceleration_reward',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
