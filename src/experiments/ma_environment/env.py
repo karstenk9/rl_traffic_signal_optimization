@@ -419,11 +419,11 @@ class SumoEnvironment(gym.Env):
         
         local_waiting_times = [traci.lane.getWaitingTime(lane_id) for lane_id in rel_lanes]
         # get number of vehicles (and types) on relevant lanes
-        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
-        # vehicle_ids = list(self.vehicles.keys())
-        num_vehicles = len(vehicle_ids)
-        # num_vehicles = len(self.vehicles)
-        #vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids]
+        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist] # use this for training
+        #vehicle_ids = list(self.vehicles.keys())
+        num_vehicles = len(vehicle_ids) # use this for training
+        #num_vehicles = len(self.vehicles)
+        vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids] # use this for training
         
         # get mean speed for all controlled lanes
         local_avg_speed = 0.0 if num_vehicles==0 else np.mean([traci.lane.getLastStepMeanSpeed(lane_id) for lane_id in rel_lanes])
@@ -432,7 +432,7 @@ class SumoEnvironment(gym.Env):
         
         # get mean speed for each lane and different vehicle types
         #pos = traci.vehicle.getPosition(vehID)
-        ''' following vehicle information crashed in the last sumo simulation runs - cannot access direkt veh info anymore'''
+        ''' following vehicle information needs to be put in comment for evaluation of the model'''
         for vehicle_id in vehicle_ids:
             vehicle_type = traci.vehicle.getTypeID(vehicle_id)
             vehicle_speed = traci.vehicle.getSpeed(vehicle_id)
