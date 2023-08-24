@@ -207,7 +207,7 @@ class TrafficSignal:
         return reward
 
     def _average_emission_reward(self):
-        return -self.get_average_emission.total_emission_avg()
+        return -self.get_average_emission()
     
     def _CO2_emission_reward(self):
         return - self.get_total_CO2emission()
@@ -271,7 +271,7 @@ class TrafficSignal:
 
     def get_total_CO2emission(self) -> float:
         '''
-        Return the total CO2 pollutant emission of all vehicles in a simulation.
+        Return the total CO2 pollutant emission of all vehicles in the controlled environment.
         '''
         CO2emission = 0.0
         vehs = self._get_veh_list()
@@ -282,7 +282,7 @@ class TrafficSignal:
     
     def get_average_emission(self) -> float:
         '''
-        Return the average pollutant emission of alle vehicles in a simulation separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
+        Return the average pollutant emission of vehicles in the controlled area separated into CO, CO2, HC, NOx, PMx, and fuel consumption.
         '''
         CO_emission = 0.0
         CO2_emission = 0.0
@@ -302,6 +302,7 @@ class TrafficSignal:
         NOx_emission = sum(self.sumo.vehicle.getNOxEmission(veh) for veh in vehs)
         fuel_consumption = sum(self.sumo.vehicle.getFuelConsumption(veh) for veh in vehs)
         
+        # get total emission averaged by # of vehicles
         total_emission_avg = (CO_emission + CO2_emission + HC_emission + PMx_emission + NOx_emission) / len(vehs)
         CO_avg = CO_emission / len(vehs)
         CO2_avg = CO2_emission / len(vehs)
@@ -310,7 +311,7 @@ class TrafficSignal:
         NOx_avg = NOx_emission / len(vehs)
         fuel_avg = fuel_consumption / len(vehs)
         
-        return total_emission_avg, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
+        return total_emission_avg #, CO_avg, CO2_avg, HC_avg, PMx_avg, NOx_avg, fuel_avg
     
 
     def get_emission_per_lane(self) -> List[List[float]]:

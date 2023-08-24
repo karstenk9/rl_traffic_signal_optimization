@@ -419,10 +419,12 @@ class SumoEnvironment(gym.Env):
         
         local_waiting_times = [traci.lane.getWaitingTime(lane_id) for lane_id in rel_lanes]
         # get number of vehicles (and types) on relevant lanes
-        #vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
-        vehicle_ids = list(self.vehicles.keys())
-        num_vehicles = len(self.vehicles)
+        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
+        # vehicle_ids = list(self.vehicles.keys())
+        num_vehicles = len(vehicle_ids)
+        # num_vehicles = len(self.vehicles)
         #vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids]
+        
         # get mean speed for all controlled lanes
         local_avg_speed = 0.0 if num_vehicles==0 else np.mean([traci.lane.getLastStepMeanSpeed(lane_id) for lane_id in rel_lanes])
         #local_avg_speed = 0.0 if num_vehicles==0 else np.mean([self.sumo.vehicle.getSpeed(vehicle_id) for vehicle_id in vehicle_ids])
@@ -431,14 +433,14 @@ class SumoEnvironment(gym.Env):
         # get mean speed for each lane and different vehicle types
         #pos = traci.vehicle.getPosition(vehID)
         ''' following vehicle information crashed in the last sumo simulation runs - cannot access direkt veh info anymore'''
-        # for vehicle_id in vehicle_ids:
-        #     vehicle_type = traci.vehicle.getTypeID(vehicle_id)
-        #     vehicle_speed = traci.vehicle.getSpeed(vehicle_id)
-        #     avg_speeds_by_type[vehicle_type] = []
-        #     avg_speeds_by_type[vehicle_type].append(vehicle_speed)
-        # average_speeds_dict = {}
-        # for vehicle_type, speeds in avg_speeds_by_type.items():
-        #     average_speeds_dict[vehicle_type] = np.mean(speeds) if speeds else None
+        for vehicle_id in vehicle_ids:
+            vehicle_type = traci.vehicle.getTypeID(vehicle_id)
+            vehicle_speed = traci.vehicle.getSpeed(vehicle_id)
+            avg_speeds_by_type[vehicle_type] = []
+            avg_speeds_by_type[vehicle_type].append(vehicle_speed)
+        average_speeds_dict = {}
+        for vehicle_type, speeds in avg_speeds_by_type.items():
+            average_speeds_dict[vehicle_type] = np.mean(speeds) if speeds else None
     
         return {
             # In SUMO, a vehicle is considered halting if its speed is below 0.1 m/s
@@ -457,7 +459,7 @@ class SumoEnvironment(gym.Env):
             "system_local_NOx": 0.0 if len(vehicles) == 0 else local_NOx,
             "system_local_noise_emission": 0.0 if len(vehicles) == 0 else local_noise,
             "system_local_#vehicles": 0.0 if len(vehicles) == 0 else num_vehicles,
-            #"system_local_avgSpeedsperType": average_speeds_dict if len(vehicles) != 0 else None,
+            "system_local_avgSpeedsperType": average_speeds_dict if len(vehicles) != 0 else None,
             "system_local_veh_types": vehicle_ids if len(vehicle_ids) != 0 else None, # changed from type to id; includes key to v-type
             "system_local_avg_speed": 0.0 if len(vehicles) == 0 else local_avg_speed,
             "system_last_reward": 0.0 if len(vehicles) == 0 else np.mean(list(self.rewards.values())),

@@ -16,14 +16,14 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_train(use_gui=False,
-                            reward_fn = 'brake_acceleration_reward',
+                            reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
                             sumo_warnings=False,
                             begin_time=25200,
                             num_seconds=4500, # sim_max_time = begin_time + num_seconds
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/brake_acceleration_200000',
-                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_brake_acceleration.xml, \
-                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_brake_acceleration.xml",
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/waitingTime_200000',
+                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_waitingTime.xml, \
+                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_waitingTime.xml",
                             )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time
@@ -56,36 +56,18 @@ model = PPO(
     n_epochs=10,
     clip_range=0.3,
     batch_size=64,
-    tensorboard_log="./logs/MA_grid/brake_acceleration",
+    tensorboard_log="./logs/MA_grid/waitingTime",
     device='auto' # use 'auto' for cpu only
 )
 
 print("Starting training")
 model.learn(total_timesteps=200000)
 
-model.save('urban_mobility_simulation/src/data/logs/brake_acceleration_200')
+model.save('urban_mobility_simulation/src/data/logs/waitingTime_200')
 
 print("Training finished. Starting evaluation")
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)
 
 print('Mean Reward: ', mean_reward)
-print('Std Reward: ', std_reward)
 
-#model = PPO.load("ppo_saved", print_system_info=True)
-
-#Maximum number of steps before reset, +1 because I'm scared of OBOE
-# print("Starting rendering")
-# num_steps = (max_time // delta_time) + 1
-
-# obs = env.reset()
-
-# if os.path.exists("temp"):
-#     shutil.rmtree("temp")
-
-# for t in trange(num_steps):
-#     actions, _ = model.predict(obs, state=None, deterministic=False)
-#     obs, reward, done, info = env.step(actions)
-#     img = env.render()
-#     img.save('temp/{}.png'.format(t))
-
-# env.close()
+env.close()
