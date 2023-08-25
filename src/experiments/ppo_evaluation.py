@@ -15,9 +15,9 @@ import numpy as np
 
 # Initialize SUMO environment as same as you trained the model (you need to replace with your own implementation)
 env = custom_env.MA_grid_eval(use_gui=False,
-                            reward_fn = 'average-speed',
+                            reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/speed_200_1800steps',
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/waitingTime_200_1800steps',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -52,7 +52,7 @@ env = VecMonitor(env)
 
 
 # Load the model
-model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/avg_speed_200.zip')
+model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/waitingTime_200.zip')
 
 # Get state of environment
 observation = env.reset()
@@ -66,7 +66,7 @@ data = []
 # Traffic lights to monitor / get controlled lanes from
 tls = ['tls_159','tls_160', 'tls_161']
 
-# Run the simulation for step from 25200 to 29700
+# Run the simulation for step from 25200 to 34200
 for step in range(1800):
     # Advance simulation step
     traci.simulationStep()
@@ -91,7 +91,7 @@ for step in range(1800):
     total_num_stops = sum([traci.vehicle.getStopState(vehicle_id) for vehicle_id in local_vehicles])
     current_reward = np.mean(reward)
         
-    # Append to data (or you can append to a file)
+    # Append to data list
     data.append([step, CO2_emissions, CO_emissions, HC_emissions, PMx_emissions, NOx_emissions, waiting_time, total_num_stops, current_reward])
 
 # Close the TraCI connection
@@ -100,5 +100,5 @@ traci.close()
 columns = ['step', 'CO2_emissions', 'CO_emissions', 'HC_emissions', 'PMx_emissions', 'NOx_emissions', 'waiting_time', 'total_num_stops', 'current_reward']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv('urban_mobility_simulation/src/data/evaluation/diffWaitTime_200k_1800.csv', index=False)
+df.to_csv('urban_mobility_simulation/src/data/evaluation/waitingTime_df.csv', index=False)
 

@@ -1,9 +1,7 @@
 """Environments from RESCO: https://github.com/jault/RESCO, paper https://people.engr.tamu.edu/guni/Papers/NeurIPS-signals.pdf ."""
 import os
 from ma_environment.env import env, parallel_env
-
-
-#PATH = os.path.dirname(sumo_rl.__file__)
+from ma_environment.env_eval import parallel_env as parallel_env_eval
 
 
 def MA_grid_train(parallel=True, **kwargs):
@@ -59,7 +57,7 @@ def MA_grid_eval(parallel=True, **kwargs):
         }
     )
     if parallel:
-        return parallel_env(**kwargs)
+        return parallel_env_eval(**kwargs)
     else:
         return env(**kwargs)
     

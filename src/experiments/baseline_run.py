@@ -90,7 +90,7 @@ for step in range(25200, 34200):  # == 2,5h simulation time
 
     # Append data to list for dataframe
     data.append([step, num_vehicles, vehicle_types, avg_speed, local_CO2_emission, local_CO_emission, local_HC_emission,
-             local_PMx_emission, local_NOx_emission, local_noise_emission, 
+             local_PMx_emission, local_NOx_emission, local_fuel_consumption, local_noise_emission, 
              local_waiting_time, local_stopped_vehicles, 
              total_CO2_emission, total_CO_emission, total_HC_emission, total_PMx_emission, total_NOx_emission, total_fuel_consumption,
              total_noise_emission, total_waiting_time, total_stopped_vehicles,
@@ -103,7 +103,7 @@ traci.close()
 
 # Create a DataFrame from the data
 columns = ['Step', 'num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'localCOEmission', 'localHCEmission',
-           'localPMxEmission', 'localNOxEmission', 'localNoiseEmission',
+           'localPMxEmission', 'localNOxEmission', 'local_fuel_consumption' 'localNoiseEmission',
            'localWaitingTime', 'localStoppedVehicles',
            'totalCO2Emission', 'totalCOEmission', 'totalHCEmission', 'totalPMxEmission', 'totalNOxEmission', 'totalFuelConsumption',
            'totalNoiseEmission', 'totalWaitingTime', 'totalStoppedVehicles',
