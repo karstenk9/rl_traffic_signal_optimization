@@ -103,7 +103,7 @@ traci.close()
 
 # Create a DataFrame from the data
 columns = ['Step', 'num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'localCOEmission', 'localHCEmission',
-           'localPMxEmission', 'localNOxEmission', 'local_fuel_consumption' 'localNoiseEmission',
+           'localPMxEmission', 'localNOxEmission', 'local_fuel_consumption','localNoiseEmission',
            'localWaitingTime', 'localStoppedVehicles',
            'totalCO2Emission', 'totalCOEmission', 'totalHCEmission', 'totalPMxEmission', 'totalNOxEmission', 'totalFuelConsumption',
            'totalNoiseEmission', 'totalWaitingTime', 'totalStoppedVehicles',
