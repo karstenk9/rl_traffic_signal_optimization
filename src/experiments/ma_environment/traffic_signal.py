@@ -220,8 +220,22 @@ class TrafficSignal:
     def _noise_emission_reward(self):
         return -self.get_average_noise_emission
     
+    # def _brake_reward(self):
+    #     return self.get_total_braking() # already negative
+    
+    # new normalized reward
     def _brake_reward(self):
-        return self.get_total_braking() # already negative
+        brakes, brake_sum = self.get_total_braking()
+        if len(brakes) == 0:
+            return 0.0
+        else:
+            #normalized_brake = (brake_sum - np.mean(brakes)) / (np.std(brakes) + 1e-10)
+            normalized_brake = np.mean(brakes)
+        return normalized_brake
+    
+    # simply normalize the reward by the number of vehicles braking
+    def _avg_brake_reward(self):
+        return self.get_average_braking()
 
     def _acceleration_reward(self):
         return self.get_total_acceleration()
@@ -230,9 +244,19 @@ class TrafficSignal:
         speed_brake = (0.5*self._average_speed_reward()) + (0.5*self._brake_reward())
         return speed_brake
     
+    # def _brake_accel_reward(self):
+    #     brake_accel = (0.5* self._brake_reward()) + (0.5*(-self._acceleration_reward()))
+    #     # negate acceleration (so they can't cancel each other out); higher braking and acceleration = more negative
+    #     return brake_accel
+    
+    # new normalized combined reward function
     def _brake_accel_reward(self):
-        brake_accel = (0.5* self._brake_reward()) + (0.5*(-self._acceleration_reward()))
-        # negate acceleration (so they can't cancel each other out); higher braking and acceleration = more negative
+        brake = self.get_total_braking()
+        accel = self.get_total_acceleration()
+        # normalizing the reward by the number of vehicles
+        # normalized_brake = (brake/len(self._get_veh_list()))
+        # normalized_accel = (-(accel/len(self._get_veh_list())))
+        brake_accel = (brake * accel)
         return brake_accel
     
     ### COMPUTE REWARD COMPONENTS ###
@@ -567,14 +591,39 @@ class TrafficSignal:
             
         return noise_emission
     
+    
+    def get_average_braking(self) -> float:
+        '''
+        Returns the average braking of all vehicles in a simulation.
+        '''
+        vehs = self._get_veh_list()
+        accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
+        if len(accelerations[accelerations < 0]) == 0:
+            return 0.0
+        else:
+            avg_brake = np.mean(accelerations[accelerations < 0]) # more braking "more negative"
+        return avg_brake
+    
+    
+    # new brake calculation
     def get_total_braking(self) -> float:
         '''
         Returns the total braking of all vehicles in a simulation.
         '''
         vehs = self._get_veh_list()
         accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
-        brake = np.sum(accelerations[accelerations < 0]) # more braking "more negative"
-        return brake
+        brakes = accelerations[accelerations < 0]
+        brake_sum = np.sum(accelerations[accelerations < 0]) # more braking "more negative"
+        return brakes, brake_sum
+    
+    # def get_total_braking(self) -> float:
+    #     '''
+    #     Returns the total braking of all vehicles in a simulation.
+    #     '''
+    #     vehs = self._get_veh_list()
+    #     accelerations = np.array([self.sumo.vehicle.getAcceleration(veh) for veh in vehs])
+    #     brake = np.sum(accelerations[accelerations < 0]) # more braking "more negative"
+    #     return brake
 
 
     def get_total_acceleration(self) -> float:
@@ -723,6 +772,7 @@ class TrafficSignal:
         "noise_emission": _noise_emission_reward,
         "local_emission": _ts_emission_reward,
         "brake_reward": _brake_reward,
+        "avg_brake_reward": _avg_brake_reward,
         "acceleration_reward": _acceleration_reward,
         "speed_brake_reward": _speed_brake_reward,
         "brake_acceleration_reward": _brake_accel_reward
