@@ -200,7 +200,6 @@ class TrafficSignal:
         return -self.get_total_queued()
 
     def _diff_waiting_time_reward(self):
-        # only considers local lanes of the traffic light (agent)
         ts_wait = sum(self.get_accumulated_waiting_time_per_lane()) / 100.0
         reward = self.last_measure - ts_wait
         self.last_measure = ts_wait
