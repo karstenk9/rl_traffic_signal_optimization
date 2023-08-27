@@ -432,7 +432,6 @@ class SumoEnvironment(gym.Env):
         
         # get mean speed for each lane and different vehicle types
         #pos = traci.vehicle.getPosition(vehID)
-        ''' following vehicle information needs to be put in comment for evaluation of the model'''
         for vehicle_id in vehicle_ids:
             vehicle_type = traci.vehicle.getTypeID(vehicle_id)
             vehicle_speed = traci.vehicle.getSpeed(vehicle_id)

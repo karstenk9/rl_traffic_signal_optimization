@@ -243,20 +243,11 @@ class TrafficSignal:
         speed_brake = (0.5*self._average_speed_reward()) + (0.5*self._brake_reward())
         return speed_brake
     
-    # def _brake_accel_reward(self):
-    #     brake_accel = (0.5* self._brake_reward()) + (0.5*(-self._acceleration_reward()))
-    #     # negate acceleration (so they can't cancel each other out); higher braking and acceleration = more negative
-    #     return brake_accel
-    
-    # new normalized combined reward function
     def _brake_accel_reward(self):
-        brake = self.get_total_braking()
-        accel = self.get_total_acceleration()
-        # normalizing the reward by the number of vehicles
-        # normalized_brake = (brake/len(self._get_veh_list()))
-        # normalized_accel = (-(accel/len(self._get_veh_list())))
-        brake_accel = (brake * accel)
+        brake_accel = (0.5* self._brake_reward()) + (0.5*(-self._acceleration_reward()))
+        # negate acceleration (so they can't cancel each other out); higher braking and acceleration = more negative
         return brake_accel
+    
     
     ### COMPUTE REWARD COMPONENTS ###
     

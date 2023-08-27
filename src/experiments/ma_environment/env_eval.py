@@ -459,7 +459,7 @@ class SumoEnvironment(gym.Env):
             "system_local_veh_types": vehicle_ids if len(vehicle_ids) != 0 else None, # changed from type to id; includes key to v-type
             "system_local_avg_speed": 0.0 if len(vehicles) == 0 else local_avg_speed,
             "system_last_reward": 0.0 if len(vehicles) == 0 else np.mean(list(self.rewards.values())),
-            "total_brake_traffic_signals": sum(self.traffic_signals[ts].get_total_braking() for ts in self.ts_ids),
+            "total_brake_traffic_signals": sum(self.traffic_signals[ts].get_total_braking()[1] for ts in self.ts_ids),
             "local_acceleration": sum(self.traffic_signals[ts].get_total_acceleration() for ts in self.ts_ids),
         }
         

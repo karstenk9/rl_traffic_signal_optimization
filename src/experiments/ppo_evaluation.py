@@ -15,9 +15,9 @@ import numpy as np
 
 # initialize SUMO environment using eval environment (collects different data during compute info)
 env = custom_env.MA_grid_eval(use_gui=False,
-                            reward_fn = 'queue',
+                            reward_fn = 'average-speed',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/queue_200_1800steps',
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/average-speed_200',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -39,7 +39,7 @@ env = VecMonitor(env)
 
 
 # Load specific trained model
-model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/queue_200.zip')
+model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/average-speed_200.zip')
 
 # Get state of environment
 observation = env.reset()
@@ -63,29 +63,88 @@ for step in range(1800):
     # Let model decide based on the current environment state
     actions, _ = model.predict(observation, state=None, deterministic=True)
 
-    # Apply the model's action to simulation
+    # Apply the model's action to simulation and get new observation state
     observation, reward, done, information = env.step(actions) # step takes 5 seconds for one simulation step --> 1800 steps = 9000 seconds = 2.5 hours
 
-    # Collect your required data
-    local_vehicles = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
+    # Get lanes and vehicles on lanes controlled by traffic lights
+    controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in tls) for item in sublist))
+    local_vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
+
+    # Get # of vehicles on the lanes
+    num_vehicles = len(local_vehicle_ids) 
+   
+    # Get vehicle types
+    vehicle_types = [] if num_vehicles == 0 else [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in local_vehicle_ids] if num_vehicles > 0 else []
+
+    # Get average speed of vehicles on the lanes
+    avg_speed = 0.0 if num_vehicles == 0 else np.mean([traci.vehicle.getSpeed(vehicle_id) for vehicle_id in local_vehicle_ids])
+
+    # Get local emission and further measures
+    local_CO2_emission = sum(traci.lane.getCO2Emission(lane_id) for lane_id in controlled_lanes)
+    local_CO_emission = sum(traci.lane.getCOEmission(lane_id) for lane_id in controlled_lanes)
+    local_HC_emission = sum(traci.lane.getHCEmission(lane_id) for lane_id in controlled_lanes)
+    local_PMx_emission = sum(traci.lane.getPMxEmission(lane_id) for lane_id in controlled_lanes)
+    local_NOx_emission = sum(traci.lane.getNOxEmission(lane_id) for lane_id in controlled_lanes)
+    local_fuel_consumption = sum(traci.lane.getFuelConsumption(lane_id) for lane_id in controlled_lanes)
+    local_noise_emission = sum(traci.lane.getNoiseEmission(lane_id) for lane_id in controlled_lanes)
+    local_waiting_time = sum(traci.lane.getWaitingTime(lane_id) for lane_id in controlled_lanes)
+    local_stopped_vehicles = sum(traci.lane.getLastStepHaltingNumber(lane_id) for lane_id in controlled_lanes)
     
-    CO2_emissions = sum([traci.vehicle.getCO2Emission(vehicle_id) for vehicle_id in local_vehicles])
-    CO_emissions = sum([traci.vehicle.getCOEmission(vehicle_id) for vehicle_id in local_vehicles])
-    HC_emissions = sum([traci.vehicle.getHCEmission(vehicle_id) for vehicle_id in local_vehicles])
-    PMx_emissions = sum([traci.vehicle.getPMxEmission(vehicle_id) for vehicle_id in local_vehicles])
-    NOx_emissions = sum([traci.vehicle.getNOxEmission(vehicle_id) for vehicle_id in local_vehicles])
-    waiting_time = sum([traci.vehicle.getWaitingTime(vehicle_id) for vehicle_id in local_vehicles])
-    total_num_stops = sum([traci.vehicle.getStopState(vehicle_id) for vehicle_id in local_vehicles])
-    current_reward = np.mean(reward)
-        
-    # Append to data list
-    data.append([step, CO2_emissions, CO_emissions, HC_emissions, PMx_emissions, NOx_emissions, waiting_time, total_num_stops, current_reward])
+    
+    # Get TLS Info (to compare phases and transitions)
+    tls159_phase = traci.trafficlight.getPhase(tls[0])
+    tls159_phase_duration = traci.trafficlight.getPhaseDuration(tls[0])
+    tls159_state = traci.trafficlight.getRedYellowGreenState(tls[0])
+    tls160_phase = traci.trafficlight.getPhase(tls[1])
+    tls160_phase_duration = traci.trafficlight.getPhaseDuration(tls[1])
+    tls160_state = traci.trafficlight.getRedYellowGreenState(tls[1])
+    tls161_phase = traci.trafficlight.getPhase(tls[2])
+    tls161_phase_duration = traci.trafficlight.getPhaseDuration(tls[2])
+    tls161_state = traci.trafficlight.getRedYellowGreenState(tls[2])
+    
+
+    # Append data to list for dataframe
+    data.append([step, num_vehicles, vehicle_types, avg_speed, local_CO2_emission, local_CO_emission, local_HC_emission,
+             local_PMx_emission, local_NOx_emission, local_fuel_consumption, local_noise_emission, 
+             local_waiting_time, local_stopped_vehicles, 
+             tls159_phase, tls159_phase_duration, tls159_state,
+             tls160_phase, tls160_phase_duration, tls160_state,
+             tls161_phase, tls161_phase_duration, tls161_state])
 
 # Close the TraCI connection
 traci.close()
 
-columns = ['step', 'CO2_emissions', 'CO_emissions', 'HC_emissions', 'PMx_emissions', 'NOx_emissions', 'waiting_time', 'total_num_stops', 'current_reward']
+# Create a DataFrame from the data
+columns = ['Step', 'num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'localCOEmission', 'localHCEmission',
+           'localPMxEmission', 'localNOxEmission', 'local_fuel_consumption','localNoiseEmission',
+           'localWaitingTime', 'localStoppedVehicles',
+           'tls159_phase', 'tls159_phase_duration', 'tls159_state',
+           'tls160_phase', 'tls160_phase_duration', 'tls160_state',
+           'tls161_phase', 'tls161_phase_duration', 'tls161_state']
+
+    # # Collect your required data
+    # local_vehicles = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
+    
+    # # Get local emission and further measures
+    # CO2_emissions = sum(traci.lane.getCO2Emission(lane_id) for lane_id in controlled_lanes)
+    # CO_emissions = sum(traci.lane.getCOEmission(lane_id) for lane_id in controlled_lanes)
+    # HC_emissions = sum(traci.lane.getHCEmission(lane_id) for lane_id in controlled_lanes)
+    # PMx_emissions = sum(traci.lane.getPMxEmission(lane_id) for lane_id in controlled_lanes)
+    # NOx_emissions = sum(traci.lane.getNOxEmission(lane_id) for lane_id in controlled_lanes)
+    # fuel_consumption = sum(traci.lane.getFuelConsumption(lane_id) for lane_id in controlled_lanes)
+    # noise_emission = sum(traci.lane.getNoiseEmission(lane_id) for lane_id in controlled_lanes)
+    # waiting_time = sum(traci.lane.getWaitingTime(lane_id) for lane_id in controlled_lanes)
+    # total_num_stops = sum(traci.lane.getLastStepHaltingNumber(lane_id) for lane_id in controlled_lanes)
+    # current_reward = np.mean(reward)
+        
+    # # Append to data list
+    # data.append([step, CO2_emissions, CO_emissions, HC_emissions, PMx_emissions, NOx_emissions, fuel_consumption, noise_emission, waiting_time, total_num_stops, current_reward])
+
+# # Close the TraCI connection
+# traci.close()
+
+# columns = ['step', 'CO2_emissions', 'CO_emissions', 'HC_emissions', 'PMx_emissions', 'NOx_emissions','fuel_consumption', 'noise_emission', 'waiting_time', 'total_num_stops', 'current_reward']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv('urban_mobility_simulation/src/data/evaluation/queue_df.csv', index=False)
+df.to_csv('urban_mobility_simulation/src/data/evaluation/average-speed_df.csv', index=False)
 
