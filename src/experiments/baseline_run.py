@@ -7,12 +7,12 @@ import numpy as np
 
 
 # Connect to SUMO
-traci.start(['sumo', "-c", "urban_mobility_simulation/models/20230718_sumo_ma/osm.sumocfg",
+traci.start(['sumo-gui', "-c", "urban_mobility_simulation/models/20230718_sumo_ma/osm.sumocfg",
                                     "--time-to-teleport", "300",
-                                    "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuatedTL_9000.xml",
-                                    "--output-prefix", "TIME",
-                                    #"--device.emissions.probability", "1.0",
-                                    "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_actuatedTL_9000.xml"
+                                    # "--tripinfo-output", "urban_mobility_simulation/src/data/actuated_output/tripinfo_actuatedTL_9000.xml",
+                                    # "--output-prefix", "TIME",
+                                    # #"--device.emissions.probability", "1.0",
+                                    # "--emission-output", "urban_mobility_simulation/src/data/actuated_output/emission_actuatedTL_9000.xml"
                                     ])
 
 # Initialize a list to hold data

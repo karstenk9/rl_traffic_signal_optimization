@@ -17,7 +17,7 @@ import numpy as np
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'queue',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/queue_200',
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/test_queue_200',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -45,7 +45,7 @@ model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation
 observation = env.reset()
 
 # Initialize SUMO simulation
-traci.start(["sumo", "-c", "urban_mobility_simulation/models/20230718_sumo_ma/osm.sumocfg"])
+#traci.start(["sumo", "-c", "urban_mobility_simulation/models/20230718_sumo_ma/osm.sumocfg"])
 
 # Initialize the lists to hold data
 data = []
@@ -56,12 +56,12 @@ tls = ['tls_159','tls_160', 'tls_161']
 # Run the simulation for step from 25200 to 34200
 for step in range(1800):
     # Advance simulation step
-    traci.simulationStep()
+    #traci.simulationStep()
     
     controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in tls) for item in sublist))
 
     # Let model decide based on the current environment state
-    actions, _ = model.predict(observation, state=None, deterministic=True)
+    actions, _ = model.predict(observation) #, state=None, deterministic=True)
 
     # Apply the model's action to simulation and get new observation state
     observation, reward, done, information = env.step(actions) # step takes 5 seconds for one simulation step --> 1800 steps = 9000 seconds = 2.5 hours
@@ -123,5 +123,5 @@ columns = ['Step', 'num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emissi
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv('urban_mobility_simulation/src/data/evaluation/queue_df.csv', index=False)
+df.to_csv('urban_mobility_simulation/src/data/evaluation/test_queue_df.csv', index=False)
 
