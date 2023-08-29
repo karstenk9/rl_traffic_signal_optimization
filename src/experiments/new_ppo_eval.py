@@ -17,9 +17,9 @@ import ma_environment.custom_envs as custom_env
 
 
 env = custom_env.MA_grid_eval(use_gui=False,
-                            reward_fn = 'queue',
+                            reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/test_average-speed',
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/test_waiting-time_400',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -42,7 +42,7 @@ env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
 
 env = VecMonitor(env)
 
-model = PPO.load('urban_mobility_simulation/src/data/logs/average-speed_200.zip', env=env)
+model = PPO.load('urban_mobility_simulation/src/data/logs/waitingTime_400.zip', env=env)
 
 obs = env.reset()
 
@@ -113,7 +113,7 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'lo
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv('urban_mobility_simulation/src/data/evaluation/test_average-speed_df.csv', index=False)
+df.to_csv('urban_mobility_simulation/src/data/evaluation/test_waiting-time_400_df.csv', index=False)
 
 
 env.close()
