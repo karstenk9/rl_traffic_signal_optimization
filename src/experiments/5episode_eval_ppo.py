@@ -28,8 +28,8 @@ Script to evaluate model performance with regard to emissions emitted during sim
 episodes = 5
 
 # define model to evaluate
-type = 'waitingTime'
-model_version = 'waitingTime_900'
+type = 'emission'
+model_version = 'combined_emission_200'
 
 tls = ['tls_159','tls_160', 'tls_161']
 
