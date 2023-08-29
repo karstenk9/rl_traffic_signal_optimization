@@ -29,7 +29,7 @@ episodes = 5
 
 # define model to evaluate
 type = 'waitingTime'
-model_version = 'waitingTime_200'
+model_version = 'waitingTime_900'
 
 tls = ['tls_159','tls_160', 'tls_161']
 
