@@ -1,7 +1,7 @@
-Urban Mobility Simulation 
+MARL for Traffic Signal Optimisation using SUMO
 ==============================
 
-**Multi Agent RL (PPO) for Traffic Signal Optimization using SUMO**
+**Multi Agent Reinforcement Learning with PPO for Traffic Signal Optimization using SUMO**
 The project investigates traffic polciies, and more specifically intelligent traffic signal control, based on reinforcement learning to identify measures that can reduce pollutant emissions within cities. SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
 
 How to run this repository
