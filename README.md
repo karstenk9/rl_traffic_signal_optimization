@@ -1,7 +1,7 @@
-Urban Mobility Simulation 
+MARL for Traffic Signal Optimisation using SUMO
 ==============================
 
-**Multi Agent RL (PPO) for Traffic Signal Optimization using SUMO**
+**Multi Agent Reinforcement Learning with PPO for Traffic Signal Optimization using SUMO**
 The project investigates traffic polciies, and more specifically intelligent traffic signal control, based on reinforcement learning to identify measures that can reduce pollutant emissions within cities. SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
 
 How to run this repository
@@ -27,19 +27,10 @@ export LIBSUMO_AS_TRACI=1
 ```
 Notice that you will not be able to run with sumo-gui or with multiple simulations in parallel if this is active ([more details](https://sumo.dlr.de/docs/Libsumo.html)).
 
-### Install SUMO-RL
+### Credits for SUMO-RL
 
-Stable release version is available through pip
-```bash
-pip install sumo-rl
-```
+The RL environments [ma_environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/ma_environment) and [environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/environment) are based on Lucas Alegre's [sumo-rl environment](https://github.com/LucasAlegre/sumo-rl/tree/main/sumo_rl/environment) which make use of Gymnasium and Stable Baselines3.
 
-Alternatively you can install using the latest (unreleased) version
-```bash
-git clone https://github.com/LucasAlegre/sumo-rl
-cd sumo-rl
-pip install -e .
-```
 
 ### Run Multi-Agent RL with Stable Baseline3 PPO
 The folder [src/experiments](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments) contains the relevant training file and another folder [ma_environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/ma_environment) that specifies the network, environment, traffic signal actions and rewards, actions and observations for the multi-agent setting.
