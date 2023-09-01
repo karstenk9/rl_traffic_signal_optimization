@@ -17,11 +17,11 @@ import ma_environment.custom_envs as custom_env
 
 env = custom_env.MA_grid_train(use_gui=False,
                             reward_fn = 'diff-waiting-time',
-                            traffic_lights= ['tls_159','tls_160', 'tls_161'], #['tls_155','tls_156','tls_157','tls_159','tls_160','tls_161'],
+                            traffic_lights= ['tls_159','tls_160', 'tls_161'], 
                             sumo_warnings=False,
                             begin_time=25200,
                             num_seconds=4500, # sim_max_time = begin_time + num_seconds
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/diff-waiting-time_900000',
+                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/diff-waiting-time_200000',
                             additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_diff-waiting-time.xml, \
                                                 --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_diff-waiting-time.xml",
                             )
@@ -42,29 +42,27 @@ env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
 
 env = VecMonitor(env)
 
-# model = PPO(
-#     policy="MlpPolicy",
-#     env=env,
-#     verbose=3,
-#     gamma=0.95,
-#     n_steps=256,
-#     ent_coef=0.01,
-#     learning_rate=0.00025,
-#     vf_coef=0.05,
-#     max_grad_norm=0.9,
-#     gae_lambda=0.95,
-#     n_epochs=10,
-#     clip_range=0.3,
-#     batch_size=64,
-#     tensorboard_log="./logs/MA_grid/avg_brake_NEW",
-#     device='auto' # use 'auto' for cpu only
-# )
-
-model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/waitingTime_400.zip', env=env)
+model = PPO(
+    policy="MlpPolicy",
+    env=env,
+    verbose=3,
+    gamma=0.95,
+    n_steps=256,
+    ent_coef=0.01,
+    learning_rate=0.00025,
+    vf_coef=0.05,
+    max_grad_norm=0.9,
+    gae_lambda=0.95,
+    n_epochs=10,
+    clip_range=0.3,
+    batch_size=64,
+    tensorboard_log="./logs/MA_grid/avg_brake_NEW",
+    device='auto' # use 'auto' for cpu & mps for GPU
+)
 
 
 print("Starting training")
-model.learn(total_timesteps=500000)
+model.learn(total_timesteps=200000)
 
 model.save('urban_mobility_simulation/src/data/logs/waitingTime_900')
 
