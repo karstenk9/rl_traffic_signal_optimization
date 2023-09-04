@@ -9,7 +9,7 @@ How to run this repository
 
 ## Prerequisites:
 
-#### Install SUMO latest version:
+#### Install [SUMO](https://eclipse.dev/sumo/) latest version:
 
 ```bash
 sudo add-apt-repository ppa:sumo/stable
