@@ -2,101 +2,65 @@ MARL for Traffic Signal Optimisation using SUMO
 ==============================
 
 **Multi Agent Reinforcement Learning with PPO for Traffic Signal Optimization using SUMO**
-The project investigates traffic polciies, and more specifically intelligent traffic signal control, based on reinforcement learning to identify measures that can reduce pollutant emissions within cities. SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
+The project investigates intelligent traffic signal control using multi-agent reinforcement learning (MARL) to identify measures that can reduce pollutant and noise emissions within cities. Hereby, SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
 
 How to run this repository
 ------------
 
-## Install
+## Prerequisites:
 
-### Install SUMO latest version:
+#### Install SUMO latest version:
 
 ```bash
 sudo add-apt-repository ppa:sumo/stable
 sudo apt-get update
 sudo apt-get install sumo sumo-tools sumo-doc 
 ```
-Don't forget to set SUMO_HOME variable (default sumo installation path is /usr/share/sumo)
+Important: Set SUMO_HOME variable (default sumo installation path is /usr/share/sumo)
 ```bash
 echo 'export SUMO_HOME="/usr/share/sumo"' >> ~/.bashrc
 source ~/.bashrc
 ```
-Important: for a huge performance boost (~8x) with Libsumo, you can declare the variable:
+#### Install (OpenAI) [Gymnasium](https://gymnasium.farama.org):
+
 ```bash
-export LIBSUMO_AS_TRACI=1
+pip install gymnasium
 ```
-Notice that you will not be able to run with sumo-gui or with multiple simulations in parallel if this is active ([more details](https://sumo.dlr.de/docs/Libsumo.html)).
+#### Install [PettingZoo](https://pettingzoo.farama.org):
+
+```bash
+pip install pettingzoo
+```
+
+#### Install [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3):
+
+```bash
+pip install stable-baselines3[extra]
+```
+
+
+### Run Multi-Agent RL with Stable Baseline3 PPO
+
+The folder [src/experiments](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments) contains the relevant training [ppo_train.py](https://github.com/JenniferHahn/rl_traffic_signal_optimization/blob/master/src/experiments/ppo_train.py) as well as evaluation files ([eval_ppo.py](https://github.com/JenniferHahn/rl_traffic_signal_optimization/blob/master/src/experiments/eval_ppo.py) & [5episode_eval_ppo.py](https://github.com/JenniferHahn/rl_traffic_signal_optimization/blob/master/src/experiments/5episode_eval_ppo.py)). Another folder - [ma_environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/ma_environment) - specifies the network, environment, traffic signal actions and rewards, actions and observations for the multi-agent setting.
+
+The network of the inner city of Mannheim used can be found in [models/20230717_sumo_ma](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/models/20230718_sumo_ma).
+
+All models trained for different reward functions (defined in traffic_signal.py) are stored in [src/data/logs](https://github.com/JenniferHahn/rl_traffic_signal_optimization/tree/master/src/data/logs).
 
 ### Credits for SUMO-RL
 
 The RL environments [ma_environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/ma_environment) and [environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/environment) are based on Lucas Alegre's [sumo-rl environment](https://github.com/LucasAlegre/sumo-rl/tree/main/sumo_rl/environment) which make use of Gymnasium and Stable Baselines3.
 
 
-### Run Multi-Agent RL with Stable Baseline3 PPO
-The folder [src/experiments](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments) contains the relevant training file and another folder [ma_environment](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/src/experiments/ma_environment) that specifies the network, environment, traffic signal actions and rewards, actions and observations for the multi-agent setting.
-
-The network of the inner city of Mannheim used can be found in [models/20230717_sumo_ma](https://github.com/JenniferHahn/urban_mobility_simulation/tree/master/models/20230718_sumo_ma).
-
-The Environment including agent, action and observation spaces as well as inital reward function and metrics for a baseline are based on [SUMO-RL](https://github.com/LucasAlegre/sumo-rl/). 
-
-
 **Important Notes:**
 
 - The obs_as_tensor function in stable_baselines3/common/util.py was updated to run the code with local GPU (mps).
-- In case there are any issues running ray, try pip install -U pyarrow and install numpy version 1.19
-- In case there are any issues with the reset function within pettingzoo_env, exchange the original ray/rllib/env/wrappers/pettingzoo_env.py with the following script/commit
-https://github.com/ray-project/ray/blob/f24f94ca36a79366e935d842d657a25470216faa/rllib/env/wrappers/pettingzoo_env.py
-
 
 
 
 Project Organization
 ------------
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
 
 --------
