@@ -1,4 +1,14 @@
-"""SUMO Environment for Traffic Signal Control."""
+
+
+"""SUMO Environment for Traffic Signal Control.
+
+Source of this Script: Lucas Alegre: SUMO-RL https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/env.py.
+Main changes and additions in compute system and agent info 
+as well as further adjustments to input a specific list of traffic signals to be controlled by the agents.
+
+
+"""
+
 import os
 import sys
 from pathlib import Path
@@ -419,19 +429,14 @@ class SumoEnvironment(gym.Env):
         
         local_waiting_times = [traci.lane.getWaitingTime(lane_id) for lane_id in rel_lanes]
         # get number of vehicles (and types) on relevant lanes
-        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist] # use this for training
-        #vehicle_ids = list(self.vehicles.keys())
-        num_vehicles = len(vehicle_ids) # use this for training
-        #num_vehicles = len(self.vehicles)
-        vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids] # use this for training
+        vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in rel_lanes) for item in sublist]
+        num_vehicles = len(vehicle_ids)
+        vehicle_types = [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in vehicle_ids]
         
         # get mean speed for all controlled lanes
         local_avg_speed = 0.0 if num_vehicles==0 else np.mean([traci.lane.getLastStepMeanSpeed(lane_id) for lane_id in rel_lanes])
-        #local_avg_speed = 0.0 if num_vehicles==0 else np.mean([self.sumo.vehicle.getSpeed(vehicle_id) for vehicle_id in vehicle_ids])
-        #local_avg_speed = np.mean(mean_speeds) if mean_speeds else None  
         
         # get mean speed for each lane and different vehicle types
-        #pos = traci.vehicle.getPosition(vehID)
         for vehicle_id in vehicle_ids:
             vehicle_type = traci.vehicle.getTypeID(vehicle_id)
             vehicle_speed = traci.vehicle.getSpeed(vehicle_id)

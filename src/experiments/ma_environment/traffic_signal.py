@@ -1,4 +1,14 @@
-"""This module contains the TrafficSignal class, which represents a traffic signal in the simulation."""
+
+
+"""This module contains the TrafficSignal class, which represents a traffic signal in the simulation.
+
+
+Source of this script: Lucas Alegre - SUMORl:  https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/traffic_signal.py
+
+Includes further functions for data retrieval and calculation of reward functions, such as brake, acceleration, and emission.
+
+"""
+
 import os
 import sys
 from typing import Callable, List, Union

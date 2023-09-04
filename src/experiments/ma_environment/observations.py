@@ -1,4 +1,14 @@
-"""Observation functions for traffic signals."""
+
+
+"""Observation functions for traffic signals.
+
+Source of this script: Lucas Alegre - SUMORl:  https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/observations.py
+
+
+"""
+
+
+
 from abc import abstractmethod
 
 import numpy as np

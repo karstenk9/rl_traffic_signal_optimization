@@ -1,12 +1,16 @@
+
+
 """SUMO Environment for Traffic Signal Control.
 
-Largely adapted from Lucas Alegre: SUMO-RL https://github.com/LucasAlegre/sumo-rl.
+Source of this Script: Lucas Alegre: SUMO-RL https://github.com/LucasAlegre/sumo-rl/blob/main/sumo_rl/environment/env.py.
 Main changes and additions in compute system and agent info.
 
 Same environment as env.py but with adjusted output because you can't access the same data 
 when only taking one step for evaluation of the predicted actions.
 
 """
+
+
 import os
 import sys
 from pathlib import Path
