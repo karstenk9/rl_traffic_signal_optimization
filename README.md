@@ -2,7 +2,9 @@ MARL for Traffic Signal Optimisation using SUMO
 ==============================
 
 **Multi Agent Reinforcement Learning with PPO for Traffic Signal Optimization using SUMO**
-The project investigates intelligent traffic signal control using multi-agent reinforcement learning (MARL) to identify measures that can reduce pollutant and noise emissions within cities. Hereby, SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
+
+As part of my Master Thesis at the University of Mannheim, the project investigates intelligent traffic signal control using multi-agent reinforcement learning (MARL) to identify measures that can reduce pollutant and noise emissions within cities. 
+Hereby, SUMO (Simulation of Urban Mobility) is used for a microscopic traffic simulation and analysis within the inner city of Mannheim.
 
 How to run this repository
 ------------
