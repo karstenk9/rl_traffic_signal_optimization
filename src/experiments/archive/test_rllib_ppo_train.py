@@ -38,17 +38,17 @@ import supersuit as ss
 
 def env_creator(args):
         env = custom_env.MA_grid_new(
-                    net_file = "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml",
-                    route_file ="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/veh_routes.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
-                                /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-                    out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_emissionAllTest',
+                    net_file = "/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml",
+                    route_file ="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/veh_routes.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/truck_routes.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml, \
+                                /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml",
+                    out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/MA_grid_emissionAllTest',
                     use_gui=False,
                     num_seconds=30000,
                     begin_time=19800,

@@ -21,9 +21,9 @@ env = custom_env.MA_grid_train(use_gui=False,
                             sumo_warnings=False,
                             begin_time=25200,
                             num_seconds=4500, # sim_max_time = begin_time + num_seconds
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/diff-waiting-time_200000',
-                            additional_sumo_cmd="--emission-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/emission_diff-waiting-time.xml, \
-                                                --lanedata-output /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/lane_diff-waiting-time.xml",
+                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/diff-waiting-time_200000',
+                            additional_sumo_cmd="--emission-output /home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/emission_diff-waiting-time.xml, \
+                                                --lanedata-output /home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/lane_diff-waiting-time.xml",
                             )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time

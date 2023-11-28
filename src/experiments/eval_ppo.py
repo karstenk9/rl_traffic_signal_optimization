@@ -19,7 +19,7 @@ import ma_environment.custom_envs as custom_env
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/test_waiting-time_400',
+                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/evaluation/test_waiting-time_400',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)

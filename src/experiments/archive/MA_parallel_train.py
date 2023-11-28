@@ -29,18 +29,18 @@ import ma_environment.env as custom_env
 #         env_name,
 #         lambda _: ParallelPettingZooEnv(
 #             custom_env.parallel_env(
-#                 net_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/additional_tls.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml',
-#                 route_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/routes_nm.xml, \
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/trucks_routes.xml, \
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
-#                 out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/',
+#                 net_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/additional_tls.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml',
+#                 route_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/routes_nm.xml, \
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml,\
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml,\
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/trucks_routes.xml, \
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
+#                 out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/',
 #                 use_gui=True,
 #                 num_seconds=80000,
 #                 begin_time=19800,
@@ -62,18 +62,18 @@ def env_creator(args):
 
 # def env_creator(args):
 #     env = custom_env.parallel_env(
-#                 net_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml', \
-#                         # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
-#                         # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/additional_tls.xml, \
-#                         # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
-#                         # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
-#                         # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml',
-#                 route_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/routes_nm.xml', \
-#                             # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
-#                             # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
-#                             # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/trucks_routes.xml, \
-#                             # /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
-#                 out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/',
+#                 net_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml', \
+#                         # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+#                         # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/additional_tls.xml, \
+#                         # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml, \
+#                         # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml, \
+#                         # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml',
+#                 route_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/routes_nm.xml', \
+#                             # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml,\
+#                             # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml,\
+#                             # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/trucks_routes.xml, \
+#                             # /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
+#                 out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/',
 #                 use_gui=True,
 #                 num_seconds=80000,
 #                 begin_time=19800,

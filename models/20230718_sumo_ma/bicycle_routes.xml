@@ -5,8 +5,8 @@
     <begin value="14400"/>
     <end value="75600"/>
     <insertion-rate value="1005.0"/>
-    <net-file value="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml"/>
-    <output-trip-file value="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml"/>
+    <net-file value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml"/>
+    <output-trip-file value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml"/>
     <prefix value="bike"/>
     <validate value="True"/>
     <vehicle-class value="bicycle"/>
@@ -17,12 +17,12 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
 
     <input>
-        <net-file value="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml"/>
-        <route-files value="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml"/>
+        <net-file value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml"/>
+        <route-files value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml"/>
     </input>
 
     <output>
-        <output-file value="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml.tmp"/>
+        <output-file value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml.tmp"/>
         <alternatives-output value="NUL"/>
         <write-trips value="true"/>
     </output>

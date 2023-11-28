@@ -35,18 +35,18 @@ import ma_environment.custom_envs as custom_env
 #         env_name,
 #         lambda _: ParallelPettingZooEnv(
 #             custom_env.parallel_env(
-#                 net_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/additional_tls.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml, \
-#                         /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml',
-#                 route_file='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/routes_veh.xml, \
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml,\
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml,\
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/trucks_routes.xml, \
-#                             /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
-#                 out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/',
+#                 net_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/additional_tls.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml, \
+#                         /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml',
+#                 route_file='/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/routes_veh.xml, \
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml,\
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml,\
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/trucks_routes.xml, \
+#                             /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.add.xml',
+#                 out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/',
 #                 use_gui=True,
 #                 num_seconds=80000,
 #                 begin_time=19800,
@@ -60,17 +60,17 @@ env_name = "MA_grid"
 
 def env_creator(args):
     env = custom_env.MA_grid_new(
-                net_file = "/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.net.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/stops.add.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/vtypes.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/osm.poly.xml",
-                route_file ="/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/veh_routes.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/truck_routes.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/bicycle_routes.xml, \
-                            /Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/models/20230718_sumo_ma/motorcycle_routes.xml",
-                out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/MA_grid_combinedemissionAllTest',
+                net_file = "/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml",
+                route_file ="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/veh_routes.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/truck_routes.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml, \
+                            /home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml",
+                out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/MA_grid_combinedemissionAllTest',
                 use_gui=False,
                 num_seconds=30000,
                 begin_time=19800,
@@ -127,7 +127,7 @@ for i in range(100):
     print("Training iteration {}...".format(i))
     print(pretty_print(result))
 
-ppo.save("/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/model_outputs/ppo_rllib_AllEmission")
+ppo.save("/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/ppo_rllib_AllEmission")
 
 #result =  
 tune.run(

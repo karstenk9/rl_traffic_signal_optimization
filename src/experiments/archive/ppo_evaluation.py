@@ -17,7 +17,7 @@ import numpy as np
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'queue',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/evaluation/test_queue_200',
+                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/evaluation/test_queue_200',
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -39,7 +39,7 @@ env = VecMonitor(env)
 
 
 # Load specific trained model
-model = PPO.load('/Users/jenniferhahn/Documents/GitHub/urban_mobility_simulation/src/data/logs/queue_200.zip', env=env)
+model = PPO.load('/home/inestp01/rl_traffic_signal_optimization/src/data/logs/queue_200.zip', env=env)
 
 # Get state of environment
 observation = env.reset()
