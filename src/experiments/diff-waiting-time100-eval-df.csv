@@ -1,0 +1,21 @@
+num_vehicles,vehicle_types,avg_speed,localWaitingTime,localStoppedVehicles,actions,tls159_phase,tls159_phase_duration,tls159_state,tls160_phase,tls160_phase_duration,tls160_state,tls161_phase,tls161_phase_duration,tls161_state
+0,[],0.0,0.0,0,[1 1 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+0,[],0.0,0.0,0,[1 1 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+0,[],0.0,0.0,0,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+0,[],0.0,0.0,0,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+0,[],0.0,0.0,0,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+0,[],0.0,0.0,0,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+0,[],0.0,0.0,0,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+0,[],0.0,0.0,0,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+0,[],0.0,0.0,0,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+0,[],0.0,0.0,0,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+1,['truck_truck'],13.537891953239798,0.0,0,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+1,['truck_truck'],5.3243123250303315,0.0,0,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+1,['truck_truck'],0.004578673452951684,3.0,1,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+1,['truck_truck'],0.0,8.0,1,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+1,['truck_truck'],0.0,13.0,1,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+1,['truck_truck'],0.0,18.0,1,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+1,['truck_truck'],0.0,23.0,1,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+1,['truck_truck'],0.0,28.0,1,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,ggggggggggrrggggggggggg
+1,['truck_truck'],0.0,33.0,1,[0 0 1],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
+1,['truck_truck'],0.0,38.0,1,[0 0 5],0,1.0,GGGgrrrrrrgGgGGrrrGG,0,1.0,rgGgGrrrrrrrrrrrGGrGGrG,0,1.0,rrrrrrrgrrggrrrrrrggrrr
