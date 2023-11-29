@@ -18,10 +18,11 @@ name = model_path.stem
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name= name + "_eval1",
+                            out_csv_name= name + "_eval",
                             begin_time=25200,
                             num_seconds=9000,
-                            time_to_teleport=300)
+                            time_to_teleport=300,
+                            additional_sumo_cmd=f"--tripinfo-output {name}-tripinfo.xml")
 
 
 max_time = env.unwrapped.env.sim_max_time
@@ -68,14 +69,6 @@ for t in range(25200, 34200, delta_time):
     # Get average speed of vehicles on the lanes
     avg_speed = 0.0 if num_vehicles == 0 else np.mean([traci.vehicle.getSpeed(vehicle_id) for vehicle_id in local_vehicle_ids])
 
-    # get CO2 emissions for controlled lanes
-    local_CO2_emission = sum(traci.lane.getCO2Emission(lane_id) for lane_id in controlled_lanes)
-    local_CO_emission = sum(traci.lane.getCOEmission(lane_id) for lane_id in controlled_lanes)
-    local_HC_emission = sum(traci.lane.getHCEmission(lane_id) for lane_id in controlled_lanes)
-    local_PMx_emission = sum(traci.lane.getPMxEmission(lane_id) for lane_id in controlled_lanes)
-    local_NOx_emission = sum(traci.lane.getNOxEmission(lane_id) for lane_id in controlled_lanes)
-    local_fuel_consumption = sum(traci.lane.getFuelConsumption(lane_id) for lane_id in controlled_lanes)
-    local_noise_emission = sum(traci.lane.getNoiseEmission(lane_id) for lane_id in controlled_lanes)
     local_waiting_time = sum(traci.lane.getWaitingTime(lane_id) for lane_id in controlled_lanes)
     local_stopped_vehicles = sum(traci.lane.getLastStepHaltingNumber(lane_id) for lane_id in controlled_lanes)
     
@@ -90,22 +83,13 @@ for t in range(25200, 34200, delta_time):
     tls161_phase_duration = traci.trafficlight.getPhaseDuration(tls[2])
     tls161_state = traci.trafficlight.getRedYellowGreenState(tls[2])
     
-    data.append([num_vehicles, vehicle_types, avg_speed, local_CO2_emission, local_CO_emission, local_HC_emission,
-             local_PMx_emission, local_NOx_emission, local_fuel_consumption, local_noise_emission, 
+    data.append([num_vehicles, vehicle_types, avg_speed,
              local_waiting_time, local_stopped_vehicles, actions,
              tls159_phase, tls159_phase_duration, tls159_state,
              tls160_phase, tls160_phase_duration, tls160_state,
              tls161_phase, tls161_phase_duration, tls161_state])
-    # with open('<emission_output_path>/<emission_output_file_name>.csv', 'a') as f:
-    #     f.write('{},{},{:.3f}\n'.format(t, 'controlled_lanes', local_CO2_emission))
-    # # get lane data
-    # lane_data = traci.lanearea.getLastStepOccupancy(lane_area_ids=controlled_lanes)
-    # # save to file
-    # with open('<lane_output_path>/<lane_output_file_name>.csv', 'a') as f:
-    #     f.write('{},{},{},{},{},{},{}\n'.format(t, lane_data['tls_159_0'], lane_data['tls_159_1'], lane_data['tls_160_0'], lane_data['tls_160_1'], lane_data['tls_161_0'], lane_data['tls_161_1']))
 
-columns = ['num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'localCOEmission', 'localHCEmission',
-           'localPMxEmission', 'localNOxEmission', 'local_fuel_consumption','localNoiseEmission',
+columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
            'localWaitingTime', 'localStoppedVehicles', 'actions',
            'tls159_phase', 'tls159_phase_duration', 'tls159_state',
            'tls160_phase', 'tls160_phase_duration', 'tls160_state',
