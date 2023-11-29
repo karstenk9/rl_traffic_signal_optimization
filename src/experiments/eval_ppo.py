@@ -1,11 +1,14 @@
 import numpy as np
 import pandas as pd
+import os
 import supersuit as ss
 import traci
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import VecMonitor
 import sys
 from pathlib import Path
+from datetime import datetime
+import shutil
 
 import ma_environment.custom_envs as custom_env
 
@@ -13,7 +16,7 @@ assert len(sys.argv) == 2, "Filename of the trained model must be passed."
 model_path = Path(sys.argv[1])
 assert model_path.exists(), f"File {model_path} does not exist."
 name = model_path.stem
-
+tripinfo_filename = "{name}-tripinfo.xml"
 
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'diff-waiting-time',
@@ -22,7 +25,7 @@ env = custom_env.MA_grid_eval(use_gui=False,
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300,
-                            additional_sumo_cmd=f"--tripinfo-output {name}-tripinfo.xml")
+                            additional_sumo_cmd=f"--tripinfo-output {tripinfo_filename}")
 
 
 max_time = env.unwrapped.env.sim_max_time
@@ -52,8 +55,19 @@ controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlle
 controlled_vehicles = set()
 
 data = []
+start = 25200  # TODO: change back to 25200
+end = 34200   # TODO: change back to 34200
 
-for t in range(25200, 34200, delta_time):
+for t in range(start, end, delta_time):
+
+    # TODO: remove
+    # Every 1000 steps, create a backup of the output file
+    if t % 1000:
+        if os.path.exists(tripinfo_filename):
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            file_name, file_extension = os.path.splitext(tripinfo_filename)
+            new_file_name = f"{file_name}_{timestamp}{file_extension}"
+            shutil.copy(tripinfo_filename, new_file_name)
 
     actions, _states = model.predict(obs, deterministic=True)
     obs, rewards, dones, info = env.step(actions)
