@@ -1,27 +1,30 @@
-import os
-import shutil
-import subprocess
-
-import numpy as np
 import supersuit as ss
-import traci
-from pyvirtualdisplay.smartdisplay import SmartDisplay
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import VecMonitor
-from tqdm import trange
+import sys
 
 import ma_environment.custom_envs as custom_env
 
 
+n_steps = 200000
+if len(sys.argv) > 1:
+    try:
+        n_steps = int(sys.argv[1])
+    except ValueError:
+        pass
+
+reward_fn = "diff-waiting-time"
+name = reward_fn + str(n_steps)
+
+
 env = custom_env.MA_grid_train(use_gui=False,
-                            reward_fn = 'diff-waiting-time',
+                            reward_fn = reward_fn,
                             traffic_lights= ['tls_159','tls_160', 'tls_161'], 
                             sumo_warnings=False,
                             begin_time=25200,
                             num_seconds=4500, # sim_max_time = begin_time + num_seconds
-                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/diff-waiting-time_200000',
+                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/model_outputs/'+name,
                             )
 max_time = env.unwrapped.env.sim_max_time
 delta_time = env.unwrapped.env.delta_time
@@ -54,15 +57,15 @@ model = PPO(
     n_epochs=10,
     clip_range=0.3,
     batch_size=64,
-    tensorboard_log="./logs/MA_grid/waitingTime",
+    tensorboard_log="./logs/MA_grid/"+name,
     device='auto' # use 'auto' for cpu & mps for GPU
 )
 
 
 print("Starting training")
-model.learn(total_timesteps=200000)
+model.learn(total_timesteps=n_steps)
 
-model.save('urban_mobility_simulation/src/data/logs/waitingTime_200')
+model.save(name)
 
 print("Training finished. Starting evaluation")
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)

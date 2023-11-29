@@ -1,17 +1,9 @@
-
-import os
-import subprocess
-
 import numpy as np
 import pandas as pd
 import supersuit as ss
 import traci
-from pyvirtualdisplay.smartdisplay import SmartDisplay
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import VecMonitor
-from tqdm import trange
 
 import ma_environment.custom_envs as custom_env
 
