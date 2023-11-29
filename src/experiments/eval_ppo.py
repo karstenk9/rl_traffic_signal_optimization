@@ -9,7 +9,7 @@ from pathlib import Path
 
 import ma_environment.custom_envs as custom_env
 
-assert len(sys.argv) == 1, "Filename of the trained model must be passed."
+assert len(sys.argv) == 2, "Filename of the trained model must be passed."
 model_path = Path(sys.argv[1])
 assert model_path.exists(), f"File {model_path} does not exist."
 name = model_path.stem
