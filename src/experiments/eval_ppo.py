@@ -49,11 +49,12 @@ obs = env.reset()
 # Traffic lights to monitor / get controlled lanes from
 tls = ['tls_159','tls_160', 'tls_161']
 controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in tls) for item in sublist))
+controlled_vehicles = set()
 
 data = []
 
 for t in range(25200, 34200, delta_time):
-    
+
     actions, _states = model.predict(obs, deterministic=True)
     obs, rewards, dones, info = env.step(actions)
     
@@ -61,6 +62,7 @@ for t in range(25200, 34200, delta_time):
     
     # Get # of vehicles on the lanes
     local_vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
+    controlled_vehicles.update(local_vehicle_ids)
     num_vehicles = len(local_vehicle_ids) 
    
     # Get vehicle types
@@ -97,5 +99,8 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
 
 df = pd.DataFrame(data, columns=columns)
 df.to_csv( name + "_eval_df.csv", index=False)
+
+controlled_vehicles = pd.DataFrame(list(controlled_vehicles), columns=["controlled_vehicles"])
+controlled_vehicles.to_csv(name + "_controlled_vehicles.csv", index=False)
 
 env.close()
