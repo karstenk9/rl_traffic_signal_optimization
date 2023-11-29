@@ -4,14 +4,21 @@ import supersuit as ss
 import traci
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import VecMonitor
+import sys
+from pathlib import Path
 
 import ma_environment.custom_envs as custom_env
+
+assert len(sys.argv) == 1, "Filename of the trained model must be passed."
+model_path = Path(sys.argv[1])
+assert model_path.exists(), f"File {model_path} does not exist."
+name = model_path.stem
 
 
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'diff-waiting-time',
                             traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name='/home/inestp01/rl_traffic_signal_optimization/src/data/evaluation/test_waiting-time_400',
+                            out_csv_name= name + "_eval1",
                             begin_time=25200,
                             num_seconds=9000,
                             time_to_teleport=300)
@@ -34,7 +41,7 @@ env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
 
 env = VecMonitor(env)
 
-model = PPO.load('urban_mobility_simulation/src/data/logs/waitingTime_400.zip', env=env)
+model = PPO.load(model_path, env=env)
 
 obs = env.reset()
 
@@ -105,7 +112,6 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed', 'localCO2Emission', 'lo
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv('urban_mobility_simulation/src/data/evaluation/test_waiting-time_400_df.csv', index=False)
-
+df.to_csv( name + "_eval_df.csv", index=False)
 
 env.close()
