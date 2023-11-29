@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed Nov 29 22:13:46 2023 by Eclipse SUMO sumo Version 1.8.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.net.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_stops.add.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/stops.add.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/vtypes.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/osm.poly.xml"/>
+        <route-files value="/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/veh_routes.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/pt/gtfs_pt_vehicles.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/truck_routes.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/bicycle_routes.xml,/home/inestp01/rl_traffic_signal_optimization/models/20230718_sumo_ma/motorcycle_routes.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="{name}-tripinfo.xml"/>
+    </output>
+
+    <time>
+        <begin value=" 25200"/>
+    </time>
+
+    <processing>
+        <time-to-teleport value="300"/>
+        <waiting-time-memory value="1000"/>
+        <max-depart-delay value="-1"/>
+    </processing>
+
+    <traci_server>
+        <remote-port value="41363"/>
+    </traci_server>
+
+    <random_number>
+        <random value="true"/>
+    </random_number>
+
+</configuration>
