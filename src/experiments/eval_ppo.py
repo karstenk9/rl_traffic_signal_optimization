@@ -98,9 +98,9 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
 df = pd.DataFrame(data, columns=columns)
-df.to_csv( name + "_eval_df.csv", index=False)
+df.to_csv( name + "-eval-df.csv", index=False)
 
 controlled_vehicles = pd.DataFrame(list(controlled_vehicles), columns=["controlled_vehicles"])
-controlled_vehicles.to_csv(name + "_controlled_vehicles.csv", index=False)
+controlled_vehicles.to_csv(name + "-controlled-vehicles.csv", index=False)
 
 env.close()
