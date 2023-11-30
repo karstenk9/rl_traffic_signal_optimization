@@ -67,9 +67,7 @@ for t in range(25200, 34200, delta_time):
     for vehicle in traci.vehicle.getIDList():
         vehicle_waiting_times[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
 
-    teleported_vehicles.update(traci.vehicle.getTeleportingIDList())
-
-
+    teleported_vehicles.update(traci.simulation.getStartingTeleportIDList())
 
     actions, _states = model.predict(obs, deterministic=True)
     obs, rewards, dones, info = env.step(actions)
