@@ -127,6 +127,7 @@ vehicle_times = pd.DataFrame({
 # vehicle_times["arrive_time"] = vehicle_times["arrive_time"].astype(int)
 # vehicle_times["waiting_time"] = vehicle_times["waiting_time"].astype(int)
 vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in controlled_vehicles)
+vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in teleported_vehicles)
 vehicle_times.to_csv(name + "-vehicle-times.csv", index=False)
 
 env.close()
