@@ -8,46 +8,45 @@ import sys
 from pathlib import Path
 
 import ma_environment.custom_envs as custom_env
+from _utils import change_sumo_config_status
 
-assert len(sys.argv) == 2, "Filename of the trained model must be passed."
-model_path = Path(sys.argv[1])
-assert model_path.exists(), f"File {model_path} does not exist."
-name = model_path.stem
+TLS_IDS = ['tls_159','tls_160', 'tls_161']
 
-env = custom_env.MA_grid_eval(use_gui=False,
-                            reward_fn = 'diff-waiting-time',
-                            traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                            out_csv_name= name + "_eval",
-                            begin_time=25200,
-                            num_seconds=9000,
-                            time_to_teleport=300,
-                            )
+assert len(sys.argv) == 2, "Filename of the trained model or 'baseline' must be passed."
+if sys.argv[1] == "baseline":
+    print("Evaluating the baseline - all traffic lights will be set to actuated.")
+    name = "baseline"
+    evaluate_model = False
+    delta_time = 1
+    tls_config_path = "../../models/20230718_sumo_ma/additional_tls.xml"
+    change_sumo_config_status(tls_config_path, TLS_IDS, "actuated")
+    traci.start(['sumo', "-c", "../../models/20230718_sumo_ma/osm.sumocfg", "--time-to-teleport", "300"])
+    change_sumo_config_status(tls_config_path, TLS_IDS, "static")
+else:
+    model_path = Path(sys.argv[1])
+    assert model_path.exists(), f"File {model_path} does not exist."
+    name = model_path.stem
+    print(f"Evaluating model {name}")
+    evaluate_model = True
 
+    env = custom_env.MA_grid_eval(use_gui=False,
+                                reward_fn = 'diff-waiting-time',
+                                traffic_lights= ['tls_159','tls_160', 'tls_161'],
+                                out_csv_name= name + "_eval",
+                                begin_time=25200,
+                                num_seconds=9000,
+                                time_to_teleport=300,
+                                )
+    env = ss.pad_observations_v0(env)
+    env = ss.pad_action_space_v0(env)
+    env = ss.pettingzoo_env_to_vec_env_v1(env)
+    delta_time = env.unwrapped.env.delta_time
+    env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
+    env = VecMonitor(env)
+    model = PPO.load(model_path, env=env)
+    obs = env.reset()
 
-max_time = env.unwrapped.env.sim_max_time
-delta_time = env.unwrapped.env.delta_time
-
-#wrap observation space to have one common observation space for all agents
-env = ss.pad_observations_v0(env)
-
-#wrap action space to have one common action space for all agents (based on largest action space)
-env = ss.pad_action_space_v0(env)
-
-#wrap pettingzoo env
-env = ss.pettingzoo_env_to_vec_env_v1(env)
-
-#concatenate envs
-env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
-
-env = VecMonitor(env)
-
-model = PPO.load(model_path, env=env)
-
-obs = env.reset()
-
-# Traffic lights to monitor / get controlled lanes from
-tls = ['tls_159','tls_160', 'tls_161']
-controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in tls) for item in sublist))
+controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in TLS_IDS) for item in sublist))
 controlled_vehicles = set()
 teleported_vehicles = set()
 vehicle_departures = dict()
@@ -69,10 +68,13 @@ for t in range(25200, 34200, delta_time):
 
     teleported_vehicles.update(traci.simulation.getStartingTeleportIDList())
 
-    actions, _states = model.predict(obs, deterministic=True)
-    obs, rewards, dones, info = env.step(actions)
-
-    print(actions)
+    if evaluate_model:
+        actions, _states = model.predict(obs, deterministic=True)
+        obs, rewards, dones, info = env.step(actions)
+        print(actions)
+    else:
+        traci.simulationStep()
+        actions = []
 
     # Get # of vehicles on the lanes
     local_vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
@@ -89,15 +91,15 @@ for t in range(25200, 34200, delta_time):
     local_stopped_vehicles = sum(traci.lane.getLastStepHaltingNumber(lane_id) for lane_id in controlled_lanes)
 
     # Get TLS Info (to compare phases and transitions)
-    tls159_phase = traci.trafficlight.getPhase(tls[0])
-    tls159_phase_duration = traci.trafficlight.getPhaseDuration(tls[0])
-    tls159_state = traci.trafficlight.getRedYellowGreenState(tls[0])
-    tls160_phase = traci.trafficlight.getPhase(tls[1])
-    tls160_phase_duration = traci.trafficlight.getPhaseDuration(tls[1])
-    tls160_state = traci.trafficlight.getRedYellowGreenState(tls[1])
-    tls161_phase = traci.trafficlight.getPhase(tls[2])
-    tls161_phase_duration = traci.trafficlight.getPhaseDuration(tls[2])
-    tls161_state = traci.trafficlight.getRedYellowGreenState(tls[2])
+    tls159_phase = traci.trafficlight.getPhase(TLS_IDS[0])
+    tls159_phase_duration = traci.trafficlight.getPhaseDuration(TLS_IDS[0])
+    tls159_state = traci.trafficlight.getRedYellowGreenState(TLS_IDS[0])
+    tls160_phase = traci.trafficlight.getPhase(TLS_IDS[1])
+    tls160_phase_duration = traci.trafficlight.getPhaseDuration(TLS_IDS[1])
+    tls160_state = traci.trafficlight.getRedYellowGreenState(TLS_IDS[1])
+    tls161_phase = traci.trafficlight.getPhase(TLS_IDS[2])
+    tls161_phase_duration = traci.trafficlight.getPhaseDuration(TLS_IDS[2])
+    tls161_state = traci.trafficlight.getRedYellowGreenState(TLS_IDS[2])
 
     data.append([num_vehicles, vehicle_types, avg_speed,
              local_waiting_time, local_stopped_vehicles, actions,
@@ -123,4 +125,5 @@ vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambd
 vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in teleported_vehicles)
 vehicle_times.to_csv(name + "-vehicle-times.csv", index=False)
 
-env.close()
+if evaluate_model:
+    env.close()
