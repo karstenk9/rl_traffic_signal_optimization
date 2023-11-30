@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import os
 import supersuit as ss
 import traci
 from stable_baselines3 import PPO
@@ -14,7 +13,6 @@ assert len(sys.argv) == 2, "Filename of the trained model must be passed."
 model_path = Path(sys.argv[1])
 assert model_path.exists(), f"File {model_path} does not exist."
 name = model_path.stem
-tripinfo_filename = f"{name}-tripinfo.xml"
 
 env = custom_env.MA_grid_eval(use_gui=False,
                             reward_fn = 'diff-waiting-time',
@@ -53,6 +51,7 @@ controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlle
 controlled_vehicles = set()
 vehicle_departures = dict()
 vehicle_arrivals = dict()
+vehicle_waiting_times = dict()
 
 data = []
 
@@ -64,16 +63,20 @@ for t in range(25200, 34200, delta_time):
     for vehicle in traci.simulation.getArrivedIDList():
         vehicle_arrivals[vehicle] = t
 
+    for vehicle in traci.vehicle.getIDList():
+        vehicle_waiting_times[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
+
+
     actions, _states = model.predict(obs, deterministic=True)
     obs, rewards, dones, info = env.step(actions)
-    
+
     print(actions)
-    
+
     # Get # of vehicles on the lanes
     local_vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
     controlled_vehicles.update(local_vehicle_ids)
-    num_vehicles = len(local_vehicle_ids) 
-   
+    num_vehicles = len(local_vehicle_ids)
+
     # Get vehicle types
     vehicle_types = [] if num_vehicles == 0 else [traci.vehicle.getTypeID(vehicle_id) for vehicle_id in local_vehicle_ids] if num_vehicles > 0 else []
 
@@ -82,7 +85,7 @@ for t in range(25200, 34200, delta_time):
 
     local_waiting_time = sum(traci.lane.getWaitingTime(lane_id) for lane_id in controlled_lanes)
     local_stopped_vehicles = sum(traci.lane.getLastStepHaltingNumber(lane_id) for lane_id in controlled_lanes)
-    
+
     # Get TLS Info (to compare phases and transitions)
     tls159_phase = traci.trafficlight.getPhase(tls[0])
     tls159_phase_duration = traci.trafficlight.getPhaseDuration(tls[0])
@@ -93,7 +96,7 @@ for t in range(25200, 34200, delta_time):
     tls161_phase = traci.trafficlight.getPhase(tls[2])
     tls161_phase_duration = traci.trafficlight.getPhaseDuration(tls[2])
     tls161_state = traci.trafficlight.getRedYellowGreenState(tls[2])
-    
+
     data.append([num_vehicles, vehicle_types, avg_speed,
              local_waiting_time, local_stopped_vehicles, actions,
              tls159_phase, tls159_phase_duration, tls159_state,
@@ -109,13 +112,18 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
 df = pd.DataFrame(data, columns=columns)
 df.to_csv(name + "-eval-df.csv", index=False)
 
-vehicle_times = pd.DataFrame({"depart_time": vehicle_departures, "arrive_time": vehicle_arrivals}).reset_index().rename({"index": "vehicle_id"}, axis=1)
+vehicle_times = pd.DataFrame({
+    "depart_time": vehicle_departures,
+    "arrive_time": vehicle_arrivals,
+    "waiting_time": vehicle_waiting_times
+}).reset_index().rename({"index": "vehicle_id"}, axis=1)
 vehicle_missing_times = vehicle_times["vehicle_id"][vehicle_times.isna().any(axis=1)].tolist()
 if vehicle_missing_times:
-    # TODO: print warning with vehicle ids
+    print(f"Departure / arrival / waiting time missing for vehicles: {vehicle_missing_times}. Ignoring them.")
     vehicle_times.dropna(inplace=True)
 vehicle_times["depart_time"] = vehicle_times["depart_time"].astype(int)
 vehicle_times["arrive_time"] = vehicle_times["arrive_time"].astype(int)
+vehicle_times["waiting_time"] = vehicle_times["waiting_time"].astype(int)
 vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in controlled_vehicles)
 vehicle_times.to_csv(name + "-vehicle-times.csv", index=False)
 
