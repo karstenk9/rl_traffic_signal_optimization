@@ -119,13 +119,6 @@ vehicle_times = pd.DataFrame({
     "arrive_time": vehicle_arrivals,
     "waiting_time": vehicle_waiting_times
 }).reset_index().rename({"index": "vehicle_id"}, axis=1)
-# vehicle_missing_times = vehicle_times["vehicle_id"][vehicle_times.isna().any(axis=1)].tolist()
-# if vehicle_missing_times:
-#     print(f"Departure / arrival / waiting time missing for vehicles: {vehicle_missing_times}. Ignoring them.")
-#     vehicle_times.dropna(inplace=True)
-# vehicle_times["depart_time"] = vehicle_times["depart_time"].astype(int)
-# vehicle_times["arrive_time"] = vehicle_times["arrive_time"].astype(int)
-# vehicle_times["waiting_time"] = vehicle_times["waiting_time"].astype(int)
 vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in controlled_vehicles)
 vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in teleported_vehicles)
 vehicle_times.to_csv(name + "-vehicle-times.csv", index=False)
