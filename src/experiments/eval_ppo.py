@@ -49,6 +49,7 @@ obs = env.reset()
 tls = ['tls_159','tls_160', 'tls_161']
 controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in tls) for item in sublist))
 controlled_vehicles = set()
+teleported_vehicles = set()
 vehicle_departures = dict()
 vehicle_arrivals = dict()
 vehicle_waiting_times = dict()
@@ -65,6 +66,9 @@ for t in range(25200, 34200, delta_time):
 
     for vehicle in traci.vehicle.getIDList():
         vehicle_waiting_times[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
+
+    teleported_vehicles.update(traci.vehicle.getTeleportingIDList())
+
 
 
     actions, _states = model.predict(obs, deterministic=True)
