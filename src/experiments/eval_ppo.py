@@ -37,10 +37,10 @@ else:
                                 num_seconds=9000,
                                 time_to_teleport=300,
                                 )
+    delta_time = env.unwrapped.env.delta_time
     env = ss.pad_observations_v0(env)
     env = ss.pad_action_space_v0(env)
     env = ss.pettingzoo_env_to_vec_env_v1(env)
-    delta_time = env.unwrapped.env.delta_time
     env = ss.concat_vec_envs_v1(env, 1, num_cpus=4, base_class="stable_baselines3")
     env = VecMonitor(env)
     model = PPO.load(model_path, env=env)
