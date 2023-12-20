@@ -114,7 +114,7 @@ columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
 simulation_states = pd.DataFrame(data, columns=columns)   # for each timestep one row
-simulation_states.to_csv(output_path + "/simulation_states.csv", index=False)
+simulation_states.to_csv(output_path + "/simulation-states.csv", index=False)
 
 vehicle_times = pd.DataFrame({
     "depart_time": vehicle_departures,
