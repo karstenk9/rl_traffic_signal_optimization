@@ -128,8 +128,8 @@ vehicle_times.to_csv(output_path + "/vehicle-times.csv", index=False)
 n_veh = len(vehicle_times)
 vehicle_avg_travel_time = vehicle_times["travel_time"].mean()
 vehicle_times_controlled = vehicle_times[vehicle_times["is_controlled_vehicle"]]
-n_veh_controlled = len(vehicle_times)
-vehicle_avg_travel_time_controlled = vehicle_times["travel_time"].mean()
+n_veh_controlled = len(vehicle_times_controlled)
+vehicle_avg_travel_time_controlled = vehicle_times_controlled["travel_time"].mean()
 lane_avg_waiting_time = simulation_states['localWaitingTime'].mean()
 
 eval_results = {
