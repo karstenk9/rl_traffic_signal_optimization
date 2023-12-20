@@ -3,6 +3,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import VecMonitor
 import sys
+import os
 
 import ma_environment.custom_envs as custom_env
 
@@ -16,6 +17,8 @@ if len(sys.argv) > 1:
 
 reward_fn = "diff-waiting-time"
 name = reward_fn + str(n_steps)
+output_path = f"../../outputs/{name}"
+os.makedirs(output_path, exist_ok=True)
 
 
 env = custom_env.MA_grid_train(use_gui=False,
@@ -57,7 +60,7 @@ model = PPO(
     n_epochs=10,
     clip_range=0.3,
     batch_size=64,
-    tensorboard_log="./logs/MA_grid/"+name,
+    # tensorboard_log="./logs/MA_grid/"+name,
     device='auto' # use 'auto' for cpu & mps for GPU
 )
 
@@ -65,7 +68,7 @@ model = PPO(
 print("Starting training")
 model.learn(total_timesteps=n_steps)
 
-model.save(name)
+model.save(output_path + "/model.zip")
 
 print("Training finished. Starting evaluation")
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=1)

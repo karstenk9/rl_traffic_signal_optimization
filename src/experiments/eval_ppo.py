@@ -6,16 +6,17 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import VecMonitor
 import sys
 from pathlib import Path
+import json
 
 import ma_environment.custom_envs as custom_env
 from _utils import change_sumo_config_status
 
 TLS_IDS = ['tls_159','tls_160', 'tls_161']
 
-assert len(sys.argv) == 2, "Filename of the trained model or 'baseline' must be passed."
-if sys.argv[1] == "baseline":
+assert len(sys.argv) == 2, "Name of the trained model (subdirectory of outputs) or 'baseline' must be passed."
+name = sys.argv[1]
+if name == "baseline":
     print("Evaluating the baseline - all traffic lights will be set to actuated.")
-    name = "baseline"
     evaluate_model = False
     delta_time = 1
     tls_config_path = "../../models/20230718_sumo_ma/additional_tls.xml"
@@ -23,16 +24,14 @@ if sys.argv[1] == "baseline":
     traci.start(['sumo', "-c", "../../models/20230718_sumo_ma/osm.sumocfg", "--time-to-teleport", "300"])
     change_sumo_config_status(tls_config_path, TLS_IDS, "static")
 else:
-    model_path = Path(sys.argv[1])
+    model_path = Path(f"../../outputs/{name}/model.zip")
     assert model_path.exists(), f"File {model_path} does not exist."
-    name = model_path.stem
     print(f"Evaluating model {name}")
     evaluate_model = True
-
     env = custom_env.MA_grid_eval(use_gui=False,
                                 reward_fn = 'diff-waiting-time',
                                 traffic_lights= ['tls_159','tls_160', 'tls_161'],
-                                out_csv_name= name + "_eval",
+                                # out_csv_name= name + "_eval",
                                 begin_time=25200,
                                 num_seconds=9000,
                                 time_to_teleport=300,
@@ -46,12 +45,13 @@ else:
     model = PPO.load(model_path, env=env)
     obs = env.reset()
 
+output_path = f"../../outputs/{name}"
+
 controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in TLS_IDS) for item in sublist))
 controlled_vehicles = set()
 teleported_vehicles = set()
 vehicle_departures = dict()
 vehicle_arrivals = dict()
-vehicle_waiting_times = dict()
 
 data = []
 
@@ -62,9 +62,6 @@ for t in range(25200, 34200, delta_time):
 
     for vehicle in traci.simulation.getArrivedIDList():
         vehicle_arrivals[vehicle] = t
-
-    for vehicle in traci.vehicle.getIDList():
-        vehicle_waiting_times[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
 
     teleported_vehicles.update(traci.simulation.getStartingTeleportIDList())
 
@@ -107,23 +104,40 @@ for t in range(25200, 34200, delta_time):
              tls160_phase, tls160_phase_duration, tls160_state,
              tls161_phase, tls161_phase_duration, tls161_state])
 
+if evaluate_model:
+    env.close()
+
 columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
            'localWaitingTime', 'localStoppedVehicles', 'actions',
            'tls159_phase', 'tls159_phase_duration', 'tls159_state',
            'tls160_phase', 'tls160_phase_duration', 'tls160_state',
            'tls161_phase', 'tls161_phase_duration', 'tls161_state']
 
-df = pd.DataFrame(data, columns=columns)
-df.to_csv(name + "-eval-df.csv", index=False)
+simulation_states = pd.DataFrame(data, columns=columns)   # for each timestep one row
+simulation_states.to_csv(output_path + "/simulation_states.csv", index=False)
 
 vehicle_times = pd.DataFrame({
     "depart_time": vehicle_departures,
     "arrive_time": vehicle_arrivals,
-    "waiting_time": vehicle_waiting_times
 }).reset_index().rename({"index": "vehicle_id"}, axis=1)
+vehicle_times["travel_time"] = vehicle_times["arrive_time"] - vehicle_times["depart_time"]
 vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in controlled_vehicles)
 vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in teleported_vehicles)
-vehicle_times.to_csv(name + "-vehicle-times.csv", index=False)
+vehicle_times.to_csv(output_path + "/vehicle-times.csv", index=False)
 
-if evaluate_model:
-    env.close()
+n_veh = len(vehicle_times)
+vehicle_avg_travel_time = vehicle_times["travel_time"].mean()
+vehicle_times_controlled = vehicle_times[vehicle_times["is_controlled_vehicle"]]
+n_veh_controlled = len(vehicle_times)
+vehicle_avg_travel_time_controlled = vehicle_times["travel_time"].mean()
+lane_avg_waiting_time = simulation_states['localWaitingTime'].mean()
+
+eval_results = {
+    "vehicle_travel_time": {
+        "all": {"number_vehicles": n_veh, "avg": vehicle_avg_travel_time},
+        "tls_controlled": {"number_vehicles": n_veh_controlled, "avg": vehicle_avg_travel_time_controlled},
+    },
+    "lane_waiting_time": {"avg": lane_avg_waiting_time}
+}
+with open(output_path + "/eval_results.json", 'w') as f:
+    json.dump(eval_results, f, indent=2)
