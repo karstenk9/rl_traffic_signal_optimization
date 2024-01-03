@@ -11,10 +11,12 @@ from pathlib import Path
 import json
 
 import ma_environment.custom_envs as custom_env
-from _utils import change_sumo_config_status
+from _utils import change_sumo_config_status, VehicleTimesListener
 
 N_ITERATIONS = 6
 TLS_IDS = ['tls_159','tls_160', 'tls_161']
+BEGIN_TIME = 25200
+NUM_SECONDS = 9000
 DELTA_TIME = 5
 TLS_CONFIG_PATH = "../../models/20230718_sumo_ma/additional_tls.xml"
 
@@ -40,8 +42,8 @@ for i in range(N_ITERATIONS):
                                     reward_fn = 'diff-waiting-time',
                                     traffic_lights= ['tls_159','tls_160', 'tls_161'],
                                     # out_csv_name= name + "_eval",
-                                    begin_time=25200,
-                                    num_seconds=9000,
+                                    begin_time=BEGIN_TIME,
+                                    num_seconds=NUM_SECONDS,
                                     time_to_teleport=300,
                                     )
         assert DELTA_TIME == env.unwrapped.env.delta_time
@@ -57,25 +59,12 @@ for i in range(N_ITERATIONS):
     os.makedirs(output_path, exist_ok=True)
 
     controlled_lanes = list(set(item for sublist in (traci.trafficlight.getControlledLanes(ts) for ts in TLS_IDS) for item in sublist))
-    controlled_vehicles = set()
-    teleported_vehicles = set()
-    vehicle_departures = dict()
-    vehicle_arrivals = dict()
-
     data = []
 
-    for t in range(25200, 34200, DELTA_TIME):
+    vehicle_times_listener = VehicleTimesListener(controlled_lanes)
+    traci.addStepListener(vehicle_times_listener)
 
-        sim_time = traci.simulation.getTime()
-        assert t == sim_time, f"wrong times: {t}, {sim_time}"
-
-        for vehicle in traci.simulation.getDepartedIDList():
-            vehicle_departures[vehicle] = t
-
-        for vehicle in traci.simulation.getArrivedIDList():
-            vehicle_arrivals[vehicle] = t
-
-        teleported_vehicles.update(traci.simulation.getStartingTeleportIDList())
+    for t in range(BEGIN_TIME, BEGIN_TIME+NUM_SECONDS, DELTA_TIME):
 
         if evaluate_model:
             actions, _states = model.predict(obs, deterministic=True)
@@ -88,7 +77,6 @@ for i in range(N_ITERATIONS):
 
         # Get # of vehicles on the lanes
         local_vehicle_ids = [item for sublist in (traci.lane.getLastStepVehicleIDs(lane_id) for lane_id in controlled_lanes) for item in sublist]
-        controlled_vehicles.update(local_vehicle_ids)
         num_vehicles = len(local_vehicle_ids)
 
         # Get vehicle types
@@ -119,6 +107,8 @@ for i in range(N_ITERATIONS):
 
     if evaluate_model:
         env.close()
+    else:
+        traci.close()
 
     columns = ['num_vehicles', 'vehicle_types', 'avg_speed',
                'localWaitingTime', 'localStoppedVehicles', 'actions',
@@ -130,25 +120,25 @@ for i in range(N_ITERATIONS):
     simulation_states.to_csv(output_path + f"/simulation-states_{i}.csv", index=False)
 
     vehicle_times = pd.DataFrame({
-        "depart_time": vehicle_departures,
-        "arrive_time": vehicle_arrivals,
+        "depart_time": vehicle_times_listener.vehicle_departures,
+        "arrive_time": vehicle_times_listener.vehicle_arrivals,
     }).reset_index().rename({"index": "vehicle_id"}, axis=1)
     vehicle_times["travel_time"] = vehicle_times["arrive_time"] - vehicle_times["depart_time"]
-    vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in controlled_vehicles)
-    vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in teleported_vehicles)
+    vehicle_times["is_controlled_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in vehicle_times_listener.controlled_vehicles)
+    vehicle_times["is_teleported_vehicle"] = vehicle_times["vehicle_id"].apply(lambda veh: veh in vehicle_times_listener.teleported_vehicles)
     vehicle_times.to_csv(output_path + f"/vehicle-times_{i}.csv", index=False)
 
-    n_veh = len(vehicle_times)
+    n_veh = vehicle_times["travel_time"].count()
     vehicle_avg_travel_time = vehicle_times["travel_time"].mean()
     vehicle_times_controlled = vehicle_times[vehicle_times["is_controlled_vehicle"]]
-    n_veh_controlled = len(vehicle_times_controlled)
+    n_veh_controlled = vehicle_times_controlled["travel_time"].count()
     vehicle_avg_travel_time_controlled = vehicle_times_controlled["travel_time"].mean()
     lane_avg_waiting_time = simulation_states['localWaitingTime'].mean()
 
     eval_results = {
         "vehicle_travel_time": {
-            "all": {"number_vehicles": n_veh, "avg": vehicle_avg_travel_time},
-            "tls_controlled": {"number_vehicles": n_veh_controlled, "avg": vehicle_avg_travel_time_controlled},
+            "all": {"number_vehicles": int(n_veh), "avg": vehicle_avg_travel_time},
+            "tls_controlled": {"number_vehicles": int(n_veh_controlled), "avg": vehicle_avg_travel_time_controlled},
         },
         "lane_waiting_time": {"avg": lane_avg_waiting_time}
     }
