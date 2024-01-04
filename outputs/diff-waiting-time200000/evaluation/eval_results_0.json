@@ -1,0 +1,15 @@
+{
+  "vehicle_travel_time": {
+    "all": {
+      "number_vehicles": 11477,
+      "avg": 831.5531062124248
+    },
+    "tls_controlled": {
+      "number_vehicles": 2046,
+      "avg": 1153.2209188660802
+    }
+  },
+  "lane_waiting_time": {
+    "avg": 1061.2883333333334
+  }
+}
