@@ -2,6 +2,7 @@ import supersuit as ss
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.vec_env import VecMonitor
+from stable_baselines3.common.logger import configure
 import sys
 import os
 
@@ -60,10 +61,11 @@ model = PPO(
     n_epochs=10,
     clip_range=0.3,
     batch_size=64,
-    # tensorboard_log="./logs/MA_grid/"+name,
     device='auto' # use 'auto' for cpu & mps for GPU
 )
 
+logger = configure("log", ["stdout", "csv"])
+model.set_logger(logger)
 
 print("Starting training")
 model.learn(total_timesteps=n_steps)
