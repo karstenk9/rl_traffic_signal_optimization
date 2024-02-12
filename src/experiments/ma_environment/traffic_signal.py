@@ -110,6 +110,7 @@ class TrafficSignal:
         self.out_lanes = [link[0][1] for link in self.sumo.trafficlight.getControlledLinks(self.id) if link]
         self.out_lanes = list(set(self.out_lanes))
         self.lanes_lenght = {lane: self.sumo.lane.getLength(lane) for lane in self.lanes + self.out_lanes}
+        self.edges = set(self.sumo.lane.getEdgeID(lane) for lane in self.lanes)
 
         self.observation_space = self.observation_fn.observation_space()
         self.action_space = spaces.Discrete(self.num_green_phases)
@@ -728,6 +729,34 @@ class TrafficSignal:
     def get_total_queued(self) -> int:
         """Returns the total number of vehicles halting in the intersection."""
         return sum(self.sumo.lane.getLastStepHaltingNumber(lane) for lane in self.lanes)
+
+    def get_paths_through_tls(self):
+        n_veh_active = 0
+        n_veh_to_pass_tls = 0
+
+        for veh in self.sumo.vehicle.getIDList():
+            route_edges = self.sumo.vehicle.getRoute(veh)
+
+            # If the route only contains 2 elements (start and end edge), the actual vehicle route is not yet computed
+            if len(route_edges) > 2:
+                n_veh_active += 1
+                intersect = self.edges.intersection(route_edges)  # edges which the vehicle will pass (or has passed) that are controlled by the tls
+
+                if len(intersect) >= 1:  # TODO: check what to do if len>1 (i.e. vehicle will pass the tls multiple times)
+                    tls_edge = intersect.pop()
+                    veh_lane = self.sumo.vehicle.getLaneID(veh)
+                    if veh_lane[0] == ":":
+                        veh_lane = self.sumo.lane.getLinks(veh_lane)[0][0]  # if lane belongs to internal edge, select the following lane
+
+                    veh_edge = self.sumo.lane.getEdgeID(veh_lane)
+                    if route_edges.index(veh_edge) <= route_edges.index(tls_edge):  # vehicle did not already pass the tls
+                        #  TODO: here the closeness of the vehicle to the tls could be an additional requirement,
+                        #  i.e. the vehicle_edge index not only has to be not larger than the tls_edge index but their difference
+                        #  also has to be smaller than a certain amount
+                        n_veh_to_pass_tls += 1
+
+        return n_veh_to_pass_tls / n_veh_active if n_veh_active > 0 else 0
+
 
     def _get_veh_list(self):
         veh_list = []
