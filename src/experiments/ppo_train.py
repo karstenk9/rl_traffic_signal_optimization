@@ -9,7 +9,7 @@ import os
 import ma_environment.custom_envs as custom_env
 
 
-n_steps = 200000
+n_steps = 150000
 if len(sys.argv) > 1:
     try:
         n_steps = int(sys.argv[1])
